@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<categories>
+
+    <category>
+        <name>NGS analysis</name>
+        <doc>Components dealing with the analysis of NGS data.</doc>
+    </category>
+
+    <category>
+        <name>RNA-Seq analysis</name>
+        <doc>Components dealing with the analysis of RNA-Seq NGS data.</doc>
+        <parent-category>NGS analysis</parent-category>
+    </category>
+
+    <category>
+        <name>transcript isoform quantification</name>
+        <doc>Components dealing with the quantification of transcript isoforms.</doc>
+    </category>
+
+    <category>
+        <name>read extraction</name>
+        <doc>Components dealing with the extraction of valid reads from NGS libraries.</doc>
+        <parent-category>NGS analysis</parent-category>
+    </category>
+
+    <category>
+        <name>short read alignment</name>
+        <doc>Components dealing with the alignment/mapping of short NGS reads.</doc>
+        <parent-category>NGS analysis</parent-category>
+    </category>
+
+    <category>
+        <name>read alignment processing</name>
+        <doc>Components dealing with the processing of NGS read alignments.</doc>
+        <parent-category>NGS analysis</parent-category>
+    </category>
+
+</categories>

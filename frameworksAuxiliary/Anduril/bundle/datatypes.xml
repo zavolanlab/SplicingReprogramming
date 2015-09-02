@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<types>
+
+    <type>
+        <name>Text</name>
+        <parent-type>BinaryFile</parent-type>
+        <desc>Plain text with no particular structure.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+
+    <type>
+        <name>Directory</name>
+        <parent-type>BinaryFolder</parent-type>
+        <desc>Plain folder with no particular structure.</desc>
+        <presentation-type>directory</presentation-type>
+    </type>
+
+    <type>
+        <name>InfoCutadapt</name>
+        <parent-type>Text</parent-type>
+        <desc>cutadapt-specific info file format.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+
+    <type>
+        <name>ReportCutadapt</name>
+        <parent-type>Text</parent-type>
+        <desc>cutadapt-specific report file format.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+    
+    <type>
+        <name>FASTX</name>
+        <parent-type>Text</parent-type>
+        <desc>Plain text in FASTX (FASTQ or FASTX) format.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+
+    <type>
+        <name>FASTQ</name>
+        <parent-type>FASTX</parent-type>
+        <desc>Plain text in FASTQ format.</desc>
+        <presentation-type>file</presentation-type>
+        <extension>fq</extension>
+    </type>
+
+<!--
+        <type>    
+        <name>FASTA</name>
+        <parent-type>FASTX</parent-type>
+        <desc>Plain text in FASTA format.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+-->
+
+    <type>
+        <name>SAM</name>
+        <parent-type>Text</parent-type>
+        <desc>Plain text in SAM format.</desc>
+        <presentation-type>file</presentation-type>
+        <extension>sam</extension>
+    </type>
+    
+    <type>
+        <name>SRA</name>
+        <parent-type>BinaryFile</parent-type>
+        <desc>Binary file in SRA format.</desc>
+        <presentation-type>file</presentation-type>
+        <extension>sra</extension>
+    </type>
+
+    <type>
+        <name>BAM</name>
+        <parent-type>BinaryFile</parent-type>
+        <desc>Binary file in BAM format.</desc>
+        <presentation-type>file</presentation-type>
+        <extension>bam</extension>
+    </type>
+    
+    <type>
+        <name>BAI</name>
+        <parent-type>BinaryFile</parent-type>
+        <desc>Binary BAM index file.</desc>
+        <presentation-type>file</presentation-type>
+        <extension>bai</extension>
+    </type>
+
+</types>

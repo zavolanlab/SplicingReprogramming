@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>sam_header_body</name>
+    <version>1.0</version>
+    <doc>Splits a SAM file and puts out either its header, its body or both. It is assumed that the header is located in one piece at the top of the input file.</doc>
+    <author email="alexander.kanitz@unibas.ch">Alexander Kanitz</author>
+    <category>NGS analysis</category>
+    <launcher type="python">
+        <argument name="file" value="component.py" />
+        <argument name="source" value="krini_functions.py" />
+    </launcher>
+    <requires URL="http://www.python.org/" name="Python" optional="false" type="manual">python</requires>
+    <requires URL="https://www.perl.org/" name="perl" optional="false" type="manual">perl</requires>
+    <type-parameters>
+        <type-parameter name="SAM" extends="text">
+            <doc>SAM.</doc>
+        </type-parameter>
+    </type-parameters>
+    <inputs>
+        <input name="INFILE_sam" type="SAM" optional="false" array="false">
+            <doc>Input file in SAM format.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="OUTFILE_body" type="SAM" array="false">
+            <doc>Body of input SAM file.</doc>
+        </output>
+        <output name="OUTFILE_head" type="SAM" array="false">
+            <doc>Header of input SAM file.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="_executable" type="string" default="sam_split_body_header.pl">
+            <doc>Path to executable.</doc>
+        </parameter>
+        <parameter name="_execMode" type="string" default="none">
+            <doc>Execution mode. One of &apos;remote&apos;, &apos;local&apos; or &apos;none&apos;.</doc>
+        </parameter>
+        <parameter name="_cores" type="string" default="1">
+            <doc>Number of threads.</doc>
+        </parameter>
+        <parameter name="_membycore" type="string" default="3500M">
+            <doc>Memory per core. Integer, optionally followed by one the follow suffixes: K, M, G.</doc>
+        </parameter>
+        <parameter name="_runtime" type="string" default="6:00:00">
+            <doc>Runtime in h:mm:ss.</doc>
+        </parameter>
+        <parameter name="quiet" type="string" default="{{FALSE}}">
+            <doc>Shut up.</doc>
+        </parameter>
+    </parameters>
+</component>

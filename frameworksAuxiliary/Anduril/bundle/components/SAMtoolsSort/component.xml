@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>SAMtoolsSort</name>
+    <version>1.2</version>
+    <doc>Sort BAM/CRAM files.</doc>
+    <author email="lh3@me.com">Heng Li</author>
+    <author>John Marshall</author>
+    <author email="petr.danecek@sanger.ac.uk">Petr Danecek</author>
+    <author email="mp15@sanger.ac.uk">Martin Pollard</author>
+    <category>NGS analysis</category>
+    <category>read alignment processing</category>
+    <launcher type="python">
+        <argument name="file" value="component.py" />
+        <argument name="source" value="krini_functions.py" />
+    </launcher>
+    <requires URL="http://www.python.org/" name="Python" optional="false" type="manual">python</requires>
+    <requires URL="samtools" name="SAMtools" optional="false" type="manual">samtools</requires>
+    <type-parameters>
+        <type-parameter name="BAM" extends="BinaryFile">
+            <doc>Binary representation of SAM file format.</doc>
+        </type-parameter>
+        <type-parameter name="SAMtools">
+            <doc>File in SAM, BAM or CRAM format.</doc>
+        </type-parameter>
+    </type-parameters>
+    <inputs>
+        <input name="INFILE_infile" type="BAM" optional="false" array="false">
+            <doc>Input file in BAM format. Needs to be sorted by coordinates.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="OUTFILE_o" type="SAMtools" array="false">
+            <doc>Sorted file in SAM, BAM, CRAM format.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="_executable" type="string" default="samtools sort">
+            <doc>Path to executable.</doc>
+        </parameter>
+        <parameter name="_execMode" type="string" default="none">
+            <doc>Execution mode. One of &apos;remote&apos;, &apos;local&apos; or &apos;none&apos;.</doc>
+        </parameter>
+        <parameter name="_cores" type="string" default="16">
+            <doc>Number of threads.</doc>
+        </parameter>
+        <parameter name="_membycore" type="string" default="2G">
+            <doc>Memory per core. Integer, optionally followed by one the follow suffixes: K, M, G.</doc>
+        </parameter>
+        <parameter name="_runtime" type="string" default="6:00:00">
+            <doc>Runtime in h:mm:ss.</doc>
+        </parameter>
+        <parameter name="n" type="string" default="{{FALSE}}">
+            <doc>Sort by read name.</doc>
+        </parameter>
+        <parameter name="O" type="string" default="bam">
+            <doc>Write output in &apos;sam&apos;, &apos;bam&apos; or &apos;cram&apos; format.</doc>
+        </parameter>
+        <parameter name="l" type="string" default="-1">
+            <doc>Compression level (0 to 9).</doc>
+        </parameter>
+        <parameter name="at" type="string" default="{{CORES}}">
+            <doc>Number of sorting and compression threads.</doc>
+        </parameter>
+        <parameter name="m" type="string" default="{{MEMBYCORE}}">
+            <doc>Maximum memory per thread. Suffix K/M/G recognized.</doc>
+        </parameter>
+        <parameter name="T" type="string" default="{{TEMPDIR}}/tmp_SAMtoolsSort">
+            <doc>Write temporary files to PREFIX.nnnn.bam.</doc>
+        </parameter>
+    </parameters>
+</component>

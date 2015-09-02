@@ -1,0 +1,42 @@
+/*
+* Author:      Alexander Kanitz
+* Affiliation: Biozentrum, University of Basel
+* Email:       alexander.kanitz@alumni.ethz.ch
+* Date:        Aug 26, 2015
+* Description: Quantify transcript expression from directional, single-ended RNA-Seq libraries with
+*              Kallisto (http://pachterlab.github.io/kallisto/). Requires a tab-separated input file
+*              listing sample name, full path to sample, sample format ("fastq" or "fasta") and
+*              3'-adapter sequence and a header with the following column names: "name", "path",
+*              "format", "adapter3"
+*/
+
+// ---> IMPORT SAMPLE <--- //
+csv = INPUT(path="/import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/documentation/time_course_1.sample_overview.csv")
+
+// ---> IMPORT KALLISTO INDEX <--- //
+indexKallisto = INPUT(path="/import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/analyzedData/kallistoIndex/index/OUTFILE_index")
+
+// ---> ITERATE OVER SAMPLES <--- //
+for row: std.itercsv(csv.in) {
+
+    // ---> IMPORT READ FILE <--- //
+    readFile = INPUT(path=row.path, @name = "readFile_" + row.sampleName)
+    readFile = std.lookup("readFile_" + row.sampleName)
+
+    // ---> REMOVE 3' ADAPTER <--- //
+    cutadapt = Cutadapt(INFILE_input=readFile, adapter=row.adapter, format=row.format, trim_n="{{TRUE}}", minimum_length="30", _execMode="local", @name = "cutadapt_" + row.sampleName)
+    cutadapt = std.lookup("cutadapt_" + row.sampleName)
+
+    // ---> REMOVE POLY-A TAIL <--- //
+    cutpoly = Cutadapt(INFILE_input=cutadapt.OUTFILE_output, adapter="AAAAAAAAAAAAAAAAAAAAAAAAA", format=row.format, trim_n="{{TRUE}}", minimum_length="30", _execMode="local", @name = "cutpoly_" + row.sampleName)
+    cutpoly = std.lookup("cutpoly_" + row.sampleName)
+
+    // ---> ESTIMATE EXPRESSION <--- //
+    kallisto = kallistoQuant(INFILE_readseqs=cutpoly.OUTFILE_output, INFILE_index=indexKallisto, plaintext="{{TRUE}}", single="{{TRUE}}", fragment_length=row.fragLenMean, sd=row.fragLenSD, threads="3", _execMode="local", @name = "kallisto_" + row.sampleName)
+    kallisto = std.lookup("kallisto_" + row.sampleName)
+
+    // ---> EXPORT OUTPUT <--- //
+    output = OUTPUT(kallisto.OUTDIR_output_dir, @name = "output_" + row.sampleName)
+    output = std.lookup("output_" + row.sampleName)
+
+}

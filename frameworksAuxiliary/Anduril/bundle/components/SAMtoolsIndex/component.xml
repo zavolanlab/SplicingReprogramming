@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>SAMtoolsIndex</name>
+    <version>0.1.19</version>
+    <doc>Index coordinate-sorted BAM files.</doc>
+    <author email="lh3@me.com">Heng Li</author>
+    <author>John Marshall</author>
+    <author email="petr.danecek@sanger.ac.uk">Petr Danecek</author>
+    <author email="mp15@sanger.ac.uk">Martin Pollard</author>
+    <category>NGS analysis</category>
+    <category>read alignment processing</category>
+    <launcher type="python">
+        <argument name="file" value="component.py" />
+        <argument name="source" value="krini_functions.py" />
+    </launcher>
+    <requires URL="http://www.python.org/" name="Python" optional="false" type="manual">python</requires>
+    <requires URL="samtools" name="SAMtools" optional="false" type="manual">samtools</requires>
+    <type-parameters>
+        <type-parameter name="BAM" extends="BinaryFile">
+            <doc>Binary representation of SAM file format.</doc>
+        </type-parameter>
+        <type-parameter name="BAI" extends="BinaryFile">
+            <doc>Index in BAI format.</doc>
+        </type-parameter>
+    </type-parameters>
+    <inputs>
+        <input name="INFILE_infile" type="BAM" optional="false" array="false">
+            <doc>Input file in BAM format. Needs to be sorted by coordinates.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="OUTFILE_outfile" type="BAI" array="false">
+            <doc>BAM index file in BAI format.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="_executable" type="string" default="samtools index">
+            <doc>Path to executable.</doc>
+        </parameter>
+        <parameter name="_execMode" type="string" default="none">
+            <doc>Execution mode. One of &apos;remote&apos;, &apos;local&apos; or &apos;none&apos;.</doc>
+        </parameter>
+        <parameter name="_cores" type="string" default="1">
+            <doc>Number of threads.</doc>
+        </parameter>
+        <parameter name="_membycore" type="string" default="2G">
+            <doc>Memory per core. Integer, optionally followed by one the follow suffixes: K, M, G.</doc>
+        </parameter>
+        <parameter name="_runtime" type="string" default="6:00:00">
+            <doc>Runtime in h:mm:ss.</doc>
+        </parameter>
+    </parameters>
+</component>

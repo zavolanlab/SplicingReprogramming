@@ -1,0 +1,13 @@
+/*
+* Author:      Alexander Kanitz
+* Affiliation: Biozentrum, University of Basel
+* Email:       alexander.kanitz@alumni.ethz.ch
+* Date:        Aug 28, 2015
+* Description: Generate an Index for Kallisto (http://pachterlab.github.io/kallisto/).
+*/
+
+// ---> IMPORT TRANSCRIPTOME <--- //
+seqFile = INPUT(path="{{INPUT_TRANSCRIPT_SEQUENCES}}")
+
+// ---> BUILD INDEX <--- //
+index = kallistoIndex(INFILE_refseqs=seqFile, _execMode="{{KALLISTOINDEX_EXECMODE}}")

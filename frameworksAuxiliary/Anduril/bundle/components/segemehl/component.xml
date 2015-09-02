@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>segemehl</name>
+    <version>0.2.0</version>
+    <doc>Heuristic mapping of short sequences.</doc>
+    <author email="steve@bioinf.uni-leipzig.de">Steve Hoffmann</author>
+    <category>NGS analysis</category>
+    <category>RNA-Seq analysis</category>
+    <category>short read alignment</category>
+    <launcher type="python">
+        <argument name="file" value="component.py" />
+        <argument name="source" value="krini_functions.py" />
+    </launcher>
+    <requires URL="http://www.python.org/" name="Python" optional="false" type="manual">python</requires>
+    <requires URL="http://www.bioinf.uni-leipzig.de/Software/segemehl/" name="segemehl" optional="false" type="manual">segemehl.x</requires>
+    <type-parameters>
+        <type-parameter name="FASTX" extends="Text">
+            <doc>FASTQ or FASTA.</doc>
+        </type-parameter>
+        <type-parameter name="segemehlIndex" extends="BinaryFile">
+            <doc>Segemehl index.</doc>
+        </type-parameter>
+        <type-parameter name="SAM" extends="Text">
+            <doc>SAM.</doc>
+        </type-parameter>
+    </type-parameters>
+    <inputs>
+        <input name="INFILE_database" type="FASTX" optional="false" array="false">
+            <doc>List of path/filename(s) of database sequence(s).</doc>
+        </input>
+        <input name="INFILE_query" type="FASTX" optional="true" array="false">
+            <doc>Path/filename of query sequence.</doc>
+        </input>
+        <input name="INFILE_mate" type="FASTX" optional="true" array="false">
+            <doc>Path/filename of mate pair sequences.</doc>
+        </input>
+        <input name="INFILE_index" type="segemehlIndex" optional="true" array="false">
+            <doc>Path/filename of db index.</doc>
+        </input>
+        <input name="INFILE_index2" type="segemehlIndex" optional="true" array="false">
+            <doc>Path/filename of second db index.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="OUTFILE_generate" type="segemehlIndex" array="false">
+            <doc>Generate db index and store to disk.</doc>
+        </output>
+        <output name="OUTFILE_generate2" type="segemehlIndex" array="false">
+            <doc>Generate second db index and store to disk.</doc>
+        </output>
+        <output name="OUTFILE_outfile" type="SAM" array="false">
+            <doc>Outputfile.</doc>
+        </output>
+        <output name="OUTFILE_nomatchfilename" type="SAM" array="false">
+            <doc>Filename for unmatched reads.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="_executable" type="string" default="segemehl.x">
+            <doc>Path to executable.</doc>
+        </parameter>
+        <parameter name="_execMode" type="string" default="none">
+            <doc>Execution mode. One of &apos;remote&apos;, &apos;local&apos; or &apos;none&apos;.</doc>
+        </parameter>
+        <parameter name="_cores" type="string" default="16">
+            <doc>Number of threads.</doc>
+        </parameter>
+        <parameter name="_membycore" type="string" default="5G">
+            <doc>Memory per core. Integer, optionally followed by one the follow suffixes: K, M, G.</doc>
+        </parameter>
+        <parameter name="_runtime" type="string" default="168:00:00">
+            <doc>Runtime in h:mm:ss.</doc>
+        </parameter>
+        <parameter name="_OUTFILE_generate" type="boolean" default="false">
+            <doc>Switch for enabling the optional output port "--generate". Set to true in workflow file if this output is desired.</doc>
+        </parameter>
+        <parameter name="_OUTFILE_generate2" type="boolean" default="false">
+            <doc>Switch for enabling the optional output port "--generate2". Set to true in workflow file if this output is desired.</doc>
+        </parameter>
+        <parameter name="_OUTFILE_outfile" type="boolean" default="false">
+            <doc>Switch for enabling the optional output port "--outfile". Set to true in workflow file if this output is desired.</doc>
+        </parameter>
+        <parameter name="_OUTFILE_nomatchfilename" type="boolean" default="false">
+            <doc>Switch for enabling the optional output port "--nomatchfilename". Set to true in workflow file if this output is desired.</doc>
+        </parameter>
+        <parameter name="silent" type="string" default="{{FALSE}}">
+            <doc>Shut up!</doc>
+        </parameter>
+        <parameter name="brief" type="string" default="{{FALSE}}">
+            <doc>Brief output.</doc>
+        </parameter>
+        <parameter name="checkidx" type="string" default="{{FALSE}}">
+            <doc>Check index.</doc>
+        </parameter>
+        <parameter name="SEGEMEHL" type="string" default="{{FALSE}}">
+            <doc>Output SEGEMEHL format (needs to be selected for brief).</doc>
+        </parameter>
+        <parameter name="MEOP" type="string" default="{{FALSE}}">
+            <doc>Output MEOP field for easier variance calling in SAM (XE:Z:).</doc>
+        </parameter>
+        <parameter name="nohead" type="string" default="{{FALSE}}">
+            <doc>Do not output header.</doc>
+        </parameter>
+        <parameter name="showalign" type="string" default="{{FALSE}}">
+            <doc>Show alignments.</doc>
+        </parameter>
+        <parameter name="polyA" type="string" default="{{FALSE}}">
+            <doc>Clip polyA tail.</doc>
+        </parameter>
+        <parameter name="autoclip" type="string" default="{{FALSE}}">
+            <doc>Autoclip unknown 3prime adapter.</doc>
+        </parameter>
+        <parameter name="hardclip" type="string" default="{{FALSE}}">
+            <doc>Enable hard clipping.</doc>
+        </parameter>
+        <parameter name="order" type="string" default="{{FALSE}}">
+            <doc>Sorts the output by chromsome and position.</doc>
+        </parameter>
+        <parameter name="prime5" type="string" default="{{FALSE}}">
+            <doc>Add 5&apos; adapter.</doc>
+        </parameter>
+        <parameter name="prime3" type="string" default="{{FALSE}}">
+            <doc>Add 3&apos; adapter.</doc>
+        </parameter>
+        <parameter name="minsize" type="string" default="12">
+            <doc>Minimum size of queries.</doc>
+        </parameter>
+        <parameter name="threads" type="string" default="{{CORES}}">
+            <doc>Number of threads.</doc>
+        </parameter>
+        <parameter name="differences" type="string" default="1">
+            <doc>Search seeds initially with &lt;n&gt; differences.</doc>
+        </parameter>
+        <parameter name="jump" type="string" default="0">
+            <doc>Search seeds with jump size &lt;n&gt; (0=automatic).</doc>
+        </parameter>
+        <parameter name="evalue" type="string" default="5.0">
+            <doc>Max evalue.</doc>
+        </parameter>
+        <parameter name="maxsplitevalue" type="string" default="50.00000">
+            <doc>Max evalue for splits.</doc>
+        </parameter>
+        <parameter name="maxinterval" type="string" default="100">
+            <doc>Maximum width of a suffix array interval, i.e. a query seed will be omitted if it matches more than &lt;n&gt; times.</doc>
+        </parameter>
+        <parameter name="maxout" type="string" default="0">
+            <doc>Maximum number of alignments that will be reported. If set to zero, all alignments will be reported.</doc>
+        </parameter>
+        <parameter name="extensionscore" type="string" default="2">
+            <doc>Score of a match during extension.</doc>
+        </parameter>
+        <parameter name="extensionpenalty" type="string" default="4">
+            <doc>Penalty for a mismatch during extension.</doc>
+        </parameter>
+        <parameter name="dropoff" type="string" default="8">
+            <doc>Dropoff parameter for extension.</doc>
+        </parameter>
+        <parameter name="accuracy" type="string" default="90">
+            <doc>Min percentage of matches per read in semi-global alignment.</doc>
+        </parameter>
+        <parameter name="minsplicecover" type="string" default="80">
+            <doc>Min coverage for spliced transcripts.</doc>
+        </parameter>
+        <parameter name="minfragscore" type="string" default="18">
+            <doc>Min score of a spliced fragment.</doc>
+        </parameter>
+        <parameter name="minfraglen" type="string" default="20">
+            <doc>Min length of a spliced fragment.</doc>
+        </parameter>
+        <parameter name="splicescorescale" type="string" default="1.0">
+            <doc>Report spliced alignment with score s only if &lt;f&gt;*s is larger than next best spliced alignment.</doc>
+        </parameter>
+        <parameter name="hitstrategy" type="string" default="1">
+            <doc>Report only best scoring hits (=1) or all (=0).</doc>
+        </parameter>
+        <parameter name="clipacc" type="string" default="70">
+            <doc>Clipping accuracy.</doc>
+        </parameter>
+        <parameter name="maxinsertsize" type="string" default="500">
+            <doc>Maximum size of the inserts.</doc>
+        </parameter>
+    </parameters>
+</component>

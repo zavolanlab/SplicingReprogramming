@@ -1,0 +1,27 @@
+## Alexander Kanitz
+## 30-JUL-2014
+
+# Make folder to keep workflow, parameter and host configuration files
+mkdir -p /import/bc2/home/zavolan/krini/bin/python /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal/RESOURCES
+
+# Generate parameter files, the pipeline setup wrapper script and the anduril run wrapper script
+/import/bc2/home/zavolan/krini/bin/python /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal/wrapper_parameters.py /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal/template_parameters.yaml /import/bc2/home/zavolan/kanitz/AS/time_series_afzal/seq_libs/concatenated 9 /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal/RUNS /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal/RESOURCES /import/bc2/home/zavolan/krini/bin/setup_pipeline_batch.py /import/bc2/home/zavolan/krini/anduril /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal template_workflow.and template_hosts.conf
+
+# Render workflow and host configuration files
+/import/bc2/home/zavolan/krini/bin/bash /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal/wrapper_setup.sh
+
+# Copy the anduril run wrapper script
+cp wrapper_run.sh wrapper_run_1_to_5.sh
+cp wrapper_run.sh wrapper_run_6_to_10.sh
+cp wrapper_run.sh wrapper_run_11_to_15.sh
+cp wrapper_run.sh wrapper_run_16_to_20.sh
+cp wrapper_run.sh wrapper_run_21_to_25.sh
+
+# Manually remove 20 run commands from each copy so that all 25 commands are distributed evenly
+
+# Run anduril
+nohup /import/bc2/home/zavolan/krini/bin/bash /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal/wrapper_run_1_to_5.sh &
+nohup /import/bc2/home/zavolan/krini/bin/bash /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal/wrapper_run_6_to_10.sh &
+nohup /import/bc2/home/zavolan/krini/bin/bash /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal/wrapper_run_11_to_15.sh &
+nohup /import/bc2/home/zavolan/krini/bin/bash /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal/wrapper_run_16_to_20.sh &
+nohup /import/bc2/home/zavolan/krini/bin/bash /import/bc2/home/zavolan/krini/anduril/runs/time_series_afzal/wrapper_run_21_to_25.sh &

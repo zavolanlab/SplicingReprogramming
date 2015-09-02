@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>sam_read_length_stats</name>
+    <version>0.2</version>
+    <doc>Calculate mean and std from SAM file.</doc>
+    <author email="foivos.gypas@unibas.ch">Foivos Gypas</author>
+    <credit email="alexander.kanitz@unibas.ch">Alex Kanitz</credit>
+    <category>NGS analysis</category>
+    <launcher type="python">
+        <argument name="file" value="component.py" />
+        <argument name="source" value="krini_functions.py" />
+    </launcher>
+    <requires URL="http://www.python.org/" name="Python" optional="false" type="manual">python</requires>
+    <requires URL="sam_read_length_stats.py" optional="false" type="manual">sam_read_length_stats.pysam_read_length_stats</requires>
+    <type-parameters>
+        <type-parameter name="SAM" extends="text">
+            <doc>SAM.</doc>
+        </type-parameter>
+        <type-parameter name="text" extends="text">
+            <doc>Text.</doc>
+        </type-parameter>
+    </type-parameters>
+    <inputs>
+        <input name="INFILE_sam" type="SAM" optional="false" array="false">
+            <doc>SAM file.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="OUTFILE_mean" type="text" array="false">
+            <doc>Text file stating the mean read length.</doc>
+        </output>
+        <output name="OUTFILE_sd" type="text" array="false">
+            <doc>Text file stating the standard deviation of the read lengths.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="_executable" type="string" default="sam_read_length_stats.py">
+            <doc>Path to executable.</doc>
+        </parameter>
+        <parameter name="_execMode" type="string" default="none">
+            <doc>Execution mode. One of &apos;remote&apos;, &apos;local&apos; or &apos;none&apos;.</doc>
+        </parameter>
+        <parameter name="_cores" type="string" default="1">
+            <doc>Number of threads.</doc>
+        </parameter>
+        <parameter name="_membycore" type="string" default="7G">
+            <doc>Memory per core. Integer, optionally followed by one the follow suffixes: K, M, G.</doc>
+        </parameter>
+        <parameter name="_runtime" type="string" default="6:00:00">
+            <doc>Runtime in h:mm:ss.</doc>
+        </parameter>
+        <parameter name="multimappers" type="string" default="{{TRUE}}">
+            <doc>Derive statistics without considering multimappers.</doc>
+        </parameter>
+    </parameters>
+</component>

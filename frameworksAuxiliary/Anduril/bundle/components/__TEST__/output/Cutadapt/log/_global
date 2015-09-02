@@ -1,0 +1,150 @@
+Log started on 2015-08-27 11:47:11;
+Executing Cutadapt (Cutadapt)
+[STDOUT Cutadapt] == Component/instance information ==
+[STDOUT Cutadapt] Component name                 : Cutadapt
+[STDOUT Cutadapt] Instance name                  : Cutadapt
+[STDOUT Cutadapt] Component path                 : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/Cutadapt
+[STDOUT Cutadapt] Execution directory            : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt
+[STDOUT Cutadapt] Temporary directory            : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/_tempdir
+[STDOUT Cutadapt] == Input ports ==
+[STDOUT Cutadapt] INFILE_input                   : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/dataFiles/100.fq
+[STDOUT Cutadapt] INFILE_input_mate              : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/dataFiles/100.fq
+[STDOUT Cutadapt] == Output ports ==
+[STDOUT Cutadapt] OUTFILE_info_file              : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_info_file
+[STDOUT Cutadapt] OUTFILE_output                 : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_output
+[STDOUT Cutadapt] OUTFILE_paired_output          : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_paired_output
+[STDOUT Cutadapt] OUTFILE_report                 : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_report
+[STDOUT Cutadapt] OUTFILE_rest_file              : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_rest_file
+[STDOUT Cutadapt] OUTFILE_too_long_output        : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_too_long_output
+[STDOUT Cutadapt] OUTFILE_too_short_output       : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_too_short_output
+[STDOUT Cutadapt] OUTFILE_untrimmed_output       : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_untrimmed_output
+[STDOUT Cutadapt] OUTFILE_untrimmed_paired_output: /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_untrimmed_paired_output
+[STDOUT Cutadapt] OUTFILE_wildcard_file          : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_wildcard_file
+[STDOUT Cutadapt] == Parameters ==
+[STDOUT Cutadapt] A                              : {{[[AAAA//CCCC//GGGG//TTTT]]}}
+[STDOUT Cutadapt] B                              : {{FALSE}}
+[STDOUT Cutadapt] G                              : {{FALSE}}
+[STDOUT Cutadapt] U                              : {{FALSE}}
+[STDOUT Cutadapt] _OUTFILE_info_file             : False
+[STDOUT Cutadapt] _OUTFILE_paired_output         : True
+[STDOUT Cutadapt] _OUTFILE_rest_file             : False
+[STDOUT Cutadapt] _OUTFILE_too_long_output       : False
+[STDOUT Cutadapt] _OUTFILE_too_short_output      : False
+[STDOUT Cutadapt] _OUTFILE_untrimmed_output      : False
+[STDOUT Cutadapt] _OUTFILE_untrimmed_paired_output: False
+[STDOUT Cutadapt] _OUTFILE_wildcard_file         : False
+[STDOUT Cutadapt] _cores                         : 1
+[STDOUT Cutadapt] _execMode                      : remote
+[STDOUT Cutadapt] _executable                    : cutadapt
+[STDOUT Cutadapt] _membycore                     : 2G
+[STDOUT Cutadapt] _runtime                       : 6:00:00
+[STDOUT Cutadapt] adapter                        : {{[[AAAA//CCCC//GGGG//TTTT]]}}
+[STDOUT Cutadapt] anywhere                       : {{FALSE}}
+[STDOUT Cutadapt] bwa                            : {{FALSE}}
+[STDOUT Cutadapt] colorspace                     : {{FALSE}}
+[STDOUT Cutadapt] cut                            : {{FALSE}}
+[STDOUT Cutadapt] discard_trimmed                : {{FALSE}}
+[STDOUT Cutadapt] discard_untrimmed              : {{FALSE}}
+[STDOUT Cutadapt] double_encode                  : {{FALSE}}
+[STDOUT Cutadapt] error_rate                     : 0.1
+[STDOUT Cutadapt] format                         : {{FALSE}}
+[STDOUT Cutadapt] front                          : {{FALSE}}
+[STDOUT Cutadapt] length_tag                     : {{FALSE}}
+[STDOUT Cutadapt] maq                            : {{FALSE}}
+[STDOUT Cutadapt] mask_adapter                   : {{FALSE}}
+[STDOUT Cutadapt] match_read_wildcards           : {{FALSE}}
+[STDOUT Cutadapt] max_n                          : 0.1
+[STDOUT Cutadapt] maximum_length                 : {{FALSE}}
+[STDOUT Cutadapt] minimum_length                 : {{FALSE}}
+[STDOUT Cutadapt] no_indels                      : {{FALSE}}
+[STDOUT Cutadapt] no_trim                        : {{FALSE}}
+[STDOUT Cutadapt] no_zero_cap                    : {{FALSE}}
+[STDOUT Cutadapt] overlap                        : 2
+[STDOUT Cutadapt] prefix                         : {{FALSE}}
+[STDOUT Cutadapt] quality_base                   : 33
+[STDOUT Cutadapt] quality_cutoff                 : {{FALSE}}
+[STDOUT Cutadapt] quiet                          : {{FALSE}}
+[STDOUT Cutadapt] strip_f3                       : {{FALSE}}
+[STDOUT Cutadapt] strip_suffix                   : {{FALSE}}
+[STDOUT Cutadapt] suffix                         : {{FALSE}}
+[STDOUT Cutadapt] times                          : 1
+[STDOUT Cutadapt] trim_n                         : {{TRUE}}
+[STDOUT Cutadapt] trim_primer                    : {{FALSE}}
+[STDOUT Cutadapt] == Command ==
+[STDOUT Cutadapt] cutadapt -A AAAA -A CCCC -A GGGG -A TTTT --adapter AAAA --adapter CCCC --adapter GGGG --adapter TTTT --error-rate 0.1 --max-n 0.1 --overlap 2 --quality-base 33 --times 1 --trim-n --output /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_output --paired-output /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_paired_output /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/dataFiles/100.fq /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/dataFiles/100.fq
+[STDOUT Cutadapt] COMMAND:
+[STDOUT Cutadapt] /import/bc2/home/zavolan/kanitz/soft/bin/cutadapt
+[STDOUT Cutadapt] ARGS:
+[STDOUT Cutadapt] ['-A', 'AAAA', '-A', 'CCCC', '-A', 'GGGG', '-A', 'TTTT', '--adapter', 'AAAA', '--adapter', 'CCCC', '--adapter', 'GGGG', '--adapter', 'TTTT', '--error-rate', '0.1', '--max-n', '0.1', '--overlap', '2', '--quality-base', '33', '--times', '1', '--trim-n', '--output', '/import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_output', '--paired-output', '/import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_paired_output', '/import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/dataFiles/100.fq', '/import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/dataFiles/100.fq']
+[STDOUT Cutadapt] SPECS:
+[STDOUT Cutadapt]  -pe smp 1 -l membycore=2G -l runtime=6:00:00 -b n
+[STDOUT Cutadapt] == Job ID ==
+[STDOUT Cutadapt] 9879488
+[STDOUT Cutadapt] == Progress ==
+[STDOUT Cutadapt] Submitted                      : 2015-Aug-27, 11:47:13
+[STDOUT Cutadapt] Started                        : 2015-Aug-27, 12:12:45
+[STDOUT Cutadapt] Finished                       : 2015-Aug-27, 12:12:46
+[STDOUT Cutadapt] == Time statistics ==
+[STDOUT Cutadapt] Queue time                     : 1531.467 s
+[STDOUT Cutadapt] Runtime                        : 1.477 s
+[STDOUT Cutadapt] Total time                     : 1532.943 s
+[STDOUT Cutadapt] == Resource statistics ==
+[STDOUT Cutadapt] Real time                      : 0.108 s
+[STDOUT Cutadapt] User time                      : 0.056 s
+[STDOUT Cutadapt] System time                    : 0.022 s
+[STDOUT Cutadapt] CPU time                       : 0.078 s
+[STDOUT Cutadapt] Integral memory                : 0.000 Gbs
+[STDOUT Cutadapt] Maximum virtual memory         : 0 bytes
+[STDOUT Cutadapt] Maximum resident set size      : 7700.000 kb
+[STDOUT Cutadapt] Accumulated I/O usage          : 0.000 Gb
+[STDOUT Cutadapt] I/O wait time                  : 0.000 s
+[STDOUT Cutadapt] Block input operations         : 0
+[STDOUT Cutadapt] Block output operations        : 16
+[STDOUT Cutadapt] Soft page faults               : 2686
+[STDOUT Cutadapt] Hard page faults               : 0
+[STDOUT Cutadapt] Voluntary context switches     : 78
+[STDOUT Cutadapt] Involuntary context switches   : 12
+[STDOUT Cutadapt] == Command STDOUT ==
+[STDOUT Cutadapt] < [STDOUT] was redirected to output file '/import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/OUTFILE_report'. >
+[STDOUT Cutadapt] == Command STDERR ==
+[STDOUT Cutadapt] < [STDERR] as saved in file "/import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/Cutadapt/Cutadapt.stderr": >
+[STDOUT Cutadapt] cutadapt version 1.8.3
+[STDOUT Cutadapt] Copyright (C) 2010-2015 Marcel Martin <marcel.martin@scilifelab.se>
+[STDOUT Cutadapt] 
+[STDOUT Cutadapt] cutadapt removes adapter sequences from high-throughput sequencing reads.
+[STDOUT Cutadapt] 
+[STDOUT Cutadapt] Usage:
+[STDOUT Cutadapt]     cutadapt -a ADAPTER [options] [-o output.fastq] input.fastq
+[STDOUT Cutadapt] 
+[STDOUT Cutadapt] For paired-end reads:
+[STDOUT Cutadapt]     cutadapt -a ADAPT1 -A ADAPT2 [options] -o out1.fastq -p out2.fastq in1.fastq in2.fastq
+[STDOUT Cutadapt] 
+[STDOUT Cutadapt] Replace "ADAPTER" with the actual sequence of your 3' adapter. IUPAC wildcard
+[STDOUT Cutadapt] characters are supported. The reverse complement is *not* automatically
+[STDOUT Cutadapt] searched. All reads from input.fastq will be written to output.fastq with the
+[STDOUT Cutadapt] adapter sequence removed. Adapter matching is error-tolerant. Multiple adapter
+[STDOUT Cutadapt] sequences can be given (use further -a options), but only the best-matching
+[STDOUT Cutadapt] adapter will be removed.
+[STDOUT Cutadapt] 
+[STDOUT Cutadapt] Input may also be in FASTA format. Compressed input and output is supported and
+[STDOUT Cutadapt] auto-detected from the file name (.gz, .xz, .bz2). Use the file name '-' for
+[STDOUT Cutadapt] standard input/output. Without the -o option, output is sent to standard output.
+[STDOUT Cutadapt] 
+[STDOUT Cutadapt] Some other available features are:
+[STDOUT Cutadapt]   * Various other adapter types (5' adapters, "mixed" 5'/3' adapters etc.)
+[STDOUT Cutadapt]   * Trimming a fixed number of bases
+[STDOUT Cutadapt]   * Quality trimming
+[STDOUT Cutadapt]   * Trimming colorspace reads
+[STDOUT Cutadapt]   * Filtering reads by various criteria
+[STDOUT Cutadapt] 
+[STDOUT Cutadapt] Use "cutadapt --help" to see all command-line options.
+[STDOUT Cutadapt] See http://cutadapt.readthedocs.org/ for full documentation.
+[STDOUT Cutadapt] 
+[STDOUT Cutadapt] 9879488: error: At least one parameter needed: name of a FASTA or FASTQ file.
+[STDOUT Cutadapt] == Exit status ==
+[STDOUT Cutadapt] 2
+[ERROR] Component Cutadapt: Component returned error status: 2
+Component Cutadapt finished with failure; READY queue is empty.
+Done. The following components had errors: 
+ Cutadapt (Cutadapt)                        
+Log closed on 2015-08-27 12:12:47; user kanitz

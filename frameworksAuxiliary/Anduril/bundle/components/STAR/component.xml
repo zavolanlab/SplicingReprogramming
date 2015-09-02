@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>STAR</name>
+    <version>2.4.1c</version>
+    <doc>STAR is an ultrafast universal RNA-seq aligner.</doc>
+    <author email="dobin@cshl.edu">Alexander Dobin</author>
+    <category>NGS analysis</category>
+    <category>RNA-Seq analysis</category>
+    <category>short read alignment</category>
+    <launcher type="python">
+        <argument name="file" value="component.py" />
+        <argument name="source" value="krini_functions.py" />
+    </launcher>
+    <requires URL="http://www.python.org/" name="Python" optional="false" type="manual">python</requires>
+    <requires URL="https://github.com/alexdobin/STAR/releases" name="STAR" optional="false" type="manual">STAR</requires>
+    <type-parameters>
+        <type-parameter name="IndexDirSTAR" extends="Directory">
+            <doc>STAR index directory.</doc>
+        </type-parameter>
+        <type-parameter name="FASTX" extends="Text">
+            <doc>FASTQ or FASTA file.</doc>
+        </type-parameter>
+        <type-parameter name="GTF" extends="Text">
+            <doc>GTF file.</doc>
+        </type-parameter>
+        <type-parameter name="BAM" extends="BinaryFile">
+            <doc>Binary representation of SAM file format.</doc>
+        </type-parameter>
+        <type-parameter name="SAMCommentFile" extends="Text">
+            <doc>File containing @CO SAM header comment lines.</doc>
+        </type-parameter>
+        <type-parameter name="FASTA" extends="Text">
+            <doc>FASTA file.</doc>
+        </type-parameter>
+        <type-parameter name="SJFileSTAR" extends="Text">
+            <doc>Tabular file of format: chr &lt;tab&gt; start &lt;tab&gt; end &lt;tab&gt; strand.</doc>
+        </type-parameter>
+        <type-parameter name="OutDirSTAR" extends="Directory">
+            <doc>STAR output directory.</doc>
+        </type-parameter>
+    </type-parameters>
+    <inputs>
+        <input name="INDIR_genomeDir" type="IndexDirSTAR" optional="true" array="false">
+            <doc>Path to the directory where genome files are stored (if runMode is not generateGenome) or will be generated (if runMode is generateGenome).</doc>
+        </input>
+        <input name="INFILE_readFilesIn" type="FASTX" optional="true" array="false">
+            <doc>Paths to files that contain input reads (one or, if needed, two files, separated by space).</doc>
+        </input>
+        <input name="INFILE_sjdbGTFfile" type="GTF" optional="true" array="false">
+            <doc>Path to the GTF file with annotations.</doc>
+        </input>
+        <input name="INFILE_inputBAMfile" type="BAM" optional="true" array="false">
+            <doc>Path to BAM input file, to be used with --runMode inputAlignmentsFromBAM.</doc>
+        </input>
+        <input name="INFILE_outSAMheaderCommentFile" type="SAMCommentFile" optional="true" array="false">
+            <doc>Path to a file with @CO (comment) lines, to be incorporated in the SAM header.</doc>
+        </input>
+        <input name="INFILE_genomeFastaFiles" type="FASTA" optional="true" array="false">
+            <doc>Path(s) to the fasta files with genomic sequences for genome generation, separated by spaces. Only used if runMode==genomeGenerate. These files should be plain text FASTA files, i.e. they *cannot* be zipped.</doc>
+        </input>
+        <input name="INFILE_sjdbFileChrStartEnd" type="SJFileSTAR" optional="true" array="false">
+            <doc>Path to files with genomic coordinates (chr &lt;tab&gt; start &lt;tab&gt; end &lt;tab&gt; strand) for splice junction introns. Multiple files can be supplied and will be concatenated.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="OUTDIRMAKE_genomeDir" type="IndexDirSTAR" array="false">
+            <doc>Path to the directory where genome files are stored (if runMode is not generateGenome) or will be generated (if runMode is generateGenome).</doc>
+        </output>
+        <output name="OUTDIRMAKE_outFileNamePrefix" type="OutDirSTAR" array="false">
+            <doc>Output files name prefix (including full or relative path).</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="_executable" type="string" default="STAR_static">
+            <doc>Path to executable.</doc>
+        </parameter>
+        <parameter name="_execMode" type="string" default="remote">
+            <doc>Execution mode. One of &apos;remote&apos;, &apos;local&apos; or &apos;none&apos;.</doc>
+        </parameter>
+        <parameter name="_cores" type="string" default="16">
+            <doc>Number of threads.</doc>
+        </parameter>
+        <parameter name="_membycore" type="string" default="3G">
+            <doc>Memory per core. Integer, optionally followed by one the follow suffixes: K, M, G.</doc>
+        </parameter>
+        <parameter name="_runtime" type="string" default="6:00:00">
+            <doc>Runtime in h:mm:ss.</doc>
+        </parameter>
+        <parameter name="_OUTDIRMAKE_genomeDir" type="boolean" default="false">
+            <doc>Switch for enabling the optional output port "--genomeDir". Set to true in workflow file if this output is desired.</doc>
+        </parameter>
+        <parameter name="readFilesCommand" type="string" default="-">
+            <doc>Command to execute for each of the input files. This command should generate FASTA or FASTQ text and send it to STDOUT. Example: zcat - to uncompress .gz files.</doc>
+        </parameter>
+        <parameter name="clip3pAdapterMMp" type="string" default="0.1">
+            <doc>Max proportion of mismatches for 3&apos; adpater clipping for each mate. If one value is given, it will be assumed the same for both mates.</doc>
+        </parameter>
+        <parameter name="alignSplicedMateMapLminOverLmate" type="string" default="0.66">
+            <doc>AlignSplicedMateMapLmin normalized to mate length.</doc>
+        </parameter>
+        <parameter name="chimScoreJunctionNonGTAG" type="string" default="-1">
+            <doc>Penalty for a non-GT/AG chimeric junction.</doc>
+        </parameter>
+        <parameter name="outFilterMatchNminOverLread" type="string" default="0.66">
+            <doc>OutFilterMatchNmin normalized to read length (sum of mates&apos; lengths for paired-end reads).</doc>
+        </parameter>
+        <parameter name="outFilterMismatchNoverLmax" type="string" default="0.3">
+            <doc>Alignment will be output only if its ratio of mismatches to mapped length is less than this value.</doc>
+        </parameter>
+        <parameter name="outFilterMismatchNoverReadLmax" type="string" default="1">
+            <doc>Alignment will be output only if its ratio of mismatches to read length is less than this value.</doc>
+        </parameter>
+        <parameter name="outFilterScoreMin" type="string" default="0">
+            <doc>Alignment will be output only if its score is higher than this value.</doc>
+        </parameter>
+        <parameter name="outFilterScoreMinOverLread" type="string" default="0.66">
+            <doc>OutFilterScoreMin normalized to read length (sum of mates&apos; lengths for paired-end reads).</doc>
+        </parameter>
+        <parameter name="scoreDelBase" type="string" default="-2">
+            <doc>Deletion extension penalty per base (in addition to scoreDelOpen).</doc>
+        </parameter>
+        <parameter name="scoreDelOpen" type="string" default="-2">
+            <doc>Deletion open penalty.</doc>
+        </parameter>
+        <parameter name="scoreGap" type="string" default="0">
+            <doc>Gap open penalty.</doc>
+        </parameter>
+        <parameter name="scoreGapATAC" type="string" default="-8">
+            <doc>AT/AC and GT/AT gap open penalty (in addition to scoreGap).</doc>
+        </parameter>
+        <parameter name="scoreGapGCAG" type="string" default="-4">
+            <doc>GC/AG and CT/GC gap open penalty (in addition to scoreGap).</doc>
+        </parameter>
+        <parameter name="scoreGapNoncan" type="string" default="-8">
+            <doc>Non-canonical gap open penalty (in addition to scoreGap).</doc>
+        </parameter>
+        <parameter name="scoreGenomicLengthLog2scale" type="string" default="-0.25">
+            <doc>Extra score logarithmically scaled with genomic length of the alignment according to scoreGenomicLengthLog2scale * log2(genomicLength).</doc>
+        </parameter>
+        <parameter name="scoreInsBase" type="string" default="-2">
+            <doc>Insertion extension penalty per base (in addition to scoreInsOpen).</doc>
+        </parameter>
+        <parameter name="scoreInsOpen" type="string" default="-2">
+            <doc>Insertion open penalty.</doc>
+        </parameter>
+        <parameter name="scoreStitchSJshift" type="string" default="1">
+            <doc>Maximum score reduction while searching for splice junction boundaries in the stitching step.</doc>
+        </parameter>
+        <parameter name="seedSearchStartLmaxOverLread" type="string" default="1">
+            <doc>SeedSearchStartLmax normalized to read length (sum of mates&apos; lengths for paired-end reads).</doc>
+        </parameter>
+        <parameter name="sjdbScore" type="string" default="2">
+            <doc>Extra alignment score for alignmets that cross database junctions.</doc>
+        </parameter>
+        <parameter name="clip3pAfterAdapterNbases" type="string" default="0">
+            <doc>Number(s) of bases to clip from 3&apos; of each mate after the adapter clipping. If one value is given, it will be assumed the same for both mates.</doc>
+        </parameter>
+        <parameter name="clip3pNbases" type="string" default="0">
+            <doc>Number(s) of bases to clip from 3&apos; of each mate. If one value is given, it will be assumed the same for both mates.</doc>
+        </parameter>
+        <parameter name="clip5pNbases" type="string" default="0">
+            <doc>Number(s) of bases to clip from 5&apos; of each mate. If one value is given, it will be assumed the same for both mates.</doc>
+        </parameter>
+        <parameter name="outSJfilterCountTotalMin" type="string" default="3 1 1 1">
+            <doc>4 x INT: Minimum total (multi-mapping + unique) read count per junction for: (1) non-canonical motifs, (2) GT/AG and CT/AC motif, (3) GC/AG and CT/GC motif, (4) AT/AC and GT/AT motif (-1 = no output for that motif). Junctions are output if either of --outSJfilterCountUniqueMin or --outSJfilterCountTotalMin are satisfied. Does not apply to annotated junctions.</doc>
+        </parameter>
+        <parameter name="outSJfilterCountUniqueMin" type="string" default="3 1 1 1">
+            <doc>4 x INT: Minimum uniquely mapping read count per junction for: (1) non-canonical motifs, (2) GT/AG and CT/AC motif, (3) GC/AG and CT/GC motif, (4) AT/AC and GT/AT motif (-1 = no output for that motif). Junctions are output if either of --outSJfilterCountUniqueMin or --outSJfilterCountTotalMin are satisfied. Does not apply to annotated junctions.</doc>
+        </parameter>
+        <parameter name="outSJfilterDistToOtherSJmin" type="string" default="10 0 5 10">
+            <doc>4 x INT: Minimum allowed distance to other junctions&apos; donor/acceptor. Does not apply to annotated junctions.</doc>
+        </parameter>
+        <parameter name="outSJfilterIntronMaxVsReadN" type="string" default="50000 100000 200000">
+            <doc>N x INT: Maximum gap allowed for junctions supported by 1,2,3,...,N reads, i.e. junctions supported by 1, 2, 3, &gt;=4 reads can have gaps &lt;= INT1, INT2, INT3, --alignIntronMax bases, respectively. Does not apply to annotated junctions.</doc>
+        </parameter>
+        <parameter name="outSJfilterOverhangMin" type="string" default="30 12 12 12">
+            <doc>4 x INT: Minimum overhang length for splice junctions on both sides for: (1) non-canonical motifs, (2) GT/AG and CT/AC motif, (3) GC/AG and CT/GC motif, (4) AT/AC and GT/AT motif (-1 = no output for that motif). Does not apply to annotated junctions.</doc>
+        </parameter>
+        <parameter name="alignIntronMax" type="string" default="0">
+            <doc>Maximum intron size. If 0, maximum intron size will be determined by 2^winBinNbits * winAnchorDistNbins.</doc>
+        </parameter>
+        <parameter name="alignIntronMin" type="string" default="21">
+            <doc>Minimum intron size. Genomic gap is considered intron (rather than a deletion) if its length is equal to or greater than the specified value.</doc>
+        </parameter>
+        <parameter name="alignMatesGapMax" type="string" default="0">
+            <doc>Maximum gap between two mates. If 0, maximum intron gap will be determined by 2^winBinNbits * winAnchorDistNbins.</doc>
+        </parameter>
+        <parameter name="alignSJDBoverhangMin" type="string" default="3">
+            <doc>Minimum overhang (i.e. block size) for annotated (sjdb) spliced alignments.</doc>
+        </parameter>
+        <parameter name="alignSJoverhangMin" type="string" default="5">
+            <doc>Minimum overhang (i.e. block size) for spliced alignments.</doc>
+        </parameter>
+        <parameter name="alignSplicedMateMapLmin" type="string" default="0">
+            <doc>Minimum mapped length for a read mate that is spliced.</doc>
+        </parameter>
+        <parameter name="alignTranscriptsPerReadNmax" type="string" default="10000">
+            <doc>Maximum number of different alignments per read to consider.</doc>
+        </parameter>
+        <parameter name="alignTranscriptsPerWindowNmax" type="string" default="100">
+            <doc>Maximum number of transcripts per window.</doc>
+        </parameter>
+        <parameter name="alignWindowsPerReadNmax" type="string" default="10000">
+            <doc>Maximum number of windows per read.</doc>
+        </parameter>
+        <parameter name="bamRemoveDuplicatesMate2basesN" type="string" default="0">
+            <doc>Number of bases from the 5&apos; of mate 2 to use in collapsing (e.g. for RAMPAGE).</doc>
+        </parameter>
+        <parameter name="chimJunctionOverhangMin" type="string" default="20">
+            <doc>Minimum overhang for a chimeric junction.</doc>
+        </parameter>
+        <parameter name="chimScoreDropMax" type="string" default="20">
+            <doc>Maximum drop (difference) of chimeric score (the sum of scores of all chimeric segements) from the read length.</doc>
+        </parameter>
+        <parameter name="chimScoreMin" type="string" default="0">
+            <doc>Minimum total (summed) score of the chimeric segments.</doc>
+        </parameter>
+        <parameter name="chimScoreSeparation" type="string" default="10">
+            <doc>Minimum difference (separation) between the best and the next best chimeric score.</doc>
+        </parameter>
+        <parameter name="chimSegmentMin" type="string" default="0">
+            <doc>Minimum length of chimeric segment length (0 = no chimeric output).</doc>
+        </parameter>
+        <parameter name="genomeChrBinNbits" type="string" default="18">
+            <doc>Equals log2(chrBin), where chrBin is the size of the bins for genome storage. Each chromosome will occupy an integer number of bins.</doc>
+        </parameter>
+        <parameter name="genomeSAindexNbases" type="string" default="14">
+            <doc>Length (bases) of the suffix array pre-indexing string (typically between 10 and 15). Longer strings will use much more memory, but allow faster searches.</doc>
+        </parameter>
+        <parameter name="genomeSAsparseD" type="string" default="1">
+            <doc>Suffix array sparsity, i.e. the distance between indices. Use bigger numbers to decrease needed RAM at the cost of mapping speed reduction.</doc>
+        </parameter>
+        <parameter name="limitBAMsortRAM" type="string" default="0">
+            <doc>Maximum available RAM for sorting BAM. If 0, it will be set to the genome index size. 0 value can only be used with --genomeLoad NoSharedMemory option.</doc>
+        </parameter>
+        <parameter name="limitGenomeGenerateRAM" type="string" default="31000000000">
+            <doc>Maximum available RAM (bytes) for genome generation.</doc>
+        </parameter>
+        <parameter name="limitIObufferSize" type="string" default="150000000">
+            <doc>Maximum available buffers size (bytes) for input/output, per thread.</doc>
+        </parameter>
+        <parameter name="limitOutSAMoneReadBytes" type="string" default="100000">
+            <doc>Maximum size of the SAM record for one read. Recommended value: &gt; 2* (LengthMate1 + LengthMate2 + 100) * outFilterMultimapNmax.</doc>
+        </parameter>
+        <parameter name="limitOutSJcollapsed" type="string" default="1000000">
+            <doc>Maximum number of collapsed junctions.</doc>
+        </parameter>
+        <parameter name="limitOutSJoneRead" type="string" default="1000">
+            <doc>Maximum number of junctions for one read (including all multi-mappers).</doc>
+        </parameter>
+        <parameter name="outBAMcompression" type="string" default="1">
+            <doc>BAM compression level (-1 = default compression, 0=no compression, 10=maximum compression).</doc>
+        </parameter>
+        <parameter name="outBAMsortingThreadN" type="string" default="{{CORES}}">
+            <doc>Number of threads for BAM sorting. 0 will default to the minimum of 6 and the value of --runThreadN.</doc>
+        </parameter>
+        <parameter name="outFilterMatchNmin" type="string" default="0">
+            <doc>Alignment will be output only if the number of matched bases is higher than this value.</doc>
+        </parameter>
+        <parameter name="outFilterMismatchNmax" type="string" default="10">
+            <doc>Alignment will be output only if it has fewer mismatches than this value.</doc>
+        </parameter>
+        <parameter name="outFilterMultimapNmax" type="string" default="10">
+            <doc>Read alignments will be output only if the read maps fewer than this value, otherwise no alignments will be output.</doc>
+        </parameter>
+        <parameter name="outFilterMultimapScoreRange" type="string" default="1">
+            <doc>Score difference to the maximum score to be considered for reporting multimapping alignments.</doc>
+        </parameter>
+        <parameter name="outQSconversionAdd" type="string" default="0">
+            <doc>Add this number to the quality score (e.g. to convert from Illumina to Sanger, use -31).</doc>
+        </parameter>
+        <parameter name="outSAMflagAND" type="string" default="65535">
+            <doc>SAM FLAG will be bitwise AND&apos;d with this value, i.e. FLAG=FLAG &amp; outSAMflagOR. This is applied after all flags have been set by STAR, but before outSAMflagOR. Can be used to unset specific bits that are not set otherwise.</doc>
+        </parameter>
+        <parameter name="outSAMflagOR" type="string" default="0">
+            <doc>SAM FLAG will be bitwise OR&apos;d with this value, i.e. FLAG=FLAG | outSAMflagOR. This is applied after all flags have been set by STAR, and after outSAMflagAND. Can be used to set specific bits that are not set otherwise.</doc>
+        </parameter>
+        <parameter name="outSAMmapqUnique" type="string" default="255">
+            <doc>SAM MAPQ value for unique mappers.</doc>
+        </parameter>
+        <parameter name="quantTranscriptomeBAMcompression" type="string" default="-1">
+            <doc>Transcriptome BAM compression level (-1 = default compression, 0=no compression, 10=maximum compression).</doc>
+        </parameter>
+        <parameter name="readMapNumber" type="string" default="-1">
+            <doc>Number of reads to map from the beginning of the file (-1 = map all reads).</doc>
+        </parameter>
+        <parameter name="runThreadN" type="string" default="{{CORES}}">
+            <doc>Number of threads to run STAR.</doc>
+        </parameter>
+        <parameter name="seedMultimapNmax" type="string" default="10000">
+            <doc>Only pieces that map fewer than this value are utilized in the stitching procedure.</doc>
+        </parameter>
+        <parameter name="seedNoneLociPerWindow" type="string" default="10">
+            <doc>Maximum number of &apos;one seed loci&apos; per window.</doc>
+        </parameter>
+        <parameter name="seedPerReadNmax" type="string" default="1000">
+            <doc>Maximum number of seeds per read.</doc>
+        </parameter>
+        <parameter name="seedPerWindowNmax" type="string" default="50">
+            <doc>Maximum number of seeds per window.</doc>
+        </parameter>
+        <parameter name="seedSearchLmax" type="string" default="0">
+            <doc>Defines the maximum length of the seeds. If 0, maximum seed length is infinite.</doc>
+        </parameter>
+        <parameter name="seedSearchStartLmax" type="string" default="50">
+            <doc>Defines the search start point through the read. The read is split into pieces no longer than this value.</doc>
+        </parameter>
+        <parameter name="sjdbOverhang" type="string" default="0">
+            <doc>Length of the donor/acceptor sequence on each side of the junctions, ideally mate_length - 1 (0 = splice junction database is not used).</doc>
+        </parameter>
+        <parameter name="twopass1readsN" type="string" default="-1">
+            <doc>Number of reads to process for the 1st step (0 = 1-step only, no 2nd pass; use -1 or very large number to map all reads in the first step).</doc>
+        </parameter>
+        <parameter name="winAnchorDistNbins" type="string" default="9">
+            <doc>Maximum number of bins between two anchors that allows aggregation of anchors into one window.</doc>
+        </parameter>
+        <parameter name="winAnchorMultimapNmax" type="string" default="50">
+            <doc>Maximum number of loci anchors are allowed to map to.</doc>
+        </parameter>
+        <parameter name="winBinNbits" type="string" default="16">
+            <doc>Equals log2(winBin), where winBin is the size of the bin for the window clustering. Each window will occupy an integer number of bins.</doc>
+        </parameter>
+        <parameter name="winFlankNbins" type="string" default="4">
+            <doc>Equals log2(winFlank), where winFlank is the size of the left and right flanking regions for each window.</doc>
+        </parameter>
+        <parameter name="sysShell" type="string" default="-">
+            <doc>Path to the shell binary, preferrably bash, e.g. /bin/bash (- = The default shell is executed, typically /bin/sh, but this was reported to fail on some systems).</doc>
+        </parameter>
+        <parameter name="outTmpDir" type="string" default="{{TEMPDIR}}/tmp_STAR">
+            <doc>Path to a directory that will be used as temporary by STAR. All contents of this directory will be removed (- = the temp directory will default to outFileNamePrefix_STARtmp).</doc>
+        </parameter>
+        <parameter name="sjdbGTFchrPrefix" type="string" default="-">
+            <doc>Prefix for chromosome names in a GTF file (e.g. &apos;chr&apos; for using ENSMEBL annotations with UCSC genomes).</doc>
+        </parameter>
+        <parameter name="sjdbGTFfeatureExon" type="string" default="exon">
+            <doc>Feature type in GTF file to be used as exons for building transcripts.</doc>
+        </parameter>
+        <parameter name="sjdbGTFtagExonParentTranscript" type="string" default="transcript_id">
+            <doc>Tag name to be used as exons&apos; transcript-parents (default &quot;transcript_id&quot; works for GTF files).</doc>
+        </parameter>
+        <parameter name="sjdbGTFtagExonParentGene" type="string" default="gene_id">
+            <doc>Tag name to be used as exons&apos; gene-parents (default &quot;gene_id&quot; works for GTF files).</doc>
+        </parameter>
+        <parameter name="outWigReferencesPrefix" type="string" default="-">
+            <doc>Prefix matching reference names to include in the output wiggle file, e.g. &quot;chr&quot; (- = include all references).</doc>
+        </parameter>
+        <parameter name="outSAMattrRGline" type="string" default="-">
+            <doc>Add SAM/BAM read group line(s) to the SAM header (- = no read group line is added). The first word contains the read group identifier and must start with &quot;ID:&quot;, e.g. --outSAMattrRGline ID:XXX CN:YY &quot;DS:Z Z Z&quot;. XXX will be added as RG tag to each output alignment. Any spaces in the tag values have to be double quoted. Comma separated RG lines correspond to different (comma separated) input files in --readFilesIn. Commas have to be surrounded by spaces, e.g. --outSAMattrRGline ID:XXX , ID:ZZZ &quot;DS:Z Z&quot; , ID:YYY DS:YYYY.</doc>
+        </parameter>
+        <parameter name="outSAMheaderHD" type="string" default="-">
+            <doc>Add @HD (header) line(s) to the SAM header (- = no line is added).</doc>
+        </parameter>
+        <parameter name="outSAMheaderPG" type="string" default="-">
+            <doc>Add @PG (software) line(s) to the SAM header (in addition to STAR; - = no line is added).</doc>
+        </parameter>
+        <parameter name="runMode" type="string" default="alignReads">
+            <doc>Type/mode of the run. One of (1) alignReads (map reads), (2) genomeGenerate (generate genome/index files), (3) inputAlignmentsFromBAM (input alignments from BAM. Presently only works with --outWigType and --bamRemoveDuplicates).</doc>
+        </parameter>
+        <parameter name="genomeLoad" type="string" default="NoSharedMemory">
+            <doc>Mode of shared memory usage for the genome files. One of (1) LoadAndKeep (load genome into shared and keep it in memory after run), (2) LoadAndRemove (load genome into shared but remove it after run), (3) LoadAndExit (load genome into shared memory and exit, keeping the genome in memory for future runs), (4) Remove (do not map anything, just remove loaded genome from memory), (5) NoSharedMemory (do not use shared memory, each job will have its own private copy of the genome).</doc>
+        </parameter>
+        <parameter name="outStd" type="string" default="Log">
+            <doc>Output that will be directed to STDOUT. One of (1) Log (log messages), (2) SAM (alignments in SAM format; normally directed to Aligned.out.sam), (3) BAM_Unsorted (alignments in BAM format, unsorted; requires --outSAMtype BAM Unsorted), (4) BAM_SortedByCoordinate (alignments in BAM format, sorted by coordinates; requires --outSAMtype BAM SortedByCoordinate), (5) BAM_Quant (alignments to transcriptome in BAM format, unsorted; requires --quantMode TranscriptomeSAM). If not Log, log messages will be directed to file Log.std.out.</doc>
+        </parameter>
+        <parameter name="outReadsUnmapped" type="string" default="None">
+            <doc>Output of unmapped reads (besides SAM). One of (1) None (no output), (2) Fastx (output in separate fasta/fastq files: Unmapped.out.mate1/2).</doc>
+        </parameter>
+        <parameter name="outSAMmode" type="string" default="Full">
+            <doc>Mode of SAM output. One of (1) None (no SAM output), (2) Full (full SAM output), (3) NoQS (SAM output without quality scores).</doc>
+        </parameter>
+        <parameter name="outSAMstrandField" type="string" default="None">
+            <doc>Cufflinks-like strand TAG. One of (1) None (not used), (2) intronMotif (strand derived from the intron motif; reads with inconsistent and/or non-canonical introns are filtered out).</doc>
+        </parameter>
+        <parameter name="outSAMunmapped" type="string" default="Within">
+            <doc>Output of unmapped reads in the SAM format. One of (1) None (no output), (2) Within (output unmapped reads within the main SAM file).</doc>
+        </parameter>
+        <parameter name="outSAMorder" type="string" default="Paired">
+            <doc>Type of sorting for the SAM output. One of (1) Paired (one mate after the other for all paired alignments), (2) PairedKeepInputOrder (one mate after the other for all paired alignments, the order is kept the same as in the input FASTQ files).</doc>
+        </parameter>
+        <parameter name="outSAMprimaryFlag" type="string" default="OneBestScore">
+            <doc>Alignments to be considered primary. All others will be marked with 0x100 bit in the FLAG. One of (1) OneBestScore (only one alignment with the best score is primary), (2) AllBestScore (all alignments with the best score are primary).</doc>
+        </parameter>
+        <parameter name="outSAMreadID" type="string" default="Standard">
+            <doc>Read ID record type. One of (1) Standard (first word, i.e. until space, from the FASTx read ID line, removing /1, /2 from the end), (2) Number (read number in the FASTx file).</doc>
+        </parameter>
+        <parameter name="bamRemoveDuplicatesType" type="string" default="-">
+            <doc>Mark duplicates in the BAM file (for now only works with sorted BAM, feeded with inputBAMfile). One of (1) - (no duplicate removal/marking), (2) UniqueIdentical (mark all multimappers and duplicate unique mappers; coordinates, FLAG &amp; CIGAR must be identical).</doc>
+        </parameter>
+        <parameter name="outWigNorm" type="string" default="RPM">
+            <doc>Type of normalization for the signal. One of (1) RPM (reads per million mapped reads), (2) None (no normalization; &apos;raw counts&apos;).</doc>
+        </parameter>
+        <parameter name="outFilterType" type="string" default="Normal">
+            <doc>Type of filtering. One of (1) Normal (standard filtering using only current alignment), (2) BySJout (keep only those reads that contain junctions that passed filtering into SJ.out.tab).</doc>
+        </parameter>
+        <parameter name="outFilterIntronMotifs" type="string" default="None">
+            <doc>Fiilter alignments using their motifs. One of (1) None (no filtering), (2) RemoveNoncanonical (filter out alignments that contain non-canonical junctions), (3) RemoveNoncanonicalUnannotated (filter out alignments that contain non-canonical unannotated junctions when using annotated splice junctions database; the annotated non-canonical junctions will be kept).</doc>
+        </parameter>
+        <parameter name="outSJfilterReads" type="string" default="All">
+            <doc>Reads to consider for collapsed splice junctions output. One of (1) All (all reads), (2) Unique (uniquely mapping reads only).</doc>
+        </parameter>
+        <parameter name="alignEndsType" type="string" default="Local">
+            <doc>Type of read ends alignment. One of (1) Local (standard local alignment with soft-clipping allowed), (2) EndToEnd (force end-to-end read alignment, do not soft-clip).</doc>
+        </parameter>
+        <parameter name="alignSoftClipAtReferenceEnds" type="string" default="Yes">
+            <doc>Allow the soft-clipping of the alignments past the end of the chromosomes. One of (1) Yes (allow), (2) No (prohibit, useful for compatibility with Cufflinks).</doc>
+        </parameter>
+        <parameter name="readMatesLengthsIn" type="string" default="NotEqual">
+            <doc>Lengths of names, sequences, qualities for both mates are the same / not the same. NotEqual is safe in all situations.</doc>
+        </parameter>
+        <parameter name="outWigStrand" type="string" default="Stranded">
+            <doc>String: strandedness of wiggle/bedGraph output. One of (1) Stranded (separate strands, str1 and str2), (2) Unstranded (collapsed strands).</doc>
+        </parameter>
+        <parameter name="twopassMode" type="string" default="None">
+            <doc>2-pass mapping mode. One of (1) None (1-pass mapping), (2) Basic (basic 2-pass mapping, with all 1st pass junctions inserted into the genome indices on the fly).</doc>
+        </parameter>
+        <parameter name="chimOutType" type="string" default="SeparateSAMold">
+            <doc>Type of chimeric output. One of (1) SeparateSAMold (output old SAM into separate Chimeric.out.sam file), (2) WithinBAM (output into main aligned BAM files Aligned.*.bam).</doc>
+        </parameter>
+        <parameter name="quantTranscriptomeBan" type="string" default="IndelSoftclipSingleend">
+            <doc>Prohibit specified alignment type(s). One of (1) IndelSoftclipSingleend (prohibit indels, soft clipping and single-end alignments; compatible with RSEM), (2) (prohibit single-end alignments).</doc>
+        </parameter>
+        <parameter name="clip3pAdapterSeq" type="string" default="-">
+            <doc>Adapter sequences to clip from 3&apos; of each mate (- = no adapter clipping is done). If one value is given, it will be assumed the same for both mates.</doc>
+        </parameter>
+        <parameter name="outSAMtype" type="string" default="SAM">
+            <doc>Type of SAM/BAM output. 1st word: (1) BAM (output BAM without sorting), (2) SAM (output SAM without sorting), (3) None (no SAM/BAM output); 2nd/3rd word: (1) Unsorted (standard), (2) SortedByCoordinate (sorted by coordinate; this option will allocate extra memory for sorting which can be specified by --limitBAMsortRAM).</doc>
+        </parameter>
+        <parameter name="outWigType" type="string" default="None">
+            <doc>Type of signal output, e.g. &quot;bedGraph&quot; OR &quot;bedGraph read1_5p&quot;. Requires sorted BAM, i.e. --outSAMtype BAM SortedByCoordinate . 1st word: (1) None (no signal output), (2) bedGraph (bedGraph format), (3) wiggle (wiggle format); 2nd word: (1) read1_5p (signal from only 5&apos; of the 1st read, useful for CAGE/RAMPAGE etc), (2) read2 (signal from only 2nd read).</doc>
+        </parameter>
+        <parameter name="quantMode" type="string" default="-">
+            <doc>Types of quantification requested. Either - (none) or one or both of (1) TranscriptomeSAM (output SAM/BAM alignments to transcriptome into a separate file), (2) GeneCounts (count reads per gene).</doc>
+        </parameter>
+        <parameter name="outSAMattributes" type="string" default="Standard">
+            <doc>Desired SAM TAG attributes. One of (1) Standard (NH HI AS nM), (2) All (NH HI AS nM NM MD jM jI), (3) None (no TAG attributes), or (4) a custom string of TAG attributes in the desired order (e.g. NH HI AS nM NM MD jM jI XS).</doc>
+        </parameter>
+    </parameters>
+</component>

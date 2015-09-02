@@ -1,0 +1,7 @@
+# Author:      Alexander Kanitz
+# Affiliation: Biozentrum, University of Basel
+# Email:       alexander.kanitz@alumni.ethz.ch
+# Date:        Aug 28, 2015
+
+INPUT.TRANSCRIPT_SEQUENCES: "/import/bc2/home/zavolan/krini/resources/annotations/GRCm38_75/Mus_musculus.GRCm38.75.cDNA.all.ncRNA.no_patches.fa"
+KALLISTOINDEX.EXECMODE: "local"

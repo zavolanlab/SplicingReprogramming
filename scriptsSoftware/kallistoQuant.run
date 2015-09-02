@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Define variables
+time="/usr/bin/time"
+workflow="/import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/run/kallistoQuant.and"
+bundleDir="/import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle"
+execDir="/import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/testOut/kallistoQuant"
+threads=4
+
+# Execute Anduril
+$time anduril run $workflow -v --bundle $bundleDir --execution-dir "${execDir}" --log "${execDir}/LOG" --threads $threads

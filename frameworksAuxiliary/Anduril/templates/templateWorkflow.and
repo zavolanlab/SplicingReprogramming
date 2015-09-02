@@ -1,0 +1,15 @@
+/*
+* Author:      <<AUTHOR_NAME>>, <<AUTHOR_AFFILIATION>>
+* Email:       <<AUTHOR_EMAIL>>
+* Date:        <<DATE>>
+* Description: <<DESCRIPTION>>
+*/
+
+// ---> <<STEP_1>> <--- //
+<<INPUT_1_INSTANCE>> = INPUT(path=<<PATH>>")
+
+// ---> <<STEP_2>> <--- //
+<<COMPONENT_1_INSTANCE>> = <<COMPONENT_1>>(<<OPTIONS_1>>)
+
+// ---> <<STEP_3>> <--- //
+<<COMPONENT_2_INSTANCE>> = <<COMPONENT_2>>(<<OPTIONS_2>>)

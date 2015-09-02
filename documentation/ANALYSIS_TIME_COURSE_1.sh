@@ -164,4 +164,79 @@ root=$(cd "$(dirname $(dirname "$0" ))" && pwd)
 # cd "$root"
 # md5sum "rawData/Day"* >> "${root}/documenation/time_course_1.md5_sums.tab"
 
-#
+
+###################################################################
+###  GET MOUSE GENOME, GENE ANNOTATIONS & TRANSCRIPT SEQUENCES  ###
+###################################################################
+
+# All genome and transcriptome resources were downloaded from ENSEMBL, release 75
+
+# Create directory for ENSEMBL mouse resources
+ENSm38_75="${root}/publicResources/GRCm38_75"
+mkdir --parents "${ENSm38_75}"
+
+# Create temporary directory
+tmpPubRes="${root}/.tmp/publicResources"
+mkdir --parents "${tmpPubRes}"
+
+# Get mouse genome (soft-masked)
+wget "ftp://ftp.ensembl.org/pub/release-75/fasta/mus_musculus/dna/Mus_musculus.GRCm38.75.dna_sm.primary_assembly.fa.gz" --directory-prefix "${ENSm38_75}"
+
+# Get chromosome names
+zcat "${ENSm38_75}/Mus_musculus.GRCm38.75.dna_sm.primary_assembly.fa.gz" | grep --perl-regexp "^>" | cut --fields 1 --delimiter " " | cut --fields 2 --delimiter ">" | sort --unique > "${ENSm38_75}/Mus_musculus.GRCm38.75.chr_names"
+
+# Generate chromosome file for file grep
+awk -v OFS="" '{ print "^", $0, "\t"}' "${ENSm38_75}/Mus_musculus.GRCm38.75.chr_names" > "${tmpPubRes}/chr_names_grep"
+
+# Get gene annotation file
+# Unique transcripts: 94929
+wget "ftp://ftp.ensembl.org/pub/release-75/gtf/mus_musculus/Mus_musculus.GRCm38.75.gtf.gz" --directory-prefix "${ENSm38_75}"
+
+# Remove features annotated on patches etc
+# Unique transcripts: 94647
+zcat "${ENSm38_75}/Mus_musculus.GRCm38.75.gtf.gz" | grep --file "${tmpPubRes}/chr_names_grep" | gzip > "${ENSm38_75}/Mus_musculus.GRCm38.75.no_patches.gtf.gz"
+
+# Get transcript identifiers
+zcat "${ENSm38_75}/Mus_musculus.GRCm38.75.no_patches.gtf.gz" | grep --perl-regexp "\ttranscript\t" | cut --fields 9 | cut --fields 4 --delimiter "\"" | sort --unique > "${tmpPubRes}/trx_ids_no_patches"
+
+# Get cDNA sequences from ENSEMBL
+# Unique transcripts: 82934
+wget "ftp://ftp.ensembl.org/pub/release-75/fasta/mus_musculus/cdna/Mus_musculus.GRCm38.75.cdna.all.fa.gz" --directory-prefix "${ENSm38_75}"
+
+# Get ncRNA sequences from ENSEMBL
+# Unique transcripts: 11995
+wget "ftp://ftp.ensembl.org/pub/release-75/fasta/mus_musculus/ncrna/Mus_musculus.GRCm38.75.ncrna.fa.gz" --directory-prefix "${ENSm38_75}"
+
+# Concatenate sequences
+zcat "${ENSm38_75}/Mus_musculus.GRCm38.75.cdna.all.fa.gz" "${ENSm38_75}/Mus_musculus.GRCm38.75.ncrna.fa.gz" | gzip > "${ENSm38_75}/Mus_musculus.GRCm38.75.cdna.all.ncrna.fa.gz"
+
+# Remove all cDNAs on patches etc by filtering only those that are left in the annotation file (DNAs 
+# annotated on patches etc)
+# Unique transcripts: 94674
+zcat "${ENSm38_75}/Mus_musculus.GRCm38.75.cdna.all.ncrna.fa.gz" | perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' "${tmpPubRes}/trx_ids_no_patches" - | gzip > "${ENSm38_75}/Mus_musculus.GRCm38.75.cdna.all.ncrna.no_patches.fa.gz"
+
+
+########################################
+###  ESTIMATE TRANSCRIPT ABUNDANCES  ###
+########################################
+
+# Manually: Compile sample table containing information required for the Anduril Kallisto pipeline
+# Fields: sampleName / path / format / adapter / fragLenMean / fragLenSD
+# Fragment length mean and standard deviations were estimated from BioAnalyzer reports here:
+# ls "${root}/documentation/time_course_1.bioanalyzer_"?".csv"
+# The compiled sample table is located here:
+# ls "${root}/documentation/time_course_1.sample_overview.csv"
+
+# Set Anduril directory
+AndurilDir="${root}/frameworksAuxiliary/Anduril"
+mkdir --parents "${ENSm38_75}"
+
+# Run Anduril pipeline for Kallisto index generation
+# TODO DESCRIBE HOW TO DOWNLOAD AND PROCESS (IF NECESSARY) THE TRANSCRIPT SEQUENCES
+time anduril run "${AndurilDir}/workflows/rendered/kallistoIndex.and" --bundle "${AndurilDir}/bundle" --execution-dir "${root}/analyzedData/kallistoIndex" --log "${root}/analyzedData/kallistoIndex/LOG" --threads 1
+
+# Run Anduril pipeline for Kallisto quantification
+time anduril run "${AndurilDir}/workflows/rendered/kallistoQuant.and" --bundle "${AndurilDir}/bundle" --execution-dir "${root}/analyzedData/kallistoQuant" --log "${root}/analyzedData/kallistoQuant/LOG" --threads 4
+
+# Round Kallisto estimates and merge them into a matrix
+Rscript "${root}/scriptsSoftware/mergeKallistoQuant.R" --inputDir "${root}/analyzedData/kallistoQuant/output/" --outFile "${root}/analyzedData/kallistoQuant/kallistoQuant.tab" --round --sampleNamePrefix 'kallisto_' --sampleNameSuffix '\-OUTDIR_output_dir'

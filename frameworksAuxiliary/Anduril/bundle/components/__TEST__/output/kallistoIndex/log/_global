@@ -1,0 +1,34 @@
+Log started on 2015-08-26 17:33:15;
+Executing kallistoIndex (kallistoIndex)
+[STDOUT kallistoIndex] == Component/instance information ==
+[STDOUT kallistoIndex] Component name                 : kallistoIndex
+[STDOUT kallistoIndex] Instance name                  : kallistoIndex
+[STDOUT kallistoIndex] Component path                 : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/kallistoIndex
+[STDOUT kallistoIndex] Execution directory            : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/kallistoIndex
+[STDOUT kallistoIndex] Temporary directory            : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/kallistoIndex/_tempdir
+[STDOUT kallistoIndex] == Input ports ==
+[STDOUT kallistoIndex] INFILE_refseqs                 : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/dataFiles/chr.fa
+[STDOUT kallistoIndex] == Output ports ==
+[STDOUT kallistoIndex] OUTFILE_index                  : /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/kallistoIndex/OUTFILE_index
+[STDOUT kallistoIndex] == Parameters ==
+[STDOUT kallistoIndex] _cores                         : 1
+[STDOUT kallistoIndex] _execMode                      : remote
+[STDOUT kallistoIndex] _executable                    : kallisto index
+[STDOUT kallistoIndex] _membycore                     : 20G
+[STDOUT kallistoIndex] _runtime                       : 6:00:00
+[STDOUT kallistoIndex] kmer_size                      : 31
+[STDOUT kallistoIndex] make_unique                    : {{FALSE}}
+[STDOUT kallistoIndex] == Command ==
+[STDOUT kallistoIndex] kallisto index --kmer-size 31 --index /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/output/kallistoIndex/OUTFILE_index /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/components/__TEST__/dataFiles/chr.fa
+[STDOUT kallistoIndex] == Job ID ==
+[STDOUT kallistoIndex] 9867040
+[STDOUT kallistoIndex] == Progress ==
+[STDOUT kallistoIndex] Submitted                      : 2015-Aug-26, 17:33:15
+[STDOUT kallistoIndex] Started                        : 2015-Aug-26, 17:33:32
+[STDERR kallistoIndex] [ERROR] Job '9867040' was aborted.
+[STDERR kallistoIndex] [ERROR] Execution aborted.
+[ERROR] Component kallistoIndex: Component returned error status: 1 (Generic error)
+Component kallistoIndex finished with failure; READY queue is empty.
+Done. The following components had errors: 
+ kallistoIndex (kallistoIndex)              
+Log closed on 2015-08-26 17:33:33; user kanitz
