@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>kallistoIndex</name>
+    <version>0.42.3</version>
+    <doc>Builds a kallisto index.</doc>
+    <author>Nicolas Bray</author>
+    <author>Harold Pimentel</author>
+    <author>Pall Melsted</author>
+    <author email="lpachter@math.berkeley.edu">Lior Pachter</author>
+    <category>NGS analysis</category>
+    <category>RNA-Seq analysis</category>
+    <category>transcript isoform quantification</category>
+    <launcher type="python">
+        <argument name="file" value="component.py" />
+        <argument name="source" value="anduril_custom_functions.py" />
+    </launcher>
+    <requires URL="http://www.python.org/" name="Python" optional="false" type="manual">python</requires>
+    <requires URL="http://pachterlab.github.io/kallisto/" name="kallisto" optional="false" type="manual">kallisto</requires>
+    <type-parameters>
+        <type-parameter name="FASTA" extends="FASTX">
+            <doc>FASTA file.</doc>
+        </type-parameter>
+        <type-parameter name="kallisto_index" extends="BinaryFile">
+            <doc>Kallisto index file.</doc>
+        </type-parameter>
+    </type-parameters>
+    <inputs>
+        <input name="INFILE_refseqs" type="FASTA" optional="false" array="false">
+            <doc>No documentation available.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="OUTFILE_index" type="kallisto_index" array="false">
+            <doc>Filename for the kallisto index to be constructed.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="_executable" type="string" default="kallisto index">
+            <doc>Path to executable.</doc>
+        </parameter>
+        <parameter name="_execMode" type="string" default="none">
+            <doc>Execution mode. One of &apos;remote&apos;, &apos;local&apos; or &apos;none&apos;.</doc>
+        </parameter>
+        <parameter name="_cores" type="string" default="1">
+            <doc>Number of threads.</doc>
+        </parameter>
+        <parameter name="_membycore" type="string" default="20G">
+            <doc>Memory per core. Integer, optionally followed by one the follow suffixes: K, M, G.</doc>
+        </parameter>
+        <parameter name="_runtime" type="string" default="0:30:00">
+            <doc>Runtime in h:mm:ss.</doc>
+        </parameter>
+        <parameter name="kmer_size" type="string" default="31">
+            <doc>K-mer (odd) length.</doc>
+        </parameter>
+        <parameter name="make_unique" type="string" default="{{FALSE}}">
+            <doc>Replace repeated target names with unique names.</doc>
+        </parameter>
+    </parameters>
+</component>

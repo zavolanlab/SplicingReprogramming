@@ -1,0 +1,29 @@
+# ------------------------ #
+# Zavolan lab, 20-DEC-2016 #
+# ------------------------ #
+
+# Patterns listed here will be excluded from the git repository.
+
+# Note that user-specific ignore patterns (e.g. backup or temporary files created by the user's
+# editor) should be added to a separate file referenced by the 'core.excludeFile' variable in the
+# user's global git configuration, located at '$HOME/.gitconfig'.
+
+# Data directories
+analyzedData/**/*
+logFiles/**/*
+manuscriptReady/**/*
+publicResources/**/*
+rawData/**/*
+virtualEnvironments/**/*
+
+# Temporary/template/old/unused directories
+.gitTemplate/**/*
+.old/**/*
+.sandbox/**/*
+.tmp/**/*
+
+# Specific directories
+documentation/AndurilWorkflows
+
+# Directory descriptor files
+WHAT_GOES_HERE

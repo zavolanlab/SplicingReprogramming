@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>SRATools_FastqDump</name>
+    <version>2.8.0</version>
+    <doc>Dumps read data from an SRA archive in FASTQ (FASTA) format.</doc>
+    <author email="sra-tools@ncbi.nlm.nih.gov">NCBI</author>
+    <category>NGS analysis</category>
+    <launcher type="python">
+        <argument name="file" value="component.py" />
+        <argument name="source" value="anduril_custom_functions.py" />
+    </launcher>
+    <requires URL="http://www.python.org/" name="Python" optional="false" type="manual">python</requires>
+    <requires URL="https://github.com/ncbi/sra-tools" name="SRA Toolkit" optional="false" type="manual">sra-tools</requires>
+    <type-parameters>
+        <type-parameter name="SRA" extends="BinaryFile">
+            <doc>NCBI SRA file.</doc>
+        </type-parameter>
+        <type-parameter name="fastq_dump_output" extends="Directory">
+            <doc>Directory containing one or more FASTQ or FASTA files.</doc>
+        </type-parameter>
+    </type-parameters>
+    <inputs>
+        <input name="INFILE_infile" type="SRA" optional="false" array="false">
+            <doc>Path to input SRA file.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="OUTDIR_outdir" type="fastq_dump_output" array="false">
+            <doc>Directory to write output to.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="_executable" type="string" default="fastq-dump">
+            <doc>Path to executable.</doc>
+        </parameter>
+        <parameter name="_execMode" type="string" default="remote">
+            <doc>Execution mode. One of &apos;remote&apos;, &apos;local&apos; or &apos;none&apos;.</doc>
+        </parameter>
+        <parameter name="_cores" type="string" default="1">
+            <doc>Number of threads.</doc>
+        </parameter>
+        <parameter name="_membycore" type="string" default="1500M">
+            <doc>Memory per core. Integer, optionally followed by one the follow suffixes: K, M, G.</doc>
+        </parameter>
+        <parameter name="_runtime" type="string" default="2:00:00">
+            <doc>Runtime in h:mm:ss.</doc>
+        </parameter>
+        <parameter name="gzip" type="string" default="{{TRUE}}">
+            <doc>Compress output using gzip.</doc>
+        </parameter>
+        <parameter name="bzip" type="string" default="{{FALSE}}">
+            <doc>Compress output using bzip2.</doc>
+        </parameter>
+        <parameter name="aligned" type="string" default="{{FALSE}}">
+            <doc>Dump only aligned sequences.</doc>
+        </parameter>
+        <parameter name="unaligned" type="string" default="{{FALSE}}">
+            <doc>Dump only unaligned sequences.</doc>
+        </parameter>
+        <parameter name="minReadLen" type="string" default="0">
+            <doc>Filter by sequence length. Reads equal in length to or longer than the indicated value are dumped.</doc>
+        </parameter>
+        <parameter name="fasta" type="string" default="{{FALSE}}">
+            <doc>Dump FASTA only, i.e. no qualities. Set line wrap width as argument (set to zero for no wrapping).</doc>
+        </parameter>
+        <parameter name="offset" type="string" default="33">
+            <doc>Offset to use for quality conversion.</doc>
+        </parameter>
+        <parameter name="split_files" type="string" default="{{FALSE}}">
+            <doc>Dump mates of paired-end reads into separate output files.</doc>
+        </parameter>
+        <parameter name="keep_empty_files" type="string" default="{{TRUE}}">
+            <doc>Do not delete empty files.</doc>
+        </parameter>
+        <parameter name="log_level" type="string" default="4">
+            <doc>Logging level as an integer between 0 and 5, corresponding to &quot;fatal&quot;, &quot;sys&quot;, &quot;int&quot;, &quot;err&quot;, &quot;warn&quot;, and &quot;info&quot;, respectively.</doc>
+        </parameter>
+        <parameter name="disable_multithreading" type="string" default="{{TRUE}}">
+            <doc>Disable multithreading.</doc>
+        </parameter>
+    </parameters>
+</component>

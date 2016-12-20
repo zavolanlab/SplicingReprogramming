@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>kallistoExtractOutput</name>
+    <version>1.0</version>
+    <doc>Given a kallisto output directory, generates a table of the form: ID -&gt; abundance estimate.</doc>
+    <author email="alexander.kanitz@unibas.ch">Alexander Kanitz</author>
+    <category>NGS analysis</category>
+    <category>RNA-Seq analysis</category>
+    <category>transcript isoform quantification</category>
+    <launcher type="python">
+        <argument name="file" value="component.py" />
+        <argument name="source" value="anduril_custom_functions.py" />
+    </launcher>
+    <requires URL="http://www.python.org/" name="Python" optional="false" type="manual">python</requires>
+    <type-parameters>
+        <type-parameter name="kallisto_output" extends="Directory">
+            <doc>Kallisto quantification output directory.</doc>
+        </type-parameter>
+    </type-parameters>
+    <inputs>
+        <input name="INDIR_inputDir" type="kallisto_output" optional="false" array="false">
+            <doc>Directory containing kallisto output file &apos;abundance.tsv&apos;.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="OUTFILE_outFile" type="TSV" array="false">
+            <doc>Output filename.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="_executable" type="string" default="kallisto_extract_output.R">
+            <doc>Path to executable.</doc>
+        </parameter>
+        <parameter name="_execMode" type="string" default="remote">
+            <doc>Execution mode. One of &apos;remote&apos;, &apos;local&apos; or &apos;none&apos;.</doc>
+        </parameter>
+        <parameter name="_cores" type="string" default="1">
+            <doc>Number of threads.</doc>
+        </parameter>
+        <parameter name="_membycore" type="string" default="1500M">
+            <doc>Memory per core. Integer, optionally followed by one the follow suffixes: K, M, G.</doc>
+        </parameter>
+        <parameter name="_runtime" type="string" default="0:00:30">
+            <doc>Runtime in h:mm:ss.</doc>
+        </parameter>
+        <parameter name="sampleName" type="string" default="sample">
+            <doc>Sample name.</doc>
+        </parameter>
+        <parameter name="counts" type="string" default="{{FALSE}}">
+            <doc>Extract estimated counts rather than normalized abundances.</doc>
+        </parameter>
+        <parameter name="round" type="string" default="{{FALSE}}">
+            <doc>Whether values shall be rounded to the next integer.</doc>
+        </parameter>
+        <parameter name="verbose" type="string" default="{{FALSE}}">
+            <doc>Print log messages.</doc>
+        </parameter>
+    </parameters>
+</component>

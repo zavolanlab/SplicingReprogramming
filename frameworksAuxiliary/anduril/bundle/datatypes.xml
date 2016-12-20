@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<types>
+
+    <type>
+        <name>Undefined</name>
+        <parent-type>BinaryFile</parent-type>
+        <desc>File of undefined type.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+
+    <type>
+        <name>Directory</name>
+        <parent-type>BinaryFolder</parent-type>
+        <desc>Plain folder with no particular structure.</desc>
+        <presentation-type>directory</presentation-type>
+    </type>
+
+    <type>
+        <name>Text</name>
+        <parent-type>BinaryFile</parent-type>
+        <desc>Plain text with no particular structure.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+
+    <type>
+        <name>Log</name>
+        <parent-type>Text</parent-type>
+        <desc>Command-specific non-tabular log file.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+
+    <type>
+        <name>Delim</name>
+        <parent-type>Text</parent-type>
+        <desc>Delimiter-separated text file.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+
+    <type>
+        <name>TSV</name>
+        <parent-type>Delim</parent-type>
+        <desc>Tab-separated text file.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+
+<!-- Already present at Anduril root level; overwriting not allowed
+    <type>
+        <name>CSV</name>
+        <parent-type>Delim</parent-type>
+        <desc>Comma-separated text file.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+-->
+
+    <type>
+        <name>FASTX</name>
+        <parent-type>Text</parent-type>
+        <desc>FASTQ or FASTA file.</desc>
+        <presentation-type>file</presentation-type>
+    </type>
+
+</types>

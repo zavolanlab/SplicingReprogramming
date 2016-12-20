@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<component>
+    <name>SUPPAPsiPerEvent</name>
+    <version></version>
+    <doc>Given a transcript expression table, calculates the percent spliced in (PSI) values for each event in the specified SUPPA isoform overlapping event (IOE) file.</doc>
+    <author email="gael.perez@upf.edu">Gael P Alamancos</author>
+    <category>NGS analysis</category>
+    <category>RNA-Seq analysis</category>
+    <category>alternative splicing quantification</category>
+    <launcher type="python">
+        <argument name="file" value="component.py" />
+        <argument name="source" value="anduril_custom_functions.py" />
+    </launcher>
+    <requires URL="http://www.python.org/" name="Python" optional="false" type="manual">python</requires>
+    <requires URL="https://bitbucket.org/regulatorygenomicsupf/suppa" name="SUPPA" optional="false" type="manual">suppa.py</requires>
+    <type-parameters>
+        <type-parameter name="SUPPA_IOE" extends="TSV">
+            <doc>SUPPA isoform overlapping event file.</doc>
+        </type-parameter>
+        <type-parameter name="SUPPA_output_event" extends="Text">
+            <doc>SUPPA output PSI per event file.</doc>
+        </type-parameter>
+    </type-parameters>
+    <inputs>
+        <input name="INFILE_ioe_file" type="SUPPA_IOE" optional="false" array="false">
+            <doc>Path to input IOE file.</doc>
+        </input>
+        <input name="INFILE_expression_file" type="TSV" optional="false" array="false">
+            <doc>Path to input expression file.</doc>
+        </input>
+    </inputs>
+    <outputs>
+        <output name="OUTFILE_output_file" type="SUPPA_output_event" array="false">
+            <doc>Path to output PSI file.</doc>
+        </output>
+    </outputs>
+    <parameters>
+        <parameter name="_executable" type="string" default="suppa.py psiPerEvent">
+            <doc>Path to executable.</doc>
+        </parameter>
+        <parameter name="_execMode" type="string" default="remote">
+            <doc>Execution mode. One of &apos;remote&apos;, &apos;local&apos; or &apos;none&apos;.</doc>
+        </parameter>
+        <parameter name="_cores" type="string" default="1">
+            <doc>Number of threads.</doc>
+        </parameter>
+        <parameter name="_membycore" type="string" default="1500M">
+            <doc>Memory per core. Integer, optionally followed by one the follow suffixes: K, M, G.</doc>
+        </parameter>
+        <parameter name="_runtime" type="string" default="0:30:00">
+            <doc>Runtime in h:mm:ss.</doc>
+        </parameter>
+        <parameter name="total_filter" type="string" default="0">
+            <doc>Minimum accumulative expression of all the transcripts involved in an event.</doc>
+        </parameter>
+        <parameter name="mode" type="string" default="INFO">
+            <doc>Verbosity mode.</doc>
+        </parameter>
+    </parameters>
+</component>

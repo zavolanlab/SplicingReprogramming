@@ -1,5 +1,0 @@
-Log started on 2015-08-26 17:22:26;
-Executing input_INFILE_input (INPUT)
-[ERROR] Component input_INFILE_input: Input file does not exist: /import/bc2/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/frameworksAuxiliary/Anduril/bundle/bundle/components/__TEST__/dataFiles/100.fq
-Component input_INFILE_input finished with failure; READY queue is empty.
-Log closed on 2015-08-26 17:22:26; user kanitz
