@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-# (c) 2016, Alexander Kanitz, Biozentrum, Universiry of Basel
+# (c) 2016-2017, Alexander Kanitz, Biozentrum, Universiry of Basel
 # email: alexander.kanitz@alumni.ethz.ch
 
 #######################
@@ -15,7 +15,7 @@ script <- sub("--file=", "", basename(commandArgs(trailingOnly=FALSE)[4]))
 #---> DESCRIPTION <---#
 description <- "Merges a field of a set of data tables based on a common ID column.\n"
 author <- "Author: Alexander Kanitz, Biozentrum, University of Basel"
-version <- "Version: 1.0.0 (18-NOV-2016)"
+version <- "Version: 1.1.0 (10-JAN-2017)"
 requirements <- "Requires: optparse"
 msg <- paste(description, author, version, requirements, sep="\n")
 
@@ -29,6 +29,12 @@ option_list <- list(
                     default=NULL,
                     help="Directory containing data tables. Required.",
                     metavar="directory"
+                ),
+                make_option(
+                    "--recursive",
+                    action="store_true",
+                    default=FALSE,
+                    help="Specify if subdirectories shall be searched for data tables."
                 ),
                 make_option(
                     "--output-directory",
@@ -153,6 +159,14 @@ option_list <- list(
                     help="Generate merged table including all data (i.e. not filtered by categories). Will always be generated if annotation table is not provided."
                 ),
                 make_option(
+                    "--prefix-ungrouped",
+                    action="store",
+                    type="character",
+                    default="all",
+                    help="Prefix for output table including all data. Default: \"all\"",
+                    metavar="char"
+                ),
+                make_option(
                     c("-h", "--help"),
                     action="store_true",
                     default=FALSE,
@@ -201,7 +215,7 @@ if ( opt$`verbose` ) cat("Starting ", script, "...\n", sep="'")
 
     #---> Non-recursively find files of specified name <---#
     if ( opt$`verbose` ) cat("Finding data tables...\n")
-    file.paths <- sort(dir(opt$`input-directory`, pattern=glob2rx(opt$`glob`), recursive=FALSE, full.names=TRUE))
+    file.paths <- sort(dir(opt$`input-directory`, pattern=glob2rx(opt$`glob`), recursive=opt$`recursive`, full.names=TRUE))
 
     #---> Extract sample IDs by removing specified pre- and suffix from file basenames <---#
     if ( opt$`verbose` ) cat("Extracting table IDs...\n")
@@ -296,6 +310,7 @@ if ( opt$`verbose` ) cat("Starting ", script, "...\n", sep="'")
         colnames(merged) <- cat.ls[[cat]]
 
         #---> Build output filename <---#
+        if ( cat == "all" ) cat <- opt$`prefix-ungrouped`
         out.filename <- file.path(opt$`output-directory`, paste(cat, opt$`out-file-suffix`, sep=""))
 
         #---> Log message <---#

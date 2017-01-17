@@ -13,7 +13,7 @@ if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FA
 script <- sub("--file=", "", basename(commandArgs(trailingOnly=FALSE)[4]))
 
 #---> DESCRIPTION <---#
-description <- "Generates merged gene symbol identifiers for orhtologous Ensembl gene IDs."
+description <- "Generates merged gene symbol identifiers for orthologous Ensembl gene IDs."
 author <- "Author: Alexander Kanitz, Biozentrum, University of Basel"
 version <- "Version: 1.0.0 (05-DEC-2016)"
 requirements <- "Requires: optparse"

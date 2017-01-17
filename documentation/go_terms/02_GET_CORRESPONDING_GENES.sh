@@ -13,10 +13,11 @@
 
 # Gets genes corresponding to a list of GO terms
 
-# THE RESULTS OF THIS SCRIPT MAY NOT BE REPRODUCIBLE AS THE CURRENT STATE OF THE GO DATABASE IS 
-# QUERIED!
-# RUN DATE: 2016-12-07
-
+###########################################################################
+# THE RESULTS OF THIS SCRIPT MAY NOT BE REPRODUCIBLE AS THE CURRENT STATE #
+# OF THE GO DATABASE IS QUERIED!                                          #
+# RUN DATE: 2017-01-10                                                    #
+###########################################################################
 
 ####################
 ###  PARAMETERS  ###
@@ -38,7 +39,8 @@ declare -A idCols=( [hsa]=1 [mmu]=2 [ptr]=3 )
 commonSymCol=7
 
 # Set output directories
-outDir="${root}/publicResources/go_terms"
+outDir="${root}/publicResources/go_terms/members_per_term"
+outDirUnion="${outDir}/union"
 tmpDir="${root}/.tmp/publicResources/go_terms"
 logDir="${root}/logFiles/publicResources/go_terms"
 
@@ -59,6 +61,7 @@ set -o pipefail
 
 # Create directories
 mkdir --parents "$outDir"
+mkdir --parents "$outDirUnion"
 mkdir --parents "$tmpDir"
 mkdir --parents "$logDir"
 
@@ -101,7 +104,7 @@ while read term; do
         url=${url_start}${term}${url_mid}${org}${url_end}
 
         # Download GO data
-        out_file_go="${out_subdir}/${short_name}.${term_short}.go"
+        out_file_go="${out_subdir}/${short_name}.${term_short}.gaf"
         wget -q -O "$out_file_go" "$url" > /dev/null 2>> "$logFile"
 
         # Extract gene symbols
@@ -119,7 +122,7 @@ while read term; do
     done
 
     # Combine merged ortholog gene symbols across organisms
-    out_file_common_sym="${outDir}/${term_short}.common_gene_symbols"
+    out_file_common_sym="${outDirUnion}/${term_short}.common_gene_symbols"
     cat "${tmpDir}/"*".${term_short}.common_gene_symbols" | sort -u > "$out_file_common_sym"
 
 done < <(cut -f1 "$goTerms")

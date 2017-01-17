@@ -49,7 +49,7 @@ mkdir -p "$logDir"
 
 # Create log file
 logFile="${logDir}/$(basename $0 ".sh").log"
-rm -f "$logFile; "touch "$logFile"
+rm -f "$logFile"; touch "$logFile"
 >&2 echo "Log written to '$logFile'..."
 
 
