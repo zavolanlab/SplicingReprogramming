@@ -29,14 +29,13 @@ inDirRoot="${root}/analyzedData/dgea/edgeR/sra_data"
 inDirHsaByStudy="${inDirRoot}/hsa/by_study_and_condition"
 inDirMmuByStudy="${inDirRoot}/mmu/by_study_and_condition"
 inDirPtrByStudy="${inDirRoot}/ptr/by_study_and_condition"
-inDirAllByStudy="${inDirRoot}/all/by_study_and_condition"
 inDirHsaByCellType="${inDirRoot}/hsa/by_cell_type_only"
 inDirMmuByCellType="${inDirRoot}/mmu/by_cell_type_only"
 inDirPtrByCellType="${inDirRoot}/ptr/by_cell_type_only"
 inDirAllByCellType="${inDirRoot}/all/by_cell_type_only"
 
 # Set output directories
-outDir="${root}/analyzedData/dgea/edgeR/sra_data/summarized"
+outDir="${root}/analyzedData/dgea/edgeR/sra_data/merged"
 logDir="${root}/logFiles/analyzedData/dgea/edgeR/sra_data"
 
 # Set other script parameters
@@ -278,74 +277,6 @@ Rscript "$script" \
     --id-column="$idColumn" \
     --data-column=6 \
     --prefix-ungrouped="${prefixPtr}.${prefixByStudy}.${prefixDE}" \
-    --has-header \
-    --verbose \
-    &>> "$logFile"
-
-
-## ALL: BY STUDY ID AND CONDITION
-echo "Summarizing comparisons across organisms by study ID and condition..." >> "$logFile"
-
-# Fold changes
-echo "Extracting fold changes..." >> "$logFile"
-Rscript "$script" \
-    --input-directory="$inDirAllByStudy" \
-    --recursive \
-    --output-directory="$outDir" \
-    --out-file-suffix="$outFileSuffix" \
-    --glob="$inFileGlob" \
-    --id-suffix="$inFileSuffix" \
-    --id-column="$idColumn" \
-    --data-column=2 \
-    --prefix-ungrouped="${prefixAll}.${prefixByStudy}.${prefixFC}" \
-    --has-header \
-    --verbose \
-    &>> "$logFile"
-
-# P values
-echo "Extracting P values..." >> "$logFile"
-Rscript "$script" \
-    --input-directory="$inDirAllByStudy" \
-    --recursive \
-    --output-directory="$outDir" \
-    --out-file-suffix="$outFileSuffix" \
-    --glob="$inFileGlob" \
-    --id-suffix="$inFileSuffix" \
-    --id-column="$idColumn" \
-    --data-column=4 \
-    --prefix-ungrouped="${prefixAll}.${prefixByStudy}.${prefixP}" \
-    --has-header \
-    --verbose \
-    &>> "$logFile"
-
-# FDRs
-echo "Extracting false discovery rates..." >> "$logFile"
-Rscript "$script" \
-    --input-directory="$inDirAllByStudy" \
-    --recursive \
-    --output-directory="$outDir" \
-    --out-file-suffix="$outFileSuffix" \
-    --glob="$inFileGlob" \
-    --id-suffix="$inFileSuffix" \
-    --id-column="$idColumn" \
-    --data-column=5 \
-    --prefix-ungrouped="${prefixAll}.${prefixByStudy}.${prefixFDR}" \
-    --has-header \
-    --verbose \
-    &>> "$logFile"
-
-# Differential expression flags
-echo "Extracting differential expression flags (-1, 0, 1)..." >> "$logFile"
-Rscript "$script" \
-    --input-directory="$inDirAllByStudy" \
-    --recursive \
-    --output-directory="$outDir" \
-    --out-file-suffix="$outFileSuffix" \
-    --glob="$inFileGlob" \
-    --id-suffix="$inFileSuffix" \
-    --id-column="$idColumn" \
-    --data-column=6 \
-    --prefix-ungrouped="${prefixAll}.${prefixByStudy}.${prefixDE}" \
     --has-header \
     --verbose \
     &>> "$logFile"

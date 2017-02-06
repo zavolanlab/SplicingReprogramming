@@ -251,7 +251,17 @@ zcat "$geneAnnoFilt" | awk '$3 == "transcript"' | awk -v OFS="\t" '{
 }' | sed -e 's/"//g' -e 's/;//g' | sort -u -k1,1 | gzip > "${trxTableFilt}"
 
 
-#############
+### COMPILE GENE SYMBOL LOOKUP TABLE
+
+## Compile table
+echo "Compiling gene ID > gene symbol lookup table..." >> "$logFile"
+idSymTable="${resDir}/${fileNamePrefix}.genes.id_to_symbol.tsv.gz"
+idSymTableFilt="${resDir}/${fileNamePrefix}.genes.id_to_symbol.tsv.gz"
+awk -F"\t" '{print $8"\t"$6}' <(zcat $trxTable) | sort -u | awk 'BEGIN{FS="\t"; OFS="\t"} {a1[$1]=$1; if (a2[$1] == "") {a2[$1]=$2} else {a2[$1]=a2[$1]"|"$2}} END{for (id in a1) {print a2[id], id}}' | grep -v "|" | sort | gzip > "$idSymTable"
+awk -F"\t" '{print $8"\t"$6}' <(zcat $trxTableFilt) | sort -u | awk 'BEGIN{FS="\t"; OFS="\t"} {a1[$1]=$1; if (a2[$1] == "") {a2[$1]=$2} else {a2[$1]=a2[$1]"|"$2}} END{for (id in a1) {print a2[id], id}}' | grep -v "|" | sort | gzip > "$idSymTableFilt"
+
+
+############
 ###  END  ###
 #############
 

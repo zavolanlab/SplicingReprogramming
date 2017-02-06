@@ -65,10 +65,10 @@ runIdHsaByStudy="hsa.by_study_and_condition"
 runIdMmuByStudy="mmu.by_study_and_condition"
 runIdPtrByStudy="ptr.by_study_and_condition"
 runIdAllByStudy="all.by_study_and_condition"
-runIdHsaByCellType="hsa.by_cell_type"
-runIdMmuByCellType="mmu.by_cell_type"
-runIdPtrByCellType="ptr.by_cell_type"
-runIdAllByCellType="all.by_cell_type"
+runIdHsaByCellType="hsa.by_cell_type_only"
+runIdMmuByCellType="mmu.by_cell_type_only"
+runIdPtrByCellType="ptr.by_cell_type_only"
+runIdAllByCellType="all.by_cell_type_only"
 
 
 ########################
@@ -102,11 +102,11 @@ echo "Preparing sample annotations..." >> "$logFile"
 awk 'BEGIN{OFS="\t"} $4 == "Homo_sapiens" {print $1, $2"."$4"."$6}' "$annoRaw" > "$annoHsaByStudy" 2>> "$logFile"
 awk 'BEGIN{OFS="\t"} $4 == "Mus_musculus" {print $1, $2"."$4"."$6}' "$annoRaw" > "$annoMmuByStudy" 2>> "$logFile"
 awk 'BEGIN{OFS="\t"} $4 == "Pan_troglodytes" {print $1, $2"."$4"."$6}' "$annoRaw" > "$annoPtrByStudy" 2>> "$logFile"
-awk 'BEGIN{OFS="\t"} {print $1, $2"."$6}' "$annoRaw" > "$annoAllByStudy" 2>> "$logFile"
+awk 'BEGIN{OFS="\t"} {print $1, $2"."$6}' <(tail -n +2 "$annoRaw") > "$annoAllByStudy" 2>> "$logFile"
 awk 'BEGIN{OFS="\t"} $4 == "Homo_sapiens" {print $1, $4"."$7}' "$annoRaw" > "$annoHsaByCellType" 2>> "$logFile"
 awk 'BEGIN{OFS="\t"} $4 == "Mus_musculus" {print $1, $4"."$7}' "$annoRaw" > "$annoMmuByCellType" 2>> "$logFile"
 awk 'BEGIN{OFS="\t"} $4 == "Pan_troglodytes" {print $1, $4"."$7}' "$annoRaw" > "$annoPtrByCellType" 2>> "$logFile"
-awk 'BEGIN{OFS="\t"} {print $1, $7}' "$annoRaw" > "$annoAllByCellType" 2>> "$logFile"
+awk 'BEGIN{OFS="\t"} {print $1, $7}' <(tail -n +2 "$annoRaw") > "$annoAllByCellType" 2>> "$logFile"
 
 # Prepare sample contrasts for each condition
 echo "Preparing sample comparisons..." >> "$logFile"
@@ -124,6 +124,8 @@ Rscript "$script" \
     --exclude="$excl" \
     --annotation="$annoHsaByStudy" \
     --comparisons="$compHsaByStudy" \
+    --reference-column=2 \
+    --query-column=1 \
     --comparison-name-column=3 \
     --verbose &>> "$logFile"
 
@@ -136,6 +138,8 @@ Rscript "$script" \
     --exclude="$excl" \
     --annotation="$annoMmuByStudy" \
     --comparisons="$compMmuByStudy" \
+    --reference-column=2 \
+    --query-column=1 \
     --comparison-name-column=3 \
     --verbose &>> "$logFile"
 
@@ -148,18 +152,8 @@ Rscript "$script" \
     --exclude="$excl" \
     --annotation="$annoPtrByStudy" \
     --comparisons="$compPtrByStudy" \
-    --comparison-name-column=3 \
-    --verbose &>> "$logFile"
-
-# Across organisms: by study and cell type
-echo "Comparing gene expression across relevant conditions per study: across organims..." >> "$logFile"
-Rscript "$script" \
-    --count-table="$cntsAll" \
-    --output-directory="$outDirAllByStudy" \
-    --run-id="$runIdAllByStudy" \
-    --exclude="$excl" \
-    --annotation="$annoAllByStudy" \
-    --comparisons="$compAllByStudy" \
+    --reference-column=2 \
+    --query-column=1 \
     --comparison-name-column=3 \
     --verbose &>> "$logFile"
 

@@ -28,233 +28,233 @@ msg <- paste(description, author, version, requirements, sep="\n")
 
 # Define list of arguments
 option_list <- list(
-                make_option(
-                    "--expression",
-                    action="store",
-                    type="character",
-                    default=NULL,
-                    help="Expression table containing feature/gene IDs in the first column, expression/abundance values in the remaining columns and a header line with sample IDs. The header line must contain one field less than the remaining lines (i.e. no field for the first/feature ID column). Required.",
-                    metavar="tsv"
-                ),
-                make_option(
-                    "--output-directory",
-                    action="store",
-                    type="character",
-                    default=".",
-                    help="Directory where output files shall be written. Default: \".\".",
-                    metavar="directory"
-                ),
-                make_option(
-                    "--run-id",
-                    action="store",
-                    type="character",
-                    default="experiment",
-                    help="String used as analysis identifier prefix for output files. Default: 'experiment'.",
-                    metavar="file"
-                ),
-                make_option(
-                    "--exclude",
-                    action="store",
-                    type="character",
-                    default=NULL,
-                    help="Text file containing identifiers of samples to be excluded from the analysis. Expected format: One identifier per line. Identifiers have to match column headers of '--expression'. Default: NULL.",
-                    metavar="file"
-                ),
-                make_option(
-                    "--annotation",
-                    action="store",
-                    type="character",
-                    default=NULL,
-                    help="Annotation table with one row for each sample. If provided, samples without annotation are not considered. Required if '--include-means', --color-category-column' and/or '--symbol-category-column' are specified. Specify '--anno-has-header' if table includes a header line. Default: NULL.",
-                    metavar="tsv"
-                ),
-                make_option(
-                    "--anno-has-header",
-                    action="store_true",
-                    default=FALSE,
-                    help="Indicates whether the annotation table includes a header line. Default: FALSE."
-                ),
-                make_option(
-                    "--include-means",
-                    action="store_true",
-                    default=FALSE,
-                    help="Indicates whether the analysis shall be run on sample means as well. Default: FALSE."
-                ),
-                make_option(
-                    "--sample-id-column",
-                    action="store",
-                    type="integer",
-                    default=NULL,
-                    help="Annotation table column/field number containing sample identifiers. Required if '--annotation' is specified. Default: NULL.",
-                    metavar="int"
-                ),
-                make_option(
-                    "--replicate-column",
-                    action="store",
-                    type="integer",
-                    default=NULL,
-                    help="Annotation table column/field number containing sample descriptor for the calculation of sample means. Expression values of samples with identical descriptors are averaged. Required if '--include-means' is specified. Default: NULL.",
-                    metavar="int"
-                ),
-                make_option(
-                    "--color-category-column",
-                    action="store",
-                    type="integer",
-                    default=NULL,
-                    help="Annotation table column/field number containing categorical information for each sample that is to be plotted in distinct colors (e.g. cell type, genotype, treatment). Default: NULL (symbols in all plots will be black).",
-                    metavar="int"
-                ),
-                make_option(
-                    "--color-column",
-                    action="store",
-                    type="integer",
-                    default=NULL,
-                    help="Annotation table column/field number containing hexadecimal color values (e.g. '#000000'). Samples belonging to the same color category (as defined by '--color-category-column') should also have the same color value in order for the legend to match the plot colors. If NULL, colors for each category in '--color-category-column' (if provided) are assigned automatically. Default: NULL.",
-                    metavar="int"
-                ),
-                make_option(
-                    "--symbol-category-column",
-                    action="store",
-                    type="integer",
-                    default=NULL,
-                    help="Annotation table column/field number containing categorical information for each sample that is to be plotted in distinct symbol shapes/types (e.g. cell type, genotype, treatment). Default: NULL (symbols in all plots will be circles, i.e. pch=16).",
-                    metavar="int"
-                ),
-                make_option(
-                    "--symbol-column",
-                    action="store",
-                    type="integer",
-                    default=NULL,
-                    help="Annotation table column/field number containing integers represent R plot symbols (see '?pch'). Samples belonging to the same symbol category (as defined by '--symbol-category-column') should also have the same plot symbol value in order for the legend to match the plot symbols. If NULL, symbols for each category in '--symbol-category-column' (if provided) are assigned automatically. Default: NULL.",
-                    metavar="int"
-                ),
-                make_option(
-                    "--subset-directory",
-                    action="store",
-                    type="character",
-                    default=NULL,
-                    help="Directory containing one or more files containing subsets of feature/gene identifiers, each to be analyzed separately. Identifiers have to match those in '--expression' and have to specified one per line. Requires that a valid argument to '--subset-glob' is also provided. If not specified, separate analyses per subset are not performed. Default: NULL.",
-                    metavar="directory"
-                ),
-                make_option(
-                    "--subset-glob",
-                    action="store",
-                    type="character",
-                    default=NULL,
-                    help="File glob to identify subset feature/gene identifier files in '--subset-directory'. Valid values include either a single asterisk '*' or a single stretch of question marks (e.g. '???'). Values matched by the wildcard will be used as identifiers for the respective subsets. Therefore, include prefixes/suffixes that are identical to all files literally in the glob string (e.g. 'prefix.*.suffix'). Required if '--subset-directory' is specified. Default: NULL.",
-                    metavar="glob"
-                ),
-                make_option(
-                    "--subset-annotation",
-                    action="store",
-                    type="character",
-                    default=NULL,
-                    help="Optional annotation table for the subsets of feature/gene identifiers defined by the '--subset-directory' and '--subset-glob' options. The table should be headerless and contain the following in the first two columns: (1) the values matched by the wildcard in '--subset-glob', (2) a short descriptive name or official identifier (e.g. GO term name and/or identifier) for the subset. If provided, the descriptive name is used in plots and filenames instead of the value matched by the wildcard. Default: NULL.",
-                    metavar="tsv"
-                ),
-                make_option(
-                    "--cutoff-expression",
-                    action="store",
-                    type="numeric",
-                    default=1,
-                    help="Consider only features/genes with a minimum expression value across at least '--cutoff-sample-no'. Set to 0 to disable filtering. Default: 1.",
-                    metavar="float"
-                ),
-                make_option(
-                    "--cutoff-sample-no",
-                    action="store",
-                    type="numeric",
-                    default=0.1,
-                    help="Number (integer >1) or fraction (float <1) of samples that have to have at least '--cutoff-expression' for a feature/gene to be considered. Set to 0 to disable filtering. Default: 0.1.",
-                    metavar="float|int"
-                ),
-                make_option(
-                    "--log-space",
-                    action="store_true",
-                    default=FALSE,
-                    help="Indicate if expression values are already in log space. Default: FALSE."
-                ),
-                make_option(
-                    "--pseudo-count",
-                    action="store",
-                    type="numeric",
-                    default=1/32,
-                    help="Value to be added to small/zero expression/abundance values for log transformation. Default: 1/32 (log2 = -5).",
-                    metavar="float"
-                ),
-                make_option(
-                    "--write-tables",
-                    action="store_true",
-                    default=FALSE,
-                    help="Indicates whether processed expression/abundance tables shall be written out. Default: FALSE."
-                ),
-                make_option(
-                    "--plot-components",
-                    action="store",
-                    type="integer",
-                    default=2,
-                    help="Number of components n to plot. All unique combinations C(n, 2) will be plotted in 2D scatterplots, i.e. n = 5 will generate 10 plots. Default: 2.",
-                    metavar="int"
-                ),
-                make_option(
-                    "--plot-width",
-                    action="store",
-                    type="integer",
-                    default=16,
-                    help="Plot width in inches. Default: 16.",
-                    metavar="int"
-                ),
-                make_option(
-                    "--plot-width-legend",
-                    action="store",
-                    type="integer",
-                    default=2,
-                    help="Width of plot legend in inches. Default: 2.",
-                    metavar="int"
-                ),
-                make_option(
-                    "--plot-height",
-                    action="store",
-                    type="numeric",
-                    default=7.25,
-                    help="Plot height in inches. Default: 7.25.",
-                    metavar="float"
-                ),
-                make_option(
-                    "--plot-height-title",
-                    action="store",
-                    type="numeric",
-                    default=0.25,
-                    help="Height of plot title in inches. Default: 0.25.",
-                    metavar="float"
-                ),
-                make_option(
-                    "--plot-symbol-expansion",
-                    action="store",
-                    type="numeric",
-                    default=1.8,
-                    help="Expansion factor for plot symbols. Default: 1.8.",
-                    metavar="float"
-                ),
-                make_option(
-                    c("-h", "--help"),
-                    action="store_true",
-                    default=FALSE,
-                    help="Show this information and die."
-                ),
-                make_option(
-                    c("-u", "--usage"),
-                    action="store_true",
-                    default=FALSE,
-                    dest="help",
-                    help="Show this information and die."
-                ),
-                make_option(
-                    c("-v", "--verbose"),
-                    action="store_true",
-                    default=FALSE,
-                    help="Print log messages to STDOUT."
-                )
+    make_option(
+        "--expression",
+        action="store",
+        type="character",
+        default=NULL,
+        help="Expression table containing feature/gene IDs in the first column, expression/abundance values in the remaining columns and a header line with sample IDs. The header line must contain one field less than the remaining lines (i.e. no field for the first/feature ID column). Required.",
+        metavar="tsv"
+    ),
+    make_option(
+        "--output-directory",
+        action="store",
+        type="character",
+        default=getwd(),
+        help="Directory where output files shall be written. Default: working directory.",
+        metavar="directory"
+    ),
+    make_option(
+        "--run-id",
+        action="store",
+        type="character",
+        default="experiment",
+        help="String used as analysis identifier prefix for output files. Default: 'experiment'.",
+        metavar="file"
+    ),
+    make_option(
+        "--exclude",
+        action="store",
+        type="character",
+        default=NULL,
+        help="Text file containing identifiers of samples to be excluded from the analysis. Expected format: One identifier per line. Identifiers have to match column headers of '--expression'. Default: NULL.",
+        metavar="file"
+    ),
+    make_option(
+        "--annotation",
+        action="store",
+        type="character",
+        default=NULL,
+        help="Annotation table with one row for each sample. If provided, samples without annotation are not considered. Required if '--include-means', --color-category-column' and/or '--symbol-category-column' are specified. Specify '--anno-has-header' if table includes a header line. Default: NULL.",
+        metavar="tsv"
+    ),
+    make_option(
+        "--anno-has-header",
+        action="store_true",
+        default=FALSE,
+        help="Indicates whether the annotation table includes a header line. Default: FALSE."
+    ),
+    make_option(
+        "--include-means",
+        action="store_true",
+        default=FALSE,
+        help="Indicates whether the analysis shall be run on sample means as well. Default: FALSE."
+    ),
+    make_option(
+        "--sample-id-column",
+        action="store",
+        type="integer",
+        default=NULL,
+        help="Annotation table column/field number containing sample identifiers. Required if '--annotation' is specified. Default: NULL.",
+        metavar="int"
+    ),
+    make_option(
+        "--replicate-column",
+        action="store",
+        type="integer",
+        default=NULL,
+        help="Annotation table column/field number containing sample descriptor for the calculation of sample means. Expression values of samples with identical descriptors are averaged. Required if '--include-means' is specified. Default: NULL.",
+        metavar="int"
+    ),
+    make_option(
+        "--color-category-column",
+        action="store",
+        type="integer",
+        default=NULL,
+        help="Annotation table column/field number containing categorical information for each sample that is to be plotted in distinct colors (e.g. cell type, genotype, treatment). Default: NULL (symbols in all plots will be black).",
+        metavar="int"
+    ),
+    make_option(
+        "--color-column",
+        action="store",
+        type="integer",
+        default=NULL,
+        help="Annotation table column/field number containing hexadecimal color values (e.g. '#000000'). Samples belonging to the same color category (as defined by '--color-category-column') should also have the same color value in order for the legend to match the plot colors. If NULL, colors for each category in '--color-category-column' (if provided) are assigned automatically. Default: NULL.",
+        metavar="int"
+    ),
+    make_option(
+        "--symbol-category-column",
+        action="store",
+        type="integer",
+        default=NULL,
+        help="Annotation table column/field number containing categorical information for each sample that is to be plotted in distinct symbol shapes/types (e.g. cell type, genotype, treatment). Default: NULL (symbols in all plots will be circles, i.e. pch=16).",
+        metavar="int"
+    ),
+    make_option(
+        "--symbol-column",
+        action="store",
+        type="integer",
+        default=NULL,
+        help="Annotation table column/field number containing integers represent R plot symbols (see '?pch'). Samples belonging to the same symbol category (as defined by '--symbol-category-column') should also have the same plot symbol value in order for the legend to match the plot symbols. If NULL, symbols for each category in '--symbol-category-column' (if provided) are assigned automatically. Default: NULL.",
+        metavar="int"
+    ),
+    make_option(
+        "--subset-directory",
+        action="store",
+        type="character",
+        default=NULL,
+        help="Directory containing one or more files containing subsets of feature/gene identifiers, each to be analyzed separately. Identifiers have to match those in '--expression' and have to specified one per line. Requires that a valid argument to '--subset-glob' is also provided. If not specified, separate analyses per subset are not performed. Default: NULL.",
+        metavar="directory"
+    ),
+    make_option(
+        "--subset-glob",
+        action="store",
+        type="character",
+        default=NULL,
+        help="File glob to identify subset feature/gene identifier files in '--subset-directory'. Valid values include either a single asterisk '*' or a single stretch of question marks (e.g. '???'). Values matched by the wildcard will be used as identifiers for the respective subsets. Therefore, include prefixes/suffixes that are identical to all files literally in the glob string (e.g. 'prefix.*.suffix'). Required if '--subset-directory' is specified. Default: NULL.",
+        metavar="glob"
+    ),
+    make_option(
+        "--subset-annotation",
+        action="store",
+        type="character",
+        default=NULL,
+        help="Optional annotation table for the subsets of feature/gene identifiers defined by the '--subset-directory' and '--subset-glob' options. The table should be headerless and contain the following in the first two columns: (1) the values matched by the wildcard in '--subset-glob', (2) a short descriptive name or official identifier (e.g. GO term name and/or identifier) for the subset. If provided, the descriptive name is used in plots and filenames instead of the value matched by the wildcard. Default: NULL.",
+        metavar="tsv"
+    ),
+    make_option(
+        "--cutoff-expression",
+        action="store",
+        type="numeric",
+        default=1,
+        help="Consider only features/genes with a minimum expression value across at least '--cutoff-sample-no'. Set to 0 to disable filtering. Default: 1.",
+        metavar="float"
+    ),
+    make_option(
+        "--cutoff-sample-no",
+        action="store",
+        type="numeric",
+        default=0.1,
+        help="Number (integer >1) or fraction (float <1) of samples that have to have at least '--cutoff-expression' for a feature/gene to be considered. Set to 0 to disable filtering. Default: 0.1.",
+        metavar="float|int"
+    ),
+    make_option(
+        "--log-space",
+        action="store_true",
+        default=FALSE,
+        help="Indicate if expression values are already in log space. Default: FALSE."
+    ),
+    make_option(
+        "--pseudo-count",
+        action="store",
+        type="numeric",
+        default=1/32,
+        help="Value to be added to small/zero expression/abundance values for log transformation. Default: 1/32 (log2 = -5).",
+        metavar="float"
+    ),
+    make_option(
+        "--write-tables",
+        action="store_true",
+        default=FALSE,
+        help="Indicates whether processed expression/abundance tables shall be written out. Default: FALSE."
+    ),
+    make_option(
+        "--plot-components",
+        action="store",
+        type="integer",
+        default=2,
+        help="Number of components n to plot. All unique combinations C(n, 2) will be plotted in 2D scatterplots, i.e. n = 5 will generate 10 plots. Default: 2.",
+        metavar="int"
+    ),
+    make_option(
+        "--plot-width",
+        action="store",
+        type="integer",
+        default=16,
+        help="Plot width in inches. Default: 16.",
+        metavar="int"
+    ),
+    make_option(
+        "--plot-width-legend",
+        action="store",
+        type="integer",
+        default=2,
+        help="Width of plot legend in inches. Default: 2.",
+        metavar="int"
+    ),
+    make_option(
+        "--plot-height",
+        action="store",
+        type="numeric",
+        default=7.25,
+        help="Plot height in inches. Default: 7.25.",
+        metavar="float"
+    ),
+    make_option(
+        "--plot-height-title",
+        action="store",
+        type="numeric",
+        default=0.25,
+        help="Height of plot title in inches. Default: 0.25.",
+        metavar="float"
+    ),
+    make_option(
+        "--plot-symbol-expansion",
+        action="store",
+        type="numeric",
+        default=1.8,
+        help="Expansion factor for plot symbols. Default: 1.8.",
+        metavar="float"
+    ),
+    make_option(
+        c("-h", "--help"),
+        action="store_true",
+        default=FALSE,
+        help="Show this information and die."
+    ),
+    make_option(
+        c("-u", "--usage"),
+        action="store_true",
+        default=FALSE,
+        dest="help",
+        help="Show this information and die."
+    ),
+    make_option(
+        c("-v", "--verbose"),
+        action="store_true",
+        default=FALSE,
+        help="Print log messages to STDOUT."
+    )
 )
 
 # Parse command-line arguments
@@ -327,6 +327,9 @@ get.wildcard.matches <- function(glob, paths) {
     # Split glob by asterisks and stretches of question marks
     frags <- unlist(strsplit(glob, "\\*|\\?+"))
 
+    # Remove empty strings from fragments
+    frags <- frags[frags != ""]
+
     # Return NULL if more than 2 fragments result
     if ( length(frags) > 2 ) return(NULL)
 
@@ -358,7 +361,7 @@ plot.pca <- function(
     pca.mean = NULL,
     anno.mean = NULL,
     title = NULL,
-    out.dir = ".",
+    out.dir = getwd(),
     prefix = "pca",
     suffix = "svg",
     sep = ".",
@@ -395,24 +398,34 @@ plot.pca <- function(
 
     # Set colors
     if ( colors ) {
-        col.legend <- if ( is.null(anno$col) ) rainbow(length(levels(as.factor(anno$col.cat)))) else levels(as.factor(anno$col))
-        col.text <- gsub("_", " ", levels(as.factor(anno$col.cat)))
-        col.label <- col.legend[as.integer(as.factor(anno$col.cat))]
-        if ( incl.mean ) col.label.mean <- col.legend[as.integer(as.factor(anno.mean$col.cat))]
+        if ( is.null(anno[["col"]]) ) {
+            col.legend <- rainbow(length(levels(as.factor(anno[["col.cat"]]))))
+            col.text <- gsub("_", " ", levels(as.factor(anno[["col.cat"]])))
+        } else {
+            col.legend <- anno[["col"]][match(levels(as.factor(anno[["col.cat"]])), anno[["col.cat"]])]
+            col.text <- levels(as.factor(anno[["col.cat"]]))
+        }
+        col.label <- col.legend[as.integer(as.factor(anno[["col.cat"]]))]
+        if ( incl.mean ) col.label.mean <- col.legend[as.integer(as.factor(anno.mean[["col.cat"]]))]
     } else {
-        col.label <- rep(def.col, ncol(pca$x))
-        if ( incl.mean ) col.label.mean <- rep(def.col, ncol(pca.mean$x))
+        col.label <- rep(def.col, ncol(dge))
+        if ( incl.mean ) col.label.mean <- rep(def.col, ncol(dge.mean))
     }
 
     # Set plotting characters
     if ( symbols ) {
-        pch.legend <- if ( is.null(anno$sym) ) 1:length(levels(as.factor(anno$sym.cat))) else as.integer(levels(as.factor(anno$sym)))
-        pch.text <- gsub("_", " ", levels(as.factor(anno$sym.cat)))
-        pch.label <- pch.legend[as.integer(as.factor(anno$sym.cat))]
-        if ( incl.mean ) pch.label.mean <- pch.legend[as.integer(as.factor(anno.mean$sym.cat))]
+        if ( is.null(anno[["sym"]]) ) {
+            pch.legend <- 1:length(levels(as.factor(anno[["sym.cat"]])))
+            pch.text <- gsub("_", " ", levels(as.factor(anno[["sym.cat"]])))
+        } else {
+            pch.legend <- anno[["sym"]][match(levels(as.factor(anno[["sym.cat"]])), anno[["sym.cat"]])]
+            pch.text <- levels(as.factor(anno[["sym.cat"]]))
+        }
+        pch.label <- pch.legend[as.integer(as.factor(anno[["sym.cat"]]))]
+        if ( incl.mean ) pch.label.mean <- pch.legend[as.integer(as.factor(anno.mean[["sym.cat"]]))]
     } else {
-        pch.label <- rep(def.sym, ncol(pca$x))
-        if ( incl.mean ) pch.label.mean <- rep(def.sym, ncol(pca.mean$x))
+        pch.label <- rep(def.sym, ncol(dge))
+        if ( incl.mean ) pch.label.mean <- rep(def.sym, ncol(dge.mean))
     }
 
     # Generate component pairs
@@ -512,8 +525,7 @@ plot.pca <- function(
 if ( verb ) cat("Creating output directory...\n", sep="")
 
 # Create output directories
-dir.create(out.dir, showWarnings=FALSE)
-if ( incl.subset ) dir.create(file.path(out.dir, "subsets"), showWarnings=FALSE)
+dir.create(out.dir, recursive=TRUE, showWarnings=FALSE)
 
 # Write log
 if ( verb ) cat("Importing data...\n", sep="")
@@ -548,7 +560,7 @@ if ( incl.subset ) {
         stop("[ERROR] Illegal value provided for '--subset-glob'! Aborted.")
     }
     subset.dat <- lapply(subset.paths, scan, "", quiet=TRUE)
-    names(subset.dat) <- sapply(strsplit(basename(subset.paths), ".", fixed=TRUE), "[[", 2)
+    names(subset.dat) <- subset.used
 
     # Import subset annotation
     if ( ! is.null(subset.anno) ) subset.anno <- read.delim(subset.anno, header=FALSE, stringsAsFactors=FALSE, colClasses=rep("character", 2), col.names=c("id", "description"))
@@ -559,16 +571,16 @@ if ( incl.subset ) {
 if ( verb ) cat("Processing data...\n", sep="")
 
 # Filter data without annotations
-if ( ! is.null(anno) ) expr <- expr[, colnames(expr) %in% anno$id]
+if ( ! is.null(anno) ) expr <- expr[, colnames(expr) %in% anno[["id"]]]
 
 # Filter data for samples to be excluded
 if ( ! is.null(excl) ) expr <- expr[, ! colnames(expr) %in% excl]
 
 # Filter annotations without data
-if ( ! is.null(anno) ) anno <- anno[anno$id %in% colnames(expr), ]
+if ( ! is.null(anno) ) anno <- anno[anno[["id"]] %in% colnames(expr), ]
 
 # Enforce correct ordering of annotations
-if ( ! is.null(anno) ) anno <- anno[match(anno$id, colnames(expr)),]
+if ( ! is.null(anno) ) anno <- anno[match(anno[["id"]], colnames(expr)),]
 
 # Filter features that are expressed (expression value > x) in at least n samples
 if ( cutoff.expr > 0 | cutoff.samples > 0 ) {
@@ -581,13 +593,13 @@ if ( ! log.space ) expr <- log2(expr + pseudo.count)
 
 # Calculate replicate means
 if ( incl.mean ) {
-    mean.groups <- aggregate(anno$id ~ anno$group, anno, c)
+    mean.groups <- aggregate(anno[["id"]] ~ anno[["group"]], anno, c)
     mean.expr <- sapply(mean.groups[, 2], function(group.members) {
         rowMeans(expr[, group.members, drop=FALSE])
     })
     colnames(mean.expr) <- mean.groups[, 1]
     mean.anno <- unique(anno[ , na.omit(match(c("group", "col.cat", "sym.cat"), colnames(anno))), drop=FALSE])
-    mean.anno <- mean.anno[match(colnames(mean.expr), mean.anno$group), ]
+    mean.anno <- mean.anno[match(colnames(mean.expr), mean.anno[["group"]]), ]
 } else {
     pca.mean.expr <- NULL
     mean.anno <- NULL
@@ -676,13 +688,13 @@ if ( incl.subset ) {
 
     # Create output directory
     out.dir.subset <- file.path(out.dir, "subsets")
-    dir.create(out.dir.subset, recursive=showWarnings=FALSE)
+    dir.create(out.dir.subset, showWarnings=FALSE)
 
     # Iterate over subsets
     for ( subset in subset.used ) {
 
         # Get subset description
-        subset.desc <- if ( ! is.null(subset.anno) ) subset.anno$description[match(subset, subset.anno$id)] else subset
+        subset.desc <- if ( ! is.null(subset.anno) ) subset.anno[["description"]][match(subset, subset.anno[["id"]])] else subset
         subset.desc.safe <- gsub("_+", "_", gsub(":", "_", gsub("_*\\((.*)\\)", ".\\1", gsub(",", "", gsub(" ", "_", subset.desc)))))
 
         # Write log

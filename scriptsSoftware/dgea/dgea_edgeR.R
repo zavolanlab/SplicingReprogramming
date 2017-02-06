@@ -10,7 +10,7 @@
 
 # Import required packages
 if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FALSE ) { stop("[ERROR] Package 'optparse' required! Aborted.") }
-if ( suppressWarnings(suppressPackageStartupMessages(require("edgeR"))) == FALSE ) { stop("[ERROR] Package 'optparse' required! Aborted.") }
+if ( suppressWarnings(suppressPackageStartupMessages(require("edgeR"))) == FALSE ) { stop("[ERROR] Package 'edgeR' required! Aborted.") }
 
 
 #######################
@@ -299,48 +299,44 @@ opt_parser <- OptionParser(usage=paste("Usage:", script, "[OPTIONS] --count-tabl
 opt <- parse_args(opt_parser)
 
 # Re-assign variables
-cnts <- opt$`count-table`
-out.dir.root <- opt$`output-directory`
-run.id <- opt$`run-id`
-excl <- opt$`exclude`
-id.sep <- opt$`id-field-separator`
-id.flds <- opt$`group-id-fields`
-anno <- opt$`annotation`
-anno.header <- opt$`has-header-annotation`
-id.col <- opt$`sample-id-column`
-grp.col <- opt$`group-column`
-comp <- opt$`comparisons`
-comp.header <- opt$`has-header-comparisons`
-ref.col <- opt$`reference-column`
-query.col <- opt$`query-column`
-name.col <- opt$`comparison-name-column`
-cutoff.min_sample_no.total <- opt$`minimum-sample-number-per-comparison`
-cutoff.min_sample_no.endpoint <- opt$`minimum-sample-number-per-endpoint`
-common.disp <- opt$`common-dispersion`
-cutoff.cpm.global <- opt$`minimum-cpm-global`
-cutoff.sample_no.global <- opt$`samples-with-minimum-cpm-global`
-cutoff.cpm.comp <- opt$`minimum-cpm-per-comparison`
-cutoff.sample_no.comp <- opt$`samples-with-minimum-cpm-per-comparison`
-method.p.adj <- opt$`p-adjust-method`
-cutoff.p.adj <- opt$`adjusted-p-value-threshold`
-cutoff.abs.log.fc <- opt$`log-fold-change-threshold`
-mds.gene.no <- opt$`mds-plot-gene-number`
-mds.sym.cex <- opt$`mds-plot-symbol-expansion`
-plot.width <- opt$`plot-width`
-plot.width.legend <- opt$`plot-width-legend`
-plot.height <- opt$`plot-height`
-plot.height.title <- opt$`plot-height-title`
-verb <- opt$`verbose`
+cnts <- opt[["count-table"]]
+out.dir.root <- opt[["output-directory"]]
+run.id <- opt[["run-id"]]
+excl <- opt[["exclude"]]
+id.sep <- opt[["id-field-separator"]]
+id.flds <- opt[["group-id-fields"]]
+anno <- opt[["annotation"]]
+anno.header <- opt[["has-header-annotation"]]
+id.col <- opt[["sample-id-column"]]
+grp.col <- opt[["group-column"]]
+comp <- opt[["comparisons"]]
+comp.header <- opt[["has-header-comparisons"]]
+ref.col <- opt[["reference-column"]]
+query.col <- opt[["query-column"]]
+name.col <- opt[["comparison-name-column"]]
+cutoff.min_sample_no.total <- opt[["minimum-sample-number-per-comparison"]]
+cutoff.min_sample_no.endpoint <- opt[["minimum-sample-number-per-endpoint"]]
+common.disp <- opt[["common-dispersion"]]
+cutoff.cpm.global <- opt[["minimum-cpm-global"]]
+cutoff.sample_no.global <- opt[["samples-with-minimum-cpm-global"]]
+cutoff.cpm.comp <- opt[["minimum-cpm-per-comparison"]]
+cutoff.sample_no.comp <- opt[["samples-with-minimum-cpm-per-comparison"]]
+method.p.adj <- opt[["p-adjust-method"]]
+cutoff.p.adj <- opt[["adjusted-p-value-threshold"]]
+cutoff.abs.log.fc <- opt[["log-fold-change-threshold"]]
+mds.gene.no <- opt[["mds-plot-gene-number"]]
+mds.sym.cex <- opt[["mds-plot-symbol-expansion"]]
+plot.width <- opt[["plot-width"]]
+plot.width.legend <- opt[["plot-width-legend"]]
+plot.height <- opt[["plot-height"]]
+plot.height.title <- opt[["plot-height-title"]]
+verb <- opt[["verbose"]]
 
 # Validate required arguments
 if ( is.null(cnts) ) {
         print_help(opt_parser)
         stop("[ERROR] Required argument missing! Aborted.")
 }
-
-# Set dependent options
-grps.from.colnms <- if ( is.null(anno) ) TRUE else FALSE
-comp.from.anno   <- if ( is.null(comp) ) TRUE else FALSE
 
 
 ###################
@@ -552,7 +548,8 @@ if ( ! is.null(anno) ) {
     }
     cnts <- cnts[, colnames(cnts) %in% anno[, id.col]]
     anno <- anno[anno[, id.col] %in% colnames(cnts), ]
-    grps <- anno[match(anno[, id.col], colnames(cnts)), grp.col]
+    anno <- anno[match(colnames(cnts), anno[, id.col]), ]
+    grps <- anno[, grp.col]
 } else {
     grps <- get.groups.from.sample.ids(colnames(cnts), split=id.sep, fields=id.flds)
 }

@@ -113,7 +113,7 @@ merge_multi <- function(ls, by=0, all=FALSE) {
     # Initialize merged dataframe with first dataframe
     df.merged <- ls[[1]]
     for ( idx in seq_len(length(ls))[-1] ) {
-        tmp <- merge(df.merged, ls[[idx]], by=by, all=all)
+        tmp <- merge(df.merged, ls[[idx]], by=by, all.x=all)
         rownames(tmp) <- tmp[, 1]
         df.merged <- tmp[, -1]
     }
@@ -157,6 +157,8 @@ if ( opt$`verbose` ) cat("Starting ", script, "...\n", sep="'")
 
     #---> Write tables <---#
     write.table(merged, opt$`output-table`, col.names=!opt$`no-header`, row.names=TRUE, sep="\t", quote=FALSE)
+
+save.image("/scicore/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/test.Rimage")
 
 #---> END MESSAGE <---#
 if ( opt$`verbose` ) cat("Done.\n")

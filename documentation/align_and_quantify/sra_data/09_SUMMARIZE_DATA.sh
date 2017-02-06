@@ -64,7 +64,6 @@ in_suffix=".processing.polyA_removal.stats"
 out_dir="${outDir}/processing/polyA_removal/stats"; mkdir -p "$out_dir"
 out_file="${out_dir}/processing.polyA_removal.stats"
 "${scriptDir}/align_and_quantify/parse_cutadapt_logs.py" "$in_dir" "$in_prefix" "$in_suffix" > "$out_file" 2>> "$logFile"
-# TODO: improve 'parse_cutadapt_logs.py' script
 
 # Summarize alignment statistics
 in_dir="${dataDir}/alignments/stats"
@@ -192,17 +191,12 @@ glob="*.alternative_splicing.events.SE.psi"
 id_suffix=".alternative_splicing.events.SE.psi"
 "${scriptDir}/generic/merge_common_field_from_multiple_tables_by_id.R" --input-directory "$in_dir" --output-directory "$out_dir" --out-file-suffix "$out_suffix" --glob "$glob" --id-suffix "$id_suffix" --has-header --annotation-table "$sampleTable" --anno-id-columns "1,2" --category-columns "3" --anno-has-header --include-ungrouped --verbose &>> "$logFile"
 
-# TODO: Write 'merge_STAR_splice_junctions.py' and run
-# TODO: Write scripts for plotting stats & results...
-
 
 #############
 ###  END  ###
 #############
 
 echo "Processed data directory: $dataDir" >> "$logFile"
-echo "Poly(A) tail removal statistics written to: $polyA_removal_stats" >> "$logFile"
-echo "Alignment statistics written to: $alignment_stats" >> "$logFile"
-#TODO: Write list of output files
+echo "Output files written to: $out_dir" >> "$logFile"
 echo "Done. No errors." >> "$logFile"
 >&2 echo "Done. No errors."
