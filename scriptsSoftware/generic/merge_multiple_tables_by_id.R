@@ -158,7 +158,5 @@ if ( opt$`verbose` ) cat("Starting ", script, "...\n", sep="'")
     #---> Write tables <---#
     write.table(merged, opt$`output-table`, col.names=!opt$`no-header`, row.names=TRUE, sep="\t", quote=FALSE)
 
-save.image("/scicore/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/test.Rimage")
-
 #---> END MESSAGE <---#
 if ( opt$`verbose` ) cat("Done.\n")

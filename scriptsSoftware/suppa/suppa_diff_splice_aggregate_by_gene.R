@@ -1,0 +1,133 @@
+#!/usr/bin/env Rscript
+# (c) 2017, Alexander Kanitz, Biozentrum, Universiry of Basel
+# email: alexander.kanitz@alumni.ethz.ch
+
+#######################
+###  PARSE OPTIONS  ###
+#######################
+
+#---> LOAD OPTION PARSER <---#
+if ( suppressWarnings(suppressPackageStartupMessages(require("optparse"))) == FALSE ) { stop("[ERROR] Package 'optparse' required! Aborted.") }
+
+#---> GET SCRIPT NAME <---#
+script <- sub("--file=", "", basename(commandArgs(trailingOnly=FALSE)[4]))
+
+#---> DESCRIPTION <---#
+description <- "Aggregates merged delta PSI or P value tables from SUPPA diffSplice analyses by gene identifier. In case of multiple events per gene, the one with the highest absolute (dPSI) or lowest (P) value is chosen. Required input file format: event_id <TAB> value_sample_1 <TAB> ... <TAB> value_sample_n.\n"
+author <- "Author: Alexander Kanitz, Biozentrum, University of Basel"
+version <- "Version: 1.0.0 (17-FEB-2016)"
+requirements <- "Requires: optparse"
+msg <- paste(description, author, version, requirements, sep="\n")
+
+#---> COMMAND-LINE ARGUMENTS <---#
+## List of allowed/recognized arguments
+option_list <- list(
+                make_option(
+                    c("-i", "--input-file"),
+                    action="store",
+                    type="character",
+                    default=NULL,
+                    help="Input filename. Required.",
+                    metavar="path"
+                ),
+                make_option(
+                    c("-o", "--output-file"),
+                    action="store",
+                    type="character",
+                    default=NULL,
+                    help="Output filename. Required.",
+                    metavar="path"
+                ),
+                make_option(
+                    c("-p", "--p-values"),
+                    action="store_true",
+                    default=FALSE,
+                    help="Use option if '--input-file' lists P rather than dPSI values."
+                ),
+                make_option(
+                    c("-h", "--help"),
+                    action="store_true",
+                    default=FALSE,
+                    help="Show this information and die."
+                ),
+                make_option(
+                    c("-u", "--usage"),
+                    action="store_true",
+                    default=FALSE,
+                    dest="help",
+                    help="Show this information and die."
+                ),
+                make_option(
+                    c("-v", "--verbose"),
+                    action="store_true",
+                    default=FALSE,
+                    help="Print log messages to STDOUT."
+                )
+)
+
+## Parse command-line arguments
+opt_parser <- OptionParser(usage=paste("Usage:", script, "[--p-values] --input-file <PATH> --output-file <PATH>\n", sep=" "), option_list = option_list, add_help_option=FALSE, description=msg)
+opt <- parse_args(opt_parser)
+
+#---> ARGUMENT VALIDATION <---#
+
+## Die if any required arguments are missing...
+if ( is.null(opt[["input-file"]]) || is.null(opt[["output-file"]]) ) {
+        print_help(opt_parser)
+        stop("[ERROR] Required argument missing! Aborted.")
+}
+
+
+###################
+###  FUNCTIONS  ###
+###################
+
+# Return original value of absolute maximum of a numeric vector
+abs.max <- function(x) {
+    max <- x[which.max(abs(x))]
+    if ( length(max) == 0 ) return(NA) else return(max)
+}
+
+
+##############
+###  MAIN  ###
+##############
+
+#---> START MESSAGE <---#
+if ( opt$`verbose` ) cat("Starting ", script, "...\n", sep="'")
+
+#---> IMPORT DATA TABLE <---#
+
+    #---> Read data tables <---#
+    if ( opt$`verbose` ) cat("Loading data table (may take long)...\n")
+    dat <- read.delim(opt[["input-file"]], stringsAsFactors=FALSE)
+
+#---> AGGREGATE DATA TABLE <---#
+
+    #---> Log message <---#
+    if ( opt$`verbose` ) cat("Aggregating data table...\n", sep="'")
+
+    #---> Get gene identifiers <---#
+    ids <- sapply(strsplit(rownames(dat), ";"), "[[", 1)
+
+    #---> Aggregate original data table by gene identifiers <---#
+    if ( opt[["p-values"]] ) {
+        dat.aggr <- aggregate(dat, by=list(ids), min)
+    } else {
+        dat.aggr <- aggregate(dat, by=list(ids), abs.max)
+    }
+
+    #---> Process aggregated table <---#
+    rownames(dat.aggr) <- dat.aggr[, 1]
+    dat.aggr <- dat.aggr[, -1]
+
+#---> WRITING OUTPUT <---#
+
+    #---> Log message <---#
+    if ( opt$`verbose` ) cat("Writing aggregated data table to file ", opt[["output-file"]], "...\n", sep="'")
+
+    #---> Write aggregated table <---#
+    write.table(dat.aggr, opt[["output-file"]], quote=FALSE, sep="\t")
+
+#---> END MESSAGE <---#
+if ( opt$`verbose` ) cat("Done.\n")
