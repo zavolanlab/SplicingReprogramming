@@ -229,33 +229,33 @@ option_list <- list(
         help="Specify if a subset including all rows of '--data-matrix' shall be included. Will be included always if '--subset-directory' is not specified. Default: '%default'."
     ),
     make_option(
-        "--threshold-rowmeans-above",
+        "--threshold-rowmedians-above",
         action="store",
         type="numeric",
         default=NULL,
-        help="For any given heatmap, plot only features whose mean value is equal to or above the specified threshold. If specified together with '--threshold-rowmeans-below', features passing either filter are considered. Default: '%default'.",
+        help="For any given heatmap, plot only features whose median value is equal to or above the specified threshold. If specified together with '--threshold-rowmedians-below', features passing either filter are considered. Default: '%default'.",
         metavar="float"
     ),
     make_option(
-        "--threshold-rowmeans-below",
+        "--threshold-rowmedians-below",
         action="store",
         type="numeric",
         default=NULL,
-        help="For any given heatmap, plot only features whose mean value is equal to or below the specified threshold. If specified together with '--threshold-rowmeans-above', features passing either filter are considered. Default: '%default'.",
+        help="For any given heatmap, plot only features whose median value is equal to or below the specified threshold. If specified together with '--threshold-rowmedians-above', features passing either filter are considered. Default: '%default'.",
         metavar="float"
     ),
     make_option(
-        "--threshold-absolute-rowmeans",
+        "--threshold-absolute-rowmedians",
         action="store_true",
         default=FALSE,
-        help="Use absolute values for filtering via '--threshold-rowmeans-above'. If TRUE, option '--threshold-rowmeans-below' is ignored. Default: '%default'."
+        help="Use absolute values for filtering via '--threshold-rowmedians-above'. If TRUE, option '--threshold-rowmedians-below' is ignored. Default: '%default'."
     ),
     make_option(
-        "--threshold-rowmeans-per-column-sidebar-category",
+        "--threshold-rowmedians-per-column-sidebar-category",
         action="store",
         type="character",
         default=NULL,
-        help="Apply row means threshold separately for each sidebar category listed in the column annotation table as specified by the '--column-annotation-sidebar-color-category-column' option. Allowed values are 'and' (rows included only if row means for each category meet the thresholds), 'or' (rows included if row means for any category meet the thresholds) and NULL (rows included if row means calculated across all columns in current data subset meet the thresholds; default). Default: '%default'.",
+        help="Apply row median threshold separately for each sidebar category listed in the column annotation table as specified by the '--column-annotation-sidebar-color-category-column' option. Allowed values are 'and' (rows included only if row means for each category meet the thresholds), 'or' (rows included if row means for any category meet the thresholds) and NULL (rows included if row means calculated across all columns in current data subset meet the thresholds; default). Default: '%default'.",
         metavar="float"
     ),
     make_option(
@@ -427,6 +427,24 @@ option_list <- list(
         metavar="int"
     ),
     make_option(
+        "--plot-values-symmetrical",
+        action="store_true",
+        default=FALSE,
+        help="Specify if plot values are symmetrical around zero. Default: '%default'."
+    ),
+    make_option(
+        "--write-plot-row-labels",
+        action="store_true",
+        default=FALSE,
+        help="Specify if row labels shall be written to a file for each plot. Default: '%default'."
+    ),
+    make_option(
+        "--write-plot-col-labels",
+        action="store_true",
+        default=FALSE,
+        help="Specify if column labels shall be written to a file for each plot. Default: '%default'."
+    ),
+    make_option(
         c("-h", "--help"),
         action="store_true",
         default=FALSE,
@@ -478,10 +496,10 @@ subs.name.col <- opt[["subset-annotation-name-column"]]
 subs.desc.col <- opt[["subset-annotation-descriptor-column"]]
 incl.all.cols <- opt[["include-all-columns-category"]]
 incl.all.rows <- opt[["include-all-rows-subset"]]
-cutoff.high <- opt[["threshold-rowmeans-above"]]
-cutoff.low <- opt[["threshold-rowmeans-below"]]
-cutoff.abs <- opt[["threshold-absolute-rowmeans"]]
-cutoff.per.cat <- opt[["threshold-rowmeans-per-column-sidebar-category"]]
+cutoff.high <- opt[["threshold-rowmedians-above"]]
+cutoff.low <- opt[["threshold-rowmedians-below"]]
+cutoff.abs <- opt[["threshold-absolute-rowmedians"]]
+cutoff.per.cat <- opt[["threshold-rowmedians-per-column-sidebar-category"]]
 plot.xlab <- opt[["plot-x-label"]]
 plot.ylab <- opt[["plot-y-label"]]
 plot.key.title <- opt[["plot-key-title"]]
@@ -503,6 +521,9 @@ plot.cexRow <- opt[["plot-row-label-expansion-factor"]]
 plot.cexCol <- opt[["plot-column-label-expansion-factor"]]
 plot.srtCol <- opt[["plot-column-label-angle"]]
 plot.res <- opt[["plot-resolution"]]
+plot.symbreaks <- opt[["plot-values-symmetrical"]]
+write.row.labels <- opt[["write-plot-row-labels"]]
+write.col.labels <- opt[["write-plot-col-labels"]]
 verb <- opt[["verbose"]]
 
 # Validate required arguments
@@ -558,13 +579,13 @@ get.wildcard.matches <- function(glob, paths) {
 
     # Remove empty strings from fragments
     frags <- frags[frags != ""]
-
+print(frags)
     # Return NULL if more than 2 fragments result
     if ( length(frags) > 2 ) return(NULL)
 
     # Iterate over paths...
     matched <- sapply(paths, function(path) {
-
+print(path)
         # Iterate over fragments...
         for (frag in frags) {
 
@@ -607,6 +628,39 @@ get.safe.filenames <- function(x) {
 
     # Return processed character vector
     return(x)
+
+}
+
+# Get medians per row of a matrix
+rowMedians <- function(mt) {
+
+    apply(mt, 1, median)
+
+}
+
+# Return logical vector for rows to keep
+filter.by.row.medians <- function(x, high=NULL, low=NULL, abs=FALSE) {
+
+    # Filter by absolute value
+    if ( ! is.null(high) && abs ) {
+        return(rowMedians(abs(x)) >= cutoff.high)
+
+    # Filter by high and low thresholds
+    } else if ( ! is.null(cutoff.high) && ! is.null(cutoff.low) ) {
+        return(rowMedians(x) >= cutoff.high | rowMedians(x) <= cutoff.low)
+
+    # Filter by high threshold only
+    } else if ( ! is.null(cutoff.high) ) {
+        return(rowMedians(x) >= cutoff.high)
+
+    # Filter by low threshold only
+    } else if ( ! is.null(cutoff.low) ) {
+        return(rowMedians(x) <= cutoff.low)
+
+    # Do not filter anything
+    } else {
+        return(rep(TRUE, nrow(x)))
+    }
 
 }
 
@@ -671,6 +725,7 @@ plot.heat <- function(
     cexCol        = 0.6,     # character expansion factor for column labels
     srtCol        = 90,      # angle of column labels in degrees (0 = horizontal, 90 = vertical)
     res           = 300,     # resolution for plotting in 'png' format
+    symbreaks     = FALSE,   # values symmetrical
     cex.main      = 0.8,     # character expansion for plot title
     ...
 ) {
@@ -768,7 +823,7 @@ plot.heat <- function(
 
     # Open graphics device
     if ( format == "svg") svg(file, width=wid, height=hei)
-    if ( format == "pdf") svg(file, width=wid, height=hei)
+    if ( format == "pdf") pdf(file, width=wid, height=hei)
     if ( format == "png") png(file, width=wid, height=hei, units="in", res=res)
 
     # Set margins
@@ -778,6 +833,13 @@ plot.heat <- function(
     if ( ! is.null (ColSideColors) && ! is.null (RowSideColors) ) {
         plot <- capture.output(heatmap.2(
             x,
+# TODO
+#Rowv = FALSE,
+#Colv = FALSE,
+#dendrogram = 'none',
+###
+            distfun       = function(x) dist(x, method = 'euclidean'),
+            hclustfun     = function(x) hclust(x, method = 'complete'),
             col           = col,
             trace         = trace,
             ColSideColors = ColSideColors,
@@ -799,11 +861,18 @@ plot.heat <- function(
             cexRow        = cexRow,
             cexCol        = cexCol,
             srtCol        = srtCol,
+            symbreaks     = symbreaks,
             ...
         ), file='/dev/null')
     } else if ( ! is.null(ColSideColors) ) {
         plot <- capture.output(heatmap.2(
             x,
+# TODO
+#Rowv = FALSE,
+#Colv = FALSE,
+#dendrogram = 'none',
+            distfun       = function(x) dist(x, method = 'euclidean'),
+            hclustfun     = function(x) hclust(x, method = 'complete'),
             col           = col,
             trace         = trace,
             ColSideColors = ColSideColors,
@@ -824,11 +893,18 @@ plot.heat <- function(
             cexRow        = cexRow,
             cexCol        = cexCol,
             srtCol        = srtCol,
+            symbreaks     = symbreaks,
             ...
         ), file='/dev/null')
     } else if ( ! is.null(RowSideColors) ) {
         plot <- capture.output(heatmap.2(
             x,
+# TODO
+#Rowv = FALSE,
+#Colv = FALSE,
+#dendrogram = 'none',
+            distfun       = function(x) dist(x, method = 'euclidean'),
+            hclustfun     = function(x) hclust(x, method = 'complete'),
             col           = col,
             trace         = trace,
             RowSideColors = RowSideColors,
@@ -849,11 +925,18 @@ plot.heat <- function(
             cexRow        = cexRow,
             cexCol        = cexCol,
             srtCol        = srtCol,
+            symbreaks     = symbreaks,
             ...
         ), file='/dev/null')
     } else {
         plot <- capture.output(heatmap.2(
             x,
+# TODO
+#Rowv = FALSE,
+#Colv = FALSE,
+#dendrogram = 'none',
+            distfun       = function(x) dist(x, method = 'euclidean'),
+            hclustfun     = function(x) hclust(x, method = 'complete'),
             col           = col,
             trace         = trace,
             margins       = margins,
@@ -873,6 +956,7 @@ plot.heat <- function(
             cexRow        = cexRow,
             cexCol        = cexCol,
             srtCol        = srtCol,
+            symbreaks     = symbreaks,
             ...
         ), file='/dev/null')
     }
@@ -1110,19 +1194,24 @@ results <- sapply(names(cats.subs.ls), function(cond.name) {
     name.safe <- get.safe.filenames(cond.name)
 
     # Build output filename for heatmap
-    out.file.prefix <- file.path(out.dir, paste(run.id, name.safe, sep="."))
+    if ( name.safe == "uncategorized.all_fields.all_features" ) {
+        out.file.prefix <- file.path(out.dir, run.id)
+    } else {
+        out.file.prefix <- file.path(out.dir, paste(run.id, name.safe, sep="."))
+    }
 
     # Subset data, row and column annotations
     dat.cond <- dat[cats.subs.ls[[cond.name]]$rows, cats.subs.ls[[cond.name]]$cols, drop=FALSE]
+
     if ( ! is.null(row.anno) ) row.anno.cond <- row.anno[match(rownames(dat.cond), row.anno[, row.anno.id.col]), , drop=FALSE]
     if ( ! is.null(col.anno) ) col.anno.cond <- col.anno[match(colnames(dat.cond), col.anno[, col.anno.id.col]), , drop=FALSE]
 
     # Filter data
     if ( is.null(cutoff.per.cat) ) {
-        dat.cond <- dat.cond[filter.by.row.means(dat.cond, high=cutoff.high, low=cutoff.low, abs=cutoff.abs), , drop=FALSE]
+        dat.cond <- dat.cond[filter.by.row.medians(dat.cond, high=cutoff.high, low=cutoff.low, abs=cutoff.abs), , drop=FALSE]
     } else {
         filt.mt <- as.matrix(sapply(unique(col.anno.cond[, col.anno.side.color.col]), function(cat) {
-            filter.by.row.means(dat.cond[, col.anno.cond[, col.anno.side.color.col] == cat, drop=FALSE], high=cutoff.high, low=cutoff.low, abs=cutoff.abs)
+            filter.by.row.medians(dat.cond[, col.anno.cond[, col.anno.side.color.col] == cat, drop=FALSE], high=cutoff.high, low=cutoff.low, abs=cutoff.abs)
         }))
         if ( cutoff.per.cat == "and" ) { 
             dat.cond <- dat.cond[rowSums(filt.mt) == ncol(filt.mt), , drop=FALSE]
@@ -1130,7 +1219,7 @@ results <- sapply(names(cats.subs.ls), function(cond.name) {
             dat.cond <- dat.cond[rowSums(filt.mt) >= 1, , drop=FALSE]
         } else {
             print_help(opt_parser)
-            stop("[ERROR] Illegal value for '--threshold-rowmeans-per-column-sidebar-category'! Aborted.")
+            stop("[ERROR] Illegal value for '--threshold-rowmedians-per-column-sidebar-category'! Aborted.")
         }
     }
 
@@ -1139,8 +1228,10 @@ results <- sapply(names(cats.subs.ls), function(cond.name) {
     if ( ! is.null(col.anno) ) col.anno.cond <- col.anno[match(colnames(dat.cond), col.anno[, col.anno.id.col]), , drop=FALSE]
 
     # Get row and column labels
-    row.labels <- if ( ! is.null(row.anno) && ! is.null(row.anno.name.col) ) row.anno.cond[, row.anno.name.col] else NULL
-    col.labels <- if ( ! is.null(col.anno) && ! is.null(col.anno.name.col) ) col.anno.cond[, col.anno.name.col] else NULL
+    row.labels <- if ( ! is.null(row.anno) && ! is.null(row.anno.name.col) ) row.anno.cond[, row.anno.name.col] else rownames(dat.cond)
+    col.labels <- if ( ! is.null(col.anno) && ! is.null(col.anno.name.col) ) col.anno.cond[, col.anno.name.col] else colnames(dat.cond)
+    if ( write.row.labels ) writeLines(row.labels, paste(out.file.prefix, "row_labels", sep="." ))
+    if ( write.col.labels ) writeLines(col.labels, paste(out.file.prefix, "col_labels", sep="." ))
 
     # Get row and column sidebar colors
     if ( ! is.null(row.anno) && ! is.null(row.anno.side.color.col) ) {
@@ -1191,7 +1282,8 @@ results <- sapply(names(cats.subs.ls), function(cond.name) {
             cexRow        = plot.cexRow,
             cexCol        = plot.cexCol,
             srtCol        = plot.srtCol,
-            res           = plot.res
+            res           = plot.res,
+            symbreaks     = plot.symbreaks
         )
 
     } else {

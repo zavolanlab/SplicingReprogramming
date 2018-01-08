@@ -42,7 +42,7 @@ outDirMmuFold10="${outDirRoot}/mmu/by_study_and_condition/mean_fold_change_10x"
 outDirPtrFold10="${outDirRoot}/ptr/by_study_and_condition/mean_fold_change_10x"
 outDirMergedFold10="${outDirRoot}/merged/by_study_and_condition/mean_fold_change_10x"
 tmpDir="${root}/.tmp/analyzedData/dgea/heatmaps/sra_data"
-logDir="${root}/logFiles/analyzedData/analyze_distributions/sra_data"
+logDir="${root}/logFiles/analyzedData/dgea/heatmaps/sra_data"
 
 # Set other script parameters
 colPrefixHsa="hsa.by_study_and_condition."

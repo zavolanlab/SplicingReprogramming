@@ -11,7 +11,7 @@
 ###  DESCRIPTION  ###
 #####################
 
-# Calculates md5 hash sums for all persistent output files
+# Summarizes transcript abundances, alternative splicing and statistics.
 
 
 ####################

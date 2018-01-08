@@ -22,7 +22,7 @@ script <- sub("--file=", "", basename(commandArgs(trailingOnly=FALSE)[4]))
 # Build description message
 description <- "Run a principal component analysis on a matrix of expression/abundance values.\n"
 author <- "Author: Alexander Kanitz, Biozentrum, University of Basel"
-version <- "Version: 1.0.0 (10-JAN-2017)"
+version <- "Version: 1.0.1 (08-AUG-2017)"
 requirements <- "Requires: optparse"
 msg <- paste(description, author, version, requirements, sep="\n")
 
@@ -157,7 +157,15 @@ option_list <- list(
         action="store",
         type="numeric",
         default=1,
-        help="Consider only features/genes with a minimum expression value across at least '--cutoff-sample-no'. Set to 0 to disable filtering. Default: 1.",
+        help="Consider only features/genes with at least '--cutoff-sample-no' samples above the specified threshold. Set to 0 to disable filtering. Default: 1.",
+        metavar="float"
+    ),
+    make_option(
+        "--cutoff-negative-expression",
+        action="store",
+        type="numeric",
+        default=NULL,
+        help="Consider only features/genes with at most '--cutoff-sample-no' samples below the specified expression threshold. Disabled by default.",
         metavar="float"
     ),
     make_option(
@@ -237,6 +245,46 @@ option_list <- list(
         metavar="float"
     ),
     make_option(
+        "--plot-tick-label-expansion",
+        action="store",
+        type="numeric",
+        default=1.6,
+        help="Expansion factor for plot tick labels. Default: %default.",
+        metavar="float"
+    ),
+    make_option(
+        "--plot-axis-label-expansion",
+        action="store",
+        type="numeric",
+        default=1.8,
+        help="Expansion factor for plot axis labels. Default: %default.",
+        metavar="float"
+    ),
+    make_option(
+        "--plot-legend-label-expansion",
+        action="store",
+        type="numeric",
+        default=1.6,
+        help="Expansion factor for legend labels. Default: %default.",
+        metavar="float"
+    ),
+    make_option(
+        "--plot-legend-title-colors",
+        action="store",
+        type="character",
+        default=NULL,
+        help="Title for legend part explaining difference in colors (if applicable). Default: %default.",
+        metavar="string"
+    ),
+    make_option(
+        "--plot-legend-title-symbols",
+        action="store",
+        type="character",
+        default=NULL,
+        help="Title for legend part explaining difference in symbols (if applicable). Default: %default.",
+        metavar="string"
+    ),
+    make_option(
         c("-h", "--help"),
         action="store_true",
         default=FALSE,
@@ -281,6 +329,7 @@ subset.glob <- opt$`subset-glob`
 log.space <- opt$`log-space`
 pseudo.count <- opt$`pseudo-count`
 cutoff.expr <- opt$`cutoff-expression`
+cutoff.neg.expr <- opt$`cutoff-negative-expression`
 cutoff.samples <- opt$`cutoff-sample-no`
 write.tables <- opt$`write-tables`
 plot.components <- opt$`plot-components`
@@ -289,6 +338,11 @@ plot.width.legend <- opt$`plot-width-legend`
 plot.height <- opt$`plot-height`
 plot.height.title <- opt$`plot-height-title`
 plot.sym.cex <- opt$`plot-symbol-expansion`
+plot.tick.label.cex <- opt$`plot-tick-label-expansion`
+plot.axis.label.cex <- opt$`plot-axis-label-expansion`
+plot.legend.cex <- opt$`plot-legend-label-expansion`
+plot.legend.title.col <- opt$`plot-legend-title-colors`
+plot.legend.title.sym <- opt$`plot-legend-title-symbols`
 verb <- opt$`verbose`
 
 # Validate required arguments
@@ -374,7 +428,12 @@ plot.pca <- function(
     width.legend = 4,
     height = 8,
     height.title = 1,
-    cex.sym = 2
+    cex.sym = 2,
+    cex.axis = 1.6,
+    cex.lab = 1.8,
+    cex.legend = 1.6,
+    legend.title.col = "Colors",
+    legend.title.sym = "Symbols"
 ) {
 
     # Set legend positioning
@@ -470,8 +529,11 @@ plot.pca <- function(
         # Open graphics device
         svg(out.file, width=width, height=height)
 
-        # Get default margins
-        mar <- mar.bak <- par("mar")
+        # Set equal margins
+        mar.bak <- par("mar")
+        mar.plot <- c(5.1, 5.1, 5.1, 5.1)
+        mar.null <- c(0, 0, 0, 0)
+        mar.leg <- c(5.1, 0.1, 5.1, 0.1)
 
         # Set layout grid
         if ( incl.mean ) {
@@ -483,30 +545,26 @@ plot.pca <- function(
         }
 
         # Plot title
-        par(mar=c(0, 0, 0, 0), oma=c(0, 0, 0, 0))
+        par(mar=mar.null, oma=mar.null)
         plot.new()
         if ( ! is.null(title) ) text(0.5, 0.5, title, cex=1.5, font=2)
 
         # Plot individual samples
-        mar[4] <- 0.1
         main <- paste("Individual samples", sep="")
-        par(mar=mar)
-        plot(x, y, main=main, xlab=xlab, ylab=ylab, pch=pch.label, col=col.label, cex=cex.sym)
+        par(mar=mar.plot)
+        plot(x, y, main=main, xlab=xlab, ylab=ylab, pch=pch.label, col=col.label, cex=cex.sym, cex.axis=cex.axis, cex.lab=cex.lab)
 
         # Plot legends
-        mar[2] <- 0.1
-        par(mar=mar)
+        par(mar=mar.leg)
         plot(1, type="n", axes=FALSE, xlab="", ylab="")
-        if ( colors ) legend(legend.orient.col, legend=col.text, col=col.legend, lwd=3, bty="n")
-        if ( symbols ) legend(legend.orient.sym, legend=pch.text, pch=pch.legend, col=def.col, bty="n")
+        if ( colors ) legend(legend.orient.col, legend=col.text, title=legend.title.col, col=col.legend, lwd=3, bty="n", cex=cex.legend)
+        if ( symbols ) legend(legend.orient.sym, legend=pch.text, title=legend.title.sym, pch=pch.legend, col=def.col, bty="n", cex=cex.legend)
 
         # Plot means
         if ( incl.mean ) {
-            mar[2] <- mar.bak[2]
-            mar[4] <- mar.bak[4]
             main.mean <- paste("Sample means", sep="")
-            par(mar=mar)
-            plot(x.mean, y.mean, main=main.mean, xlab=xlab.mean, ylab=ylab.mean, pch=pch.label.mean, col=col.label.mean, cex=cex.sym)
+            par(mar=mar.plot)
+            plot(x.mean, y.mean, main=main.mean, xlab=xlab.mean, ylab=ylab.mean, pch=pch.label.mean, col=col.label.mean, cex=cex.sym, cex.axis=cex.axis, cex.lab=cex.lab)
         }
 
         # Close graphics device
@@ -582,10 +640,13 @@ if ( ! is.null(anno) ) anno <- anno[anno[["id"]] %in% colnames(expr), ]
 # Enforce correct ordering of annotations
 if ( ! is.null(anno) ) anno <- anno[match(anno[["id"]], colnames(expr)),]
 
-# Filter features that are expressed (expression value > x) in at least n samples
-if ( cutoff.expr > 0 | cutoff.samples > 0 ) {
-    if ( cutoff.samples <= 1 ) cutoff.samples <- floor(ncol(expr) * cutoff.samples)
+# Filter features by minimum/maximum expression
+if ( cutoff.samples > 0 & cutoff.samples <= 1 ) cutoff.samples <- floor(ncol(expr) * cutoff.samples)
+if ( cutoff.expr > 0 & cutoff.samples > 0 ) {
     expr <- expr[rowSums(expr > cutoff.expr) >= cutoff.samples, , drop=FALSE]
+}
+if ( ! is.null(cutoff.neg.expr) & cutoff.samples > 0 ) {
+    expr <- expr[rowSums(expr < cutoff.neg.expr) > cutoff.samples, , drop=FALSE]
 }
 
 # Transform expression data to log space
@@ -656,21 +717,26 @@ if ( min(ncol(expr.shift), nrow(expr.shift)) >= plot.components ) {
 
     # Generate multidimensional scaling plots: all genes
     plot.pca(
-        pca          = pca.expr,
-        anno         = anno,
-        pca.mean     = pca.mean.expr,
-        anno.mean    = mean.anno,
-        title        = NULL,
-        out.dir      = out.dir,
-        prefix       = paste(run.id, sep="."),
-        components   = plot.components,
-        colors       = ! is.null(col.cat.col),
-        symbols      = ! is.null(sym.cat.col),
-        width        = plot.width,
-        width.legend = plot.width.legend,
-        height       = plot.height,
-        height.title = plot.height.title,
-        cex.sym      = plot.sym.cex
+        pca              = pca.expr,
+        anno             = anno,
+        pca.mean         = pca.mean.expr,
+        anno.mean        = mean.anno,
+        title            = NULL,
+        out.dir          = out.dir,
+        prefix           = paste(run.id, sep="."),
+        components       = plot.components,
+        colors           = ! is.null(col.cat.col),
+        symbols          = ! is.null(sym.cat.col),
+        width            = plot.width,
+        width.legend     = plot.width.legend,
+        height           = plot.height,
+        height.title     = plot.height.title,
+        cex.sym          = plot.sym.cex,
+        cex.axis         = plot.tick.label.cex,
+        cex.lab          = plot.axis.label.cex,
+        cex.legend       = plot.legend.cex,
+        legend.title.col = plot.legend.title.col,
+        legend.title.sym = plot.legend.title.sym
     )
 
 } else {
@@ -727,21 +793,26 @@ if ( incl.subset ) {
 
             # Generate multidimensional scaling plot: subsets
             plot.pca(
-                pca          = pca.expr.filt,
-                anno         = anno,
-                pca.mean     = pca.mean.expr.filt,
-                anno.mean    = mean.anno,
-                title        = title,
-                out.dir      = out.dir.subset,
-                prefix       = paste(run.id, subset.desc.safe, sep="."),
-                components   = plot.components,
-                colors       = ! is.null(col.cat.col),
-                symbols      = ! is.null(sym.cat.col),
-                width        = plot.width,
-                width.legend = plot.width.legend,
-                height       = plot.height,
-                height.title = plot.height.title,
-                cex.sym      = plot.sym.cex
+                pca              = pca.expr.filt,
+                anno             = anno,
+                pca.mean         = pca.mean.expr.filt,
+                anno.mean        = mean.anno,
+                title            = title,
+                out.dir          = out.dir.subset,
+                prefix           = paste(run.id, subset.desc.safe, sep="."),
+                components       = plot.components,
+                colors           = ! is.null(col.cat.col),
+                symbols          = ! is.null(sym.cat.col),
+                width            = plot.width,
+                width.legend     = plot.width.legend,
+                height           = plot.height,
+                height.title     = plot.height.title,
+                cex.sym          = plot.sym.cex,
+                cex.axis         = plot.tick.label.cex,
+                cex.lab          = plot.axis.label.cex,
+                cex.legend       = plot.legend.cex,
+                legend.title.col = plot.legend.title.col,
+                legend.title.sym = plot.legend.title.sym
             )
 
         } else {

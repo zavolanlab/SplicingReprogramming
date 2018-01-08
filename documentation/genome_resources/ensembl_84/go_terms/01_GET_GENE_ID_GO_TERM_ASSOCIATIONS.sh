@@ -45,7 +45,7 @@ outPrefixMmu="${ensemblRelease}.${dataType}.${orgMmu}"
 outPrefixPtr="${ensemblRelease}.${dataType}.${orgPtr}"
 
 # Set GAF generation script
-script="/scicore/home/zavolan/kanitz/PROJECTS/SpliceFactorsReprogramming/scriptsSoftware/genomic_resources/generate_gene_associations_file_from_table.py"
+script="${root}/scriptsSoftware/genomic_resources/generate_gene_associations_file_from_table.py"
 
 # Set script parameters
 db="Ensembl"

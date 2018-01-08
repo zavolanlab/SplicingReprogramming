@@ -21,6 +21,8 @@ virtualEnvironments/**/*
 .old/**/*
 .sandbox/**/*
 .tmp/**/*
+.RData
+.Rhistory
 
 # Specific directories
 documentation/AndurilWorkflows

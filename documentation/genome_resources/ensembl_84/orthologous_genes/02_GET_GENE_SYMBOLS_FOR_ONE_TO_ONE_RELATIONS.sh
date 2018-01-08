@@ -23,6 +23,7 @@ root="$(dirname $(dirname $(dirname $(dirname $(cd "$(dirname "$0" )" && pwd))))
 
 # Set input files
 relations="${root}/publicResources/genome_resources/ensembl_84/orthologous_genes/ensembl_84.orthologous_genes.one_to_one.tsv.gz"
+relationsHM="${root}/publicResources/genome_resources/ensembl_84/orthologous_genes/ensembl_84.orthologous_genes.one_to_one.hsa_mmu_only.tsv.gz"
 idTableHsa="${root}/publicResources/genome_resources/hsa.GRCh38_84/hsa.GRCh38_84.transcripts.tsv.gz"
 idTableMmu="${root}/publicResources/genome_resources/mmu.GRCm38_84/mmu.GRCm38_84.transcripts.tsv.gz"
 idTablePtr="${root}/publicResources/genome_resources/ptr.CHIMP2.1.4_84/ptr.CHIMP2.1.4_84.transcripts.tsv.gz"
@@ -70,20 +71,29 @@ rm -f "$logFile"; touch "$logFile"
 # Uncompress input data
 echo "Extracting data..." >> "$logFile"
 rel="${tmpDir}/ensembl_84.orthologous_genes.one_to_one.tsv"
+relHM="${tmpDir}/ensembl_84.orthologous_genes.one_to_one.hsa_mmu_only.tsv"
 ids_hsa="${tmpDir}/hsa.GRCh38_84.transcripts.tsv"
 ids_mmu="${tmpDir}/mmu.GRCm38_84.transcripts.tsv"
 ids_ptr="${tmpDir}/ptr.CHIMP2.1.4_84.transcripts.tsv"
-gunzip --stdout "$relations"  > "$rel"
-gunzip --stdout "$idTableHsa" > "$ids_hsa"
-gunzip --stdout "$idTableMmu" > "$ids_mmu"
-gunzip --stdout "$idTablePtr" > "$ids_ptr"
+gunzip --stdout "$relations"   > "$rel"
+gunzip --stdout "$relationsHM" > "$relHM"
+gunzip --stdout "$idTableHsa"  > "$ids_hsa"
+gunzip --stdout "$idTableMmu"  > "$ids_mmu"
+gunzip --stdout "$idTablePtr"  > "$ids_ptr"
 
-# Get merged gene symbols for orthologous genes
+# Get merged gene symbols for orthologous genes (all organisms: hsa, mmu & ptr)
 echo "Build lookup table for merged gene symbols of orthologous genes..." >> "$logFile"
 out_file_tmp="${tmpDir}/gene_IDs.common_gene_symbols.tsv"
 out_file="${outPrefix}.gene_IDs.common_gene_symbols.tsv.gz"
 Rscript "$script" --input-table "$rel" --output-table "$out_file_tmp" --grouping-tables "${ids_hsa},${ids_mmu},${ids_ptr}" --group-id-columns 6 --group-symbol-columns 8 --verbose &>> "$logFile"
 gzip --stdout "$out_file_tmp" > "$out_file" 2>> "$logFile"
+
+# Get merged gene symbols for orthologous genes (all organisms: hsa, mmu & ptr)
+echo "Build lookup table for merged gene symbols of orthologous genes..." >> "$logFile"
+out_file_tmp_HM="${tmpDir}/gene_IDs.common_gene_symbols.hsa_mmu_only.tsv"
+out_file_HM="${outPrefix}.gene_IDs.common_gene_symbols.hsa_mmu_only.tsv.gz"
+Rscript "$script" --input-table "$relHM" --output-table "$out_file_tmp_HM" --grouping-tables "${ids_hsa},${ids_mmu}" --group-id-columns 6 --group-symbol-columns 8 --verbose &>> "$logFile"
+gzip --stdout "$out_file_tmp_HM" > "$out_file_HM" 2>> "$logFile"
 
 
 #############

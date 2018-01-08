@@ -40,7 +40,7 @@ outDirRoot="${root}/analyzedData/multivariate_analyses/pca/sra_data"
 outDirHsa="${outDirRoot}/hsa"
 outDirMmu="${outDirRoot}/mmu"
 outDirPtr="${outDirRoot}/ptr"
-tmpDir="${root}/.tmp/analyzedData/multivariate_analyses/mds/sra_data"
+tmpDir="${root}/.tmp/analyzedData/multivariate_analyses/pca/sra_data"
 logDir="${root}/logFiles/analyzedData/multivariate_analyses/pca/sra_data"
 
 # Set other script parameters
@@ -84,7 +84,7 @@ rm -f "$logFile"; touch "$logFile"
 
 # Prepare annotations
 echo "Preparing annotations..." >> "$logFile"
-anno="${tmpDir}/samples.annotations.mds.tsv"
+anno="${tmpDir}/samples.annotations.pca.tsv"
 awk 'BEGIN {OFS="\t"} {print $1, $2"."$4"."$6, $7, $8, $2}' "$annoRaw" > "$anno" 2>> "$logFile"
 
 # Do PCA: Human

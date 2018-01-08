@@ -29,7 +29,6 @@ inDirRoot="${root}/analyzedData/dgea/edgeR/sra_data/merged"
 inFileHsaByStudy="${inDirRoot}/hsa.by_study_and_condition.fc.tsv"
 inFileMmuByStudy="${inDirRoot}/mmu.by_study_and_condition.fc.tsv"
 inFilePtrByStudy="${inDirRoot}/ptr.by_study_and_condition.fc.tsv"
-inFileAllByStudy="${inDirRoot}/all.by_study_and_condition.fc.tsv"
 inFileHsaByCellType="${inDirRoot}/hsa.by_cell_type_only.fc.tsv"
 inFileMmuByCellType="${inDirRoot}/mmu.by_cell_type_only.fc.tsv"
 inFilePtrByCellType="${inDirRoot}/ptr.by_cell_type_only.fc.tsv"
@@ -40,7 +39,6 @@ outDirRoot="${root}/analyzedData/dgea/analyze_distributions/sra_data"
 outDirHsaByStudy="${outDirRoot}/hsa/by_study_and_condition"
 outDirMmuByStudy="${outDirRoot}/mmu/by_study_and_condition"
 outDirPtrByStudy="${outDirRoot}/ptr/by_study_and_condition"
-outDirAllByStudy="${outDirRoot}/all/by_study_and_condition"
 outDirHsaByCellType="${outDirRoot}/hsa/by_cell_type_only"
 outDirMmuByCellType="${outDirRoot}/mmu/by_cell_type_only"
 outDirPtrByCellType="${outDirRoot}/ptr/by_cell_type_only"
@@ -51,7 +49,6 @@ logDir="${root}/logFiles/analyzedData/analyze_distributions/sra_data"
 prefixHsaByStudy="hsa.by_study_and_condition"
 prefixMmuByStudy="mmu.by_study_and_condition"
 prefixPtrByStudy="ptr.by_study_and_condition"
-prefixAllByStudy="all.by_study_and_condition"
 prefixHsaByCellType="hsa.by_cell_type_only"
 prefixMmuByCellType="mmu.by_cell_type_only"
 prefixPtrByCellType="ptr.by_cell_type_only"
@@ -82,7 +79,7 @@ set -o pipefail
 
 # Create directories
 mkdir -p "$outDirRoot"
-mkdir -p "$outDirHsaByStudy" "$outDirMmuByStudy" "$outDirPtrByStudy" "$outDirAllByStudy"
+mkdir -p "$outDirHsaByStudy" "$outDirMmuByStudy" "$outDirPtrByStudy"
 mkdir -p "$outDirHsaByCellType" "$outDirMmuByCellType" "$outDirPtrByCellType" "$outDirAllByCellType"
 mkdir -p "$logDir"
 
@@ -142,24 +139,6 @@ Rscript "$script" \
     --subset-glob="$subsetGlobPtr" \
     --subset-annotation="$subsetAnno" \
     --column-short-name-prefix="$prefixPtrByStudy." \
-    --minimum-number-of-values-per-set="$minGenes" \
-    --plot-x-label="$xLabel" \
-    --plot-vertical-bar="$verticalBar" \
-    --plot-cdf-median-line \
-    --plot-cdf-points-subsets \
-    --verbose \
-    &>> "$logFile"
-
-## ALL: BY STUDY ID AND CONDITION
-echo "Summarizing fold changes of comparisons across organisms by study ID and condition..." >> "$logFile"
-Rscript "$script" \
-    --data-matrix="$inFileAllByStudy" \
-    --output-directory="$outDirAllByStudy" \
-    --run-id="$prefixAllByStudy" \
-    --subset-directory="$subsetDirAll" \
-    --subset-glob="$subsetGlobAll" \
-    --subset-annotation="$subsetAnno" \
-    --column-short-name-prefix="$prefixAllByStudy." \
     --minimum-number-of-values-per-set="$minGenes" \
     --plot-x-label="$xLabel" \
     --plot-vertical-bar="$verticalBar" \

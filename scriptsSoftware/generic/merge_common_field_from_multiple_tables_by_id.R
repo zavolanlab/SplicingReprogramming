@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-# (c) 2016-2017, Alexander Kanitz, Biozentrum, Universiry of Basel
+# (c) 2016-2017, Alexander Kanitz, Biozentrum, University of Basel
 # email: alexander.kanitz@alumni.ethz.ch
 
 #######################

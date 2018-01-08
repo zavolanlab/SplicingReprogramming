@@ -113,7 +113,7 @@ merge_multi <- function(ls, by=0, all=FALSE) {
     # Initialize merged dataframe with first dataframe
     df.merged <- ls[[1]]
     for ( idx in seq_len(length(ls))[-1] ) {
-        tmp <- merge(df.merged, ls[[idx]], by=by, all.x=all)
+        tmp <- merge(df.merged, ls[[idx]], by=by, all=all)
         rownames(tmp) <- tmp[, 1]
         df.merged <- tmp[, -1]
     }
@@ -145,7 +145,7 @@ if ( opt$`verbose` ) cat("Starting ", script, "...\n", sep="'")
 #---> MERGING DATA TABLES <---#
 
     #---> Log message <---#
-    if ( opt$`verbose` ) cat("Merging data tables...\n", sep="'")
+    if ( opt$`verbose` ) cat("Merging data tables (may take long)...\n", sep="'")
 
     #---> Merge data tables <---#
     merged <- merge_multi(df.ls, by=0, all=opt$`all-rows`)

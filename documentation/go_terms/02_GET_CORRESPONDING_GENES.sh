@@ -16,7 +16,7 @@
 ###########################################################################
 # THE RESULTS OF THIS SCRIPT MAY NOT BE REPRODUCIBLE AS THE CURRENT STATE #
 # OF THE GO DATABASE IS QUERIED!                                          #
-# RUN DATE: 2017-01-10                                                    #
+# RUN DATE: 2017-06-28                                                    #
 ###########################################################################
 
 ####################
@@ -30,7 +30,7 @@ root="$(dirname $(dirname $(cd "$(dirname "$0" )" && pwd)))"
 declare -A organisms=( [hsa]="Homo sapiens" [mmu]="Mus musculus" [ptr]="Pan troglodytes" )
 
 # Set GO terms file
-goTerms="${root}/publicResources/go_terms/go_terms"
+goTerms="${root}/internalResources/sra_data/go_terms"
 
 # Set Ensembl gene ID > gene symbols lookup files
 declare -A idTables=( [hsa]="${root}/publicResources/genome_resources/hsa.GRCh38_84/hsa.GRCh38_84.transcripts.tsv.gz" [mmu]="${root}/publicResources/genome_resources/mmu.GRCm38_84/mmu.GRCm38_84.transcripts.tsv.gz" [ptr]="${root}/publicResources/genome_resources/ptr.CHIMP2.1.4_84/ptr.CHIMP2.1.4_84.transcripts.tsv.gz" )
@@ -45,9 +45,8 @@ tmpDir="${root}/.tmp/publicResources/go_terms"
 logDir="${root}/logFiles/publicResources/go_terms"
 
 # GO URL fragments
-url_start="http://geneontology-golr.stanford.edu/solr/select?defType=edismax&qt=standard&indent=on&wt=csv&rows=10000&start=0&fl=source,bioentity_internal_id,bioentity_label,qualifier,annotation_class,reference,evidence_type,evidence_with,aspect,bioentity_name,bioentity,synonym,type,taxon,date,assigned_by,annotation_extension_class,bioentity_isoform&facet=true&facet.mincount=1&facet.sort=count&json.nl=arrarr&facet.limit=25&hl=true&hl.simple.pre=%3Cem%20class=%22hilite%22%3E&csv.encapsulator=&csv.separator=%09&csv.header=false&csv.mv.separator=%7C&fq=document_category:%22annotation%22&fq=regulates_closure:%22"
-url_mid="%22&fq=taxon_closure_label:%22"
-url_end="%22&facet.field=source&facet.field=assigned_by&facet.field=aspect&facet.field=evidence_type_closure&facet.field=panther_family_label&facet.field=qualifier&facet.field=taxon_closure_label&facet.field=annotation_class_label&facet.field=regulates_closure_label&facet.field=annotation_extension_class_closure_label&q=*:*"
+url_start="http://golr.geneontology.org/select?defType=edismax&wt=csv&rows=100000&csv.separator=%09&csv.header=false&csv.mv.separator=%7C&fl=source,bioentity_internal_id,bioentity_label,qualifier,annotation_class,reference,evidence_type,evidence_with,aspect,bioentity_name,bioentity,synonym,type,taxon,date,assigned_by,annotation_extension_class,bioentity_isoform&fq=document_category:%22annotation%22&qf=annotation_class%5E2&qf=regulates_closure%5E1&fq=taxon_subset_closure_label:%22"
+url_mid="%22&q=GO:"
 
 
 ########################
@@ -101,10 +100,11 @@ while read term; do
 
         # Build URL
         org=$(echo "${organisms[$short_name]}" | sed 's/\s/%20/g')
-        url=${url_start}${term}${url_mid}${org}${url_end}
+        url=${url_start}${org}${url_mid}${term}
 
         # Download GO data
         out_file_go="${out_subdir}/${short_name}.${term_short}.gaf"
+        #DEBUG echo "URL for term '$term': $url" &>> "$logFile"
         wget -q -O "$out_file_go" "$url" > /dev/null 2>> "$logFile"
 
         # Extract gene symbols
