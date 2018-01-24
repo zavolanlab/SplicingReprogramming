@@ -19,7 +19,7 @@ res <- supertest(dat, n=pop)
 
 # Prepare output table
 dat.out <- summary(res)$Table
-dat.out <- dat.out[dat.out$Degree > 1, ]
+#dat.out <- dat.out[dat.out$Degree > 1, ]
 
 # Write results to file
 write.table(dat.out, file=stdout(), row.names=FALSE, quote=FALSE, sep="\t")
