@@ -11,10 +11,7 @@ setup that was used to execute resource-intensive processes. All indicated versi
 used in this study. Others may work, but have not been tested.
 
 #### Required software
-The following software is required. Wherever followed by parentheses, the indicated executable name, 
-when called from a shell, has to link to the correct version of the specific software (i.e. it has 
-to be available in your `$PATH` and to be returned by the `which` command when called with the 
-respective executable as its argument).
+The following software is required:
 * Anduril 1.2.23 (`anduril`)
 * cutadapt 1.8.3 (`cutadapt`)
 * Git 1.8.5.6
@@ -26,6 +23,9 @@ respective executable as its argument).
 * SUPPA ... (`suppa.py`)
 * ...
 TODO: Check for completeness, add links and check version numbers
+> Wherever followed by parentheses, the indicated executable name, when called from a shell, has to 
+> link to the correct version of the specific software. You may need to modify your `$PATH` to 
+> ensure this.
 
 #### Operating system
 All analyses were performed on systems running:
