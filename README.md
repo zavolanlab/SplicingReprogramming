@@ -133,7 +133,7 @@ data are computed and summarized:
 * Keisuke Kaji
 * Mihaela Zavolan
 
-All code not listed in the [Pre-requisites](#pre-requisites) section written by Alexander Kanitz. 
+All code not listed in the [Pre-requisites](#pre-requisites) section written by Alexander Kanitz.  
 See *Authors' contributions* section in (TODO: URL publication) for further details.
 
 ## Acknowledgments
