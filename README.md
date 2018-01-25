@@ -35,7 +35,10 @@ TODO
 
 ### Get public resources
 
-Downloads, filters and further processes genomes, gene annotations and transcriptomes:
+In this section, genome resources for human, mouse and chimpanzee are downloaded, filtered, 
+processed and indexed.
+
+1. Downloads, filters and further processes genomes, gene annotations and transcriptomes:
 ```sh
 # Human
 "${root}/documentation/genome_resources/hsa.GRCh38_84/01.get_and_process_genome_resources.sh"
@@ -45,7 +48,7 @@ Downloads, filters and further processes genomes, gene annotations and transcrip
 "${root}/documentation/genome_resources/ptr.CHIMP2.1.4_84/01.get_and_process_genome_resources.sh"
 ```
 
-Generate transcript quantification and read mapping indices and compile AS events:
+2. Generate transcript quantification and read mapping indices and compile AS events:
 
 > This step uses Anduril/DRMAA-based execution on a HPC cluster!
 
@@ -60,24 +63,33 @@ Generate transcript quantification and read mapping indices and compile AS event
 
 ### Get RNA-Seq data
 
-Download RNA-Seq data from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra):
+In this section, RNA-Seq libraries from several different studies (TODO: see Table 1 in publication) 
+are downloaded from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra).
+
+1. Download data:
 ```sh
 "${root}/documentation/sra_data/01.download_data.sh"
 ```
 
 ### Quantification & alignments
 
-Generate evenly sized chunks of the sample table:
+In this section, the previously downloaded RNA-Seq libraries are uniformly processed. The following 
+data are computed and summarized:
+* Abundance of transcript isoforms
+* Inclusion rates for alternative splicing (AS) events
+* Read alignments
+
+1. Generate evenly sized chunks of the sample table:
 ```sh
 "${root}/documentation/align_and_quantify/01.split_sample_table.sh"
 ```
 
-Generate Anduril network files for the processing of RNA-Seq data:
+2. Generate Anduril network files for the processing of RNA-Seq data:
 ```sh
 "${root}/documentation/align_and_quantify/02.generate_workflows.sh"
 ```
 
-Build and execute Anduril commands:
+3. Build and execute Anduril commands:
 
 > This step uses Anduril/DRMAA-based execution on a HPC cluster!
 
@@ -85,27 +97,27 @@ Build and execute Anduril commands:
 "${root}/documentation/align_and_quantify/03.execute_workflows.sh"
 ```
 
-Move and re-organize persistent output files:
+4. Move and re-organize persistent output files:
 ```sh
 "${root}/documentation/align_and_quantify/04.organize_output_files.sh"
 ```
 
-Aggregate data into feature (rows) x sample (columns) matrices:
+5. Aggregate data into feature (rows) x sample (columns) matrices:
 ```sh
 "${root}/documentation/align_and_quantify/05.summarize_data.sh"
 ```
 
-[Optional] Calculate md5 hash sums for persistent output files:
+6. [Optional] Calculate md5 hash sums for persistent output files:
 ```sh
 "${root}/documentation/align_and_quantify/06.calculate_hash_sums.sh"
 ```
 
-[Optional] Re-organize and archive Anduril log files:
+7. [Optional] Re-organize and archive Anduril log files:
 ```sh
 "${root}/documentation/align_and_quantify/07.archive_log_files.sh"
 ```
 
-[Optional] Remove temporary and intermediate Anduril data files:
+8. [Optional] Remove temporary and intermediate Anduril data files:
 ```sh
 "${root}/documentation/align_and_quantify/08.remove_temporary_files.sh"
 ```
