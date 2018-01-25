@@ -46,7 +46,9 @@ Downloads, filters and further processes genomes, gene annotations and transcrip
 ```
 
 Generate transcript quantification and read mapping indices and compile AS events:
+
 > This step uses Anduril/DRMAA-based execution on a HPC cluster!
+
 ```sh
 # Human
 "${root}/documentation/genome_resources/hsa.GRCh38_84/02.generate_indices_and_as_events.sh"
@@ -76,6 +78,9 @@ Generate Anduril network files for the processing of RNA-Seq data:
 ```
 
 Build and execute Anduril commands:
+
+> This step uses Anduril/DRMAA-based execution on a HPC cluster!
+
 ```sh
 "${root}/documentation/align_and_quantify/03.execute_workflows.sh"
 ```
