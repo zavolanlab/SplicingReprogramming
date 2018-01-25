@@ -35,14 +35,25 @@ TODO
 
 ### Get public resources
 
-TODO:
+Downloads, filters and further processes genomes, gene annotations and transcriptomes:
 ```sh
 # Human
-"${root}/documentation/genome_resources/hsa.GRCh38_84/01.get_and_process_genome_resources.sh
+"${root}/documentation/genome_resources/hsa.GRCh38_84/01.get_and_process_genome_resources.sh"
 # Mouse
-"${root}/documentation/genome_resources/mmu.GRCm38_84/01.get_and_process_genome_resources.sh
+"${root}/documentation/genome_resources/mmu.GRCm38_84/01.get_and_process_genome_resources.sh"
 # Chimpanzee
-"${root}/documentation/genome_resources/ptr.CHIMP2.1.4_84/01.get_and_process_genome_resources.sh
+"${root}/documentation/genome_resources/ptr.CHIMP2.1.4_84/01.get_and_process_genome_resources.sh"
+```
+
+Generate transcript quantification and read mapping indices and compile AS events:
+<aside class="warning">This step uses Anduril/DRMAA-based execution on a HPC cluster!</aside>
+```sh
+# Human
+"${root}/documentation/genome_resources/hsa.GRCh38_84/02.generate_indices_and_as_events.sh"
+# Mouse
+"${root}/documentation/genome_resources/mmu.GRCm38_84/02.generate_indices_and_as_events.sh"
+# Chimpanzee
+"${root}/documentation/genome_resources/ptr.CHIMP2.1.4_84/02.generate_indices_and_as_events.sh"
 ```
 
 ### Get RNA-Seq data
@@ -93,9 +104,6 @@ Aggregate data into feature (rows) x sample (columns) matrices:
 ```sh
 "${root}/documentation/align_and_quantify/08.remove_temporary_files.sh"
 ```
-
-
-
 
 
 
