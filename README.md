@@ -35,11 +35,19 @@ TODO
 
 ### Get public resources
 
-TODO
+TODO:
+```sh
+# Human
+"${root}/documentation/genome_resources/hsa.GRCh38_84/01.get_and_process_genome_resources.sh
+# Mouse
+"${root}/documentation/genome_resources/mmu.GRCm38_84/01.get_and_process_genome_resources.sh
+# Chimpanzee
+"${root}/documentation/genome_resources/ptr.CHIMP2.1.4_84/01.get_and_process_genome_resources.sh
+```
 
-### Download RNA-Seq data
+### Get RNA-Seq data
 
-Download RNA-Seq data from SRA:
+Download RNA-Seq data from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra):
 ```sh
 "${root}/documentation/sra_data/01.download_data.sh"
 ```
