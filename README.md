@@ -1,6 +1,6 @@
 # RNA splicing in reprogramming
 
-Code for reproducing the data in TODO: REF.
+Code for reproducing the data in (TODO: ref to publication).
 
 ## Reproducing the data
 
@@ -124,15 +124,60 @@ data are computed and summarized:
 
 
 
+
+
 ## Authors
 
-List the main authors and, if applicable, link to a separate file 'contributors' within the repository
+* Alexander Kanitz
+* Afzal Pasha Syed
+* Keisuke Kaji
+* Mihaela Zavolan
+
+All code not listed in the [Pre-requisites](#pre-requisites) section written by Alexander Kanitz. 
+See (TODO: Authors' contributions section in the publication) for further details.
 
 ## Acknowledgments
 
-List all non-authors, organisations or whatever/whoever was instrumental in realizing the project
+The authors would like to thank:
+* [Zavolan lab](https://www.biozentrum.unibas.ch/research/groups-platforms/overview/unit/zavolan/), 
+  particularly
+    * Christina J. Herrmann
+    * Andreas J. Gruber
+    * Maciej Bak
+* [Kaji lab](http://www.crm.ed.ac.uk/research/group/biology-reprogramming), particularly
+    * Sergio Menendez
+    * Tyson Ruetz
+    * Sarah Brightwell
+* [Single cell facility, ETH Zurich](https://www.bsse.ethz.ch/scf), particularly
+    * Verena Jäggin
+    * Telma Lopez
+* [sciCORE Center for Scientific Computing](https://scicore.unibas.ch/)
+* [The Cancer Genome Atlas](https://cancergenome.nih.gov/)
+
+See (TODO: Acknowledgements section in the publication) for further details.
+
+## Funding
+* [ERC Starting Grant](https://erc.europa.eu/funding/starting-grants) to Mihaela Zavolan
+* [MRC Senior Non-Clinical 
+  Fellowship](https://www.mrc.ac.uk/skills-careers/fellowships/non-clinical-fellowships/senior-non-clinical-fellowship-sncf/) 
+  to Keisuke Kaji
+
+See (TODO: Funding section in the publication) for further details.
 
 ## License
 
-Mention the license and link to local file [LICENSE.md](LICENSE.md) for details
+Copyright 2018 Biozentrum, University of Basel
 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+A copy of the License should also be available in the file [LICENSE](LICENSE).
