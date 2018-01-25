@@ -47,14 +47,6 @@ We have used the following configuration:
 * **HPC** - UGE 8.3.1p6 with libdrmaa.so.1.0
 * **Client** - Python 2.7.5 with drmaa 0.7.6
 
-Furthermore, your `$PYTHONPATH` has to be set/modified to include a custom Anduril resource:
-```bash
-export PYTHONPATH="${root}/frameworksAuxiliary/anduril/lib:$PYTHONPATH"
-```
-> **NOTE:** Executing the `export` commands in the current shell instance will only affect the 
-> environment of that particular instance. To avoid having to execute these again in future 
-> instances, add the lines to your shell startup script (e.g. `.bashrc` for Bash).  
-
 Finally, you need to ensure that the following environment variables are (correctly) set on your 
 system:
 * `$ANDURIL_HOME`
@@ -71,12 +63,19 @@ Now it's time to clone this repository:
 ```sh
 git clone TODO: Add URL
 ```
-
 We can move into the new directory and set it as the root directory for the analysis:
 ```sh
 cd SpliceFactorsReprogramming
 root="$PWD"
 ```
+Now that we have defined the `$root` variable, your `$PYTHONPATH` has to be set/modified to include 
+a custom Anduril resource:
+```bash
+export PYTHONPATH="${root}/frameworksAuxiliary/anduril/lib:$PYTHONPATH"
+```
+> **NOTE:** Executing the `export` commands in the current shell instance will only affect the 
+> environment of that particular instance. To avoid having to execute these again in future 
+> instances, add the lines to your shell startup script (e.g. `.bashrc` for Bash).
 
 ### Description of files
 TODO: Complete
