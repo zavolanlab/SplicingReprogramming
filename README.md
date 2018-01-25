@@ -70,7 +70,6 @@ are downloaded from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra
 "${root}/documentation/sra_data/01.download_data.sh"
 ```
 
-2. 
 
 ### Quantification & alignments
 
