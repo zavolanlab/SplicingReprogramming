@@ -49,6 +49,7 @@ processed and indexed.
 ```
 
 2. Generate transcript quantification and read mapping indices and compile AS events:
+
 > This step uses Anduril/DRMAA-based execution on a HPC cluster!
 ```sh
 # Human
@@ -90,7 +91,8 @@ data are computed and summarized:
 ```
 
 3. Build and execute Anduril commands:
-> This step uses Anduril/DRMAA-based execution on a HPC cluster!
+
+> This step uses Anduril/DRMAA-based execution on a HPC cluster!                                 
 > This step requires several TB of storage space!
 ```sh
 "${root}/documentation/align_and_quantify/03.execute_workflows.sh"
