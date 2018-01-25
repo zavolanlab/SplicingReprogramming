@@ -31,15 +31,15 @@ Other versions may work, but have not been tested.
 
 #### Anduril, high-performance computing (HPC) cluster & distributed resource management (DRM)
 This study features two resource-intensive processing workflows, each step of which is remotely 
-executed on an HPC cluster whose resources are managed by a DRM application (here: Univa Grid 
-Engine). The [Anduril](http://anduril.org/site/) platform is used to manage their execution with the 
-help of the following required components:
+executed on an HPC cluster whose resources are managed by a DRM application (e.g. [Univa Grid 
+Engine](http://www.univa.com/products/grid-engine)). The [Anduril](http://anduril.org/site/) 
+platform is used to manage their execution with the help of the following required components:
 * the [DRM application API (DRMAA)](https://www.drmaa.org/)) library (to be set up on the HPC)
-* a corresponding Python client being (installed on your system)
+* a corresponding Python module (installed on the client)
 
 We have used the following configuration:
-* HPC: UGE 8.3.1p6 with libdrmaa.so.1.0
-* Client: Python 2.7.5 with drmaa 0.7.6
+* **HPC** - UGE 8.3.1p6 with libdrmaa.so.1.0
+* **Client** - Python 2.7.5 with drmaa 0.7.6
 
 Furthermore, the following environment variables have to be set/modified:
 ```bash
