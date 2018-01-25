@@ -125,8 +125,9 @@ data are computed and summarized:
 
 
 
+## Credit
 
-## Authors
+### Authors
 
 * Alexander Kanitz
 * Afzal Pasha Syed
@@ -136,7 +137,7 @@ data are computed and summarized:
 All code not listed in the [Pre-requisites](#pre-requisites) section written by Alexander Kanitz.  
 See *Authors' contributions* section in (TODO: URL publication) for further details.
 
-## Acknowledgments
+### Acknowledgments
 
 The authors would like to thank:
 * [Zavolan lab](https://www.biozentrum.unibas.ch/research/groups-platforms/overview/unit/zavolan/), 
@@ -161,7 +162,7 @@ The authors would like to thank:
 
 See *Acknowledgements* section in (TODO: URL publication) for further details.
 
-## Funding
+### Funding
 * [ERC Starting Grant](https://erc.europa.eu/funding/starting-grants) to Mihaela Zavolan 
   (310510-WHYMIR)
 * [MRC Senior Non-Clinical 
