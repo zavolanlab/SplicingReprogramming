@@ -22,6 +22,7 @@ The following software is required:
 * STAR 2.4.1c (`STAR`)
 * SUPPA ... (`suppa.py`)
 * ...
+
 TODO: Check for completeness, add links and check version numbers  
 
 > Wherever followed by parentheses, the indicated executable name, when called from a shell, has to 
@@ -33,6 +34,7 @@ All analyses were performed on systems running:
 * CentOS 6.5 with
     * GNU bash 4.2.0(1)
     * GNU coreutils 8.9
+
 TODO: Check for completeness, add links and check version numbers
 
 #### Resource management
