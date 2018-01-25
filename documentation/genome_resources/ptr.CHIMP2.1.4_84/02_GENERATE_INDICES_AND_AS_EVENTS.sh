@@ -32,6 +32,7 @@ execDir="${tmpDir}/get_indices_and_as_events"
 logDir="${root}/logFiles/publicResources/genome_resources/${fileNamePrefix}"
 logDirAnduril="${logDir}/get_indices_and_as_events"
 targetDir="${resDir}/indices"
+sjdb_overhang=200
 
 
 ########################
@@ -108,12 +109,12 @@ transcriptome = INPUT(path = transcriptome_path)
 
 //// ---> PROCESSING <--- ////
 
-// ---> BUILD STAR INDEX: Read length 136 <--- //
-index_STAR_136 = STAR (
+// ---> BUILD STAR INDEX: Read length 200 <--- //
+index_STAR_200 = STAR (
     INFILE_genomeFastaFiles = genome,
     INFILE_sjdbGTFfile      = gene_anno,
     runMode                 = "genomeGenerate",
-    sjdbOverhang            = "135",
+    sjdbOverhang            = $sjdb_overhang,
     _OUTDIRMAKE_genomeDir   = "true",
     _execMode               = "remote",
     _cores                  = "8",
@@ -154,8 +155,8 @@ echo "Copying results..." >> "$logFile"
 # Copy STAR index directory
 echo "STAR..." >> "$logFile"
 baseGenome="$(basename "${genomeTmp%.*}")"
-targetDirSTAR_136="${targetDir}/STAR/${baseGenome}.gene_annotations.filtered.136"; mkdir --parents "$targetDirSTAR_136"
-cp "${execDir}/index_STAR_136/OUTDIRMAKE_genomeDir/"* "$targetDirSTAR_136"
+targetDirSTAR_200="${targetDir}/STAR/${baseGenome}.gene_annotations.filtered.200"; mkdir --parents "$targetDirSTAR_200"
+cp "${execDir}/index_STAR_200/OUTDIRMAKE_genomeDir/"* "$targetDirSTAR_200"
 
 # Copy kallisto index file
 echo "kallisto..." >> "$logFile"

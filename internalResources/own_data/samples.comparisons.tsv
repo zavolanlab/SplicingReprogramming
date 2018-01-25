@@ -1,2 +1,0 @@
-endpoint_1	endpoint_2	comparison_name	study_id	organism	process	comparison_figure_name	comparison_figure_name_with_study	comparison_figure_name_with_organism_and_study
-time_course_retro.mmu.GRCm38_84.iPSC	time_course_retro.mmu.GRCm38_84.MEF	time_course_retro.mmu.GRCm38_84.iPSC.over.MED	time_course_retro	mmu.GRCm38_84	reprogramming	iPSCs over fibroblasts	Time course retroviruses: iPSCs over fibroblasts	Mouse - time course retroviruses: iPSCs over fibroblasts
