@@ -91,7 +91,6 @@ data are computed and summarized:
 ```
 
 3. Build and execute Anduril commands:
-
 > This step uses Anduril/DRMAA-based execution on a HPC cluster!                                 
 > This step requires several TB of storage space!
 ```sh
