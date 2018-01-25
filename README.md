@@ -66,6 +66,7 @@ In this section, RNA-Seq libraries from several different studies (TODO: see Tab
 are downloaded from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra).
 
 1. Download data:
+
 > This step requires >500GB of storage space!
 ```sh
 "${root}/documentation/sra_data/01.download_data.sh"
