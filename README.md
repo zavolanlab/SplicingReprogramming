@@ -140,18 +140,23 @@ See *Authors' contributions* section in (TODO: URL publication) for further deta
 
 The authors would like to thank:
 * [Zavolan lab](https://www.biozentrum.unibas.ch/research/groups-platforms/overview/unit/zavolan/), 
-  particularly
+  [Biozentrum](https://www.biozentrum.unibas.ch/home/), [University of 
+  Basel](https://www.unibas.ch/en.html), particularly
     * Christina J. Herrmann
     * Andreas J. Gruber
     * Maciej Bak
-* [Kaji lab](http://www.crm.ed.ac.uk/research/group/biology-reprogramming), particularly
+* [Kaji lab](http://www.crm.ed.ac.uk/research/group/biology-reprogramming), [MRC Centre for 
+  Regenerative Medicine](http://www.crm.ed.ac.uk/), [University of 
+  Edinburgh](https://www.ed.ac.uk/), particularly
     * Sergio Menendez
     * Tyson Ruetz
     * Sarah Brightwell
-* [Single cell facility, ETH Zurich](https://www.bsse.ethz.ch/scf), particularly
+* [Single cell facility](https://www.bsse.ethz.ch/scf), [Department of Biosystems and 
+  Engineering](https://www.bsse.ethz.ch/), [ETH Zurich](https://www.ethz.ch/en.html), particularly
     * Verena Jäggin
     * Telma Lopez
 * [sciCORE Center for Scientific Computing](https://scicore.unibas.ch/)
+* [Swiss Institute of Bioinformatics](https://www.sib.swiss/)
 * [The Cancer Genome Atlas](https://cancergenome.nih.gov/)
 
 See *Acknowledgements* section in (TODO: URL publication) for further details.
