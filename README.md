@@ -58,7 +58,7 @@ export PYTHONPATH="${root}/frameworksAuxiliary/anduril/lib:$PYTHONPATH"
 Finally, you need to ensure that the following environment variables are (correctly) set on your 
 system:
 * `$ANDURIL_HOME`
-* `DRMAA_LIBRARY_PATH`
+* `$DRMAA_LIBRARY_PATH`
 
 > **NOTE:** The DRMAA library, as well as the corresponding Python module and environment variable 
 > `$DRMAA_LIBRARY_PATH` are not required if Anduril workflows are to be executed locally. However, 
