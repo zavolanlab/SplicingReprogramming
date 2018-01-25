@@ -162,12 +162,11 @@ The authors would like to thank:
 See *Acknowledgements* section in (TODO: URL publication) for further details.
 
 ## Funding
-* [ERC Starting Grant](https://erc.europa.eu/funding/starting-grants) to Mihaela Zavolan
+* [ERC Starting Grant](https://erc.europa.eu/funding/starting-grants) to Mihaela Zavolan 
+  (310510-WHYMIR)
 * [MRC Senior Non-Clinical 
   Fellowship](https://www.mrc.ac.uk/skills-careers/fellowships/non-clinical-fellowships/senior-non-clinical-fellowship-sncf/) 
-  to Keisuke Kaji
-
-See *Funding* section in (TODO: URL publication) for further details.
+  to Keisuke Kaji (MR/N008715/1)
 
 ## License
 
