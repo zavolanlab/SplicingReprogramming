@@ -1,20 +1,86 @@
 # RNA splicing in reprogramming
-
 Code for reproducing the data in (TODO: URL publication).
 
 ## Reproducing the data
+TODO: Add links and add/check version numbers
+
+> Bash is the recommended shell for the execution of all commands in this section. Commands may need 
+> to be modified if executed from another shell.
 
 ### Pre-requisites
-TODO: Add description (can partly take this from RNA-seq pipeline description)
+This section lists the software requirements, as well as a description of the operating system and 
+hardware used to run the original analysis. The indicated versions refer to those used in the study. 
+Other versions may work, but have not been tested.
 
-TODO: Add links and version numbers
-* Anduril
-* STAR
-* kallisto
-* SUPPA
+#### Required software
+* Git 1.8.5.6
+* Anduril 1.2.23
+* SRA Toolkit 2.8.0
+* cutadapt 1.8.3
+* samtools 1.3.1
+* kallisto 0.42.3
+* STAR 2.4.1c
+* SUPPA ...
 * ...
 
-TODO: Add words on cluster
+
+#### Operating system
+* CentOS 6.5 with
+    * GNU bash 4.2.0(1)
+    * GNU coreutils 8.9
+
+#### Anduril, high-performance computing (HPC) cluster & distributed resource management (DRM)
+This study features two resource-intensive processing workflows, each step of which is remotely 
+executed on an HPC cluster whose resources are managed by a DRM application (here: Univa Grid 
+Engine). The [Anduril](http://anduril.org/site/) platform is used to manage their execution with the 
+help of the following required components:
+* the [DRM application API (DRMAA)](https://www.drmaa.org/)) library (to be set up on the HPC)
+* a corresponding Python client being (installed on your system)
+
+We have used the following configuration:
+* HPC: UGE 8.3.1p6 with libdrmaa.so.1.0
+* Client: Python 2.7.5 with drmaa 0.7.6
+
+Furthermore, the following environment variables have to be set/modified:
+```bash
+export DRMAA_LIBRARY_PATH="<PATH>"   # Set path according to your system
+export PYTHONPATH="${root}/frameworksAuxiliary/anduril/lib:$PYTHONPATH"
+```
+
+> **NOTE:** The DRMAA library and variable definition as well as installation of the corresponding 
+> Python package are not required if workflows are supposed to be executed on the local machine. However, 
+ note that execution of the index generation and mapping/quantification pipelines will require up to 
+ 40Gb of available RAM for human or mouse samples and that workflows need to be manually 
+ re-configured for local execution.
+
+The script `kallisto_extract_output.R` required by the mapping/quantification pipeline is distributed as part of this repository and can be found in directory `"${projectRoot}/scriptsSoftware/anduril`. To make it available to Anduril, it has to be added to your `$PATH`:
+
+Finally, you will have to ensure that the correct versions of the executables of all commands used by the pipeline are available in your `$PATH`. Specifically, these are:
+* anduril
+* fastq-dump
+* cutadapt
+* STAR
+* kallisto
+* samtools
+* suppa.py
+
+**NOTE:** See [Requirements](#requirements) section for version requirements.
+
+For the BC2/sciCORE system, this can easily be achieved by adding the following to your `$PATH`:
+```bash
+export PATH="/scicore/home/zavolan/kanitz/soft/bin:$PATH"
+module load anduril/1.2.23-goolf-1.4.10-Python-2.7.5
+module load SAMtools/1.3.1-goolf-1.7.20
+```
+
+**NOTE:** Executing the `export` commands in the current shell instance will only affect the 
+environment of that particular instance. To avoid having to execute these again in future instances, 
+add the lines to your shell startup script (e.g. `.bashrc` for Bash).
+
+
+
+
+
 
 ### Clone repository
 
@@ -31,7 +97,11 @@ root="$PWD"
 
 ### Description of files
 
-TODO
+TODO: Modify/add
+
+The directory will contain the barebones directory structure with the following top-level content:
+* `frameworksAuxiliary  `Contains the Anduril bundle including all required components
+* `scriptsSoftware      `Contains scripts required for the pipeline and preparation
 
 ### Get genome resources
 
@@ -52,7 +122,7 @@ In this section, the following resources for human, mouse and chimpanzee are dow
 ```
 
 2. Generate transcript quantification and read mapping indices and compile AS events:
-> This step uses Anduril/DRMAA-based execution on a HPC cluster!
+> **Note:** This step uses Anduril/DRMAA-based execution on a HPC cluster!
 ```sh
 # Human
 "${root}/documentation/genome_resources/hsa.GRCh38_84/02.generate_indices_and_as_events.sh"
@@ -67,7 +137,7 @@ In this section, the following resources for human, mouse and chimpanzee are dow
 In this section, RNA-Seq libraries from several different studies (TODO: see Table 1 in publication) 
 are downloaded from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra).
 
-> This step requires >500GB of storage space!
+> **Note:** This step requires >500GB of storage space!
 ```sh
 "${root}/documentation/sra_data/01.download_data.sh"
 ```
@@ -91,8 +161,8 @@ data are computed and summarized:
 ```
 
 3. Build and execute Anduril commands:
-> This step uses Anduril/DRMAA-based execution on a HPC cluster!  
-> This step requires several TB of storage space!
+> **Note:** This step uses Anduril/DRMAA-based execution on a HPC cluster!  
+> **Note:** This step requires several TB of storage space!
 ```sh
 "${root}/documentation/align_and_quantify/03.execute_workflows.sh"
 ```
@@ -121,9 +191,6 @@ data are computed and summarized:
 ```sh
 "${root}/documentation/align_and_quantify/08.remove_temporary_files.sh"
 ```
-
-
-
 
 ## Credit
 
