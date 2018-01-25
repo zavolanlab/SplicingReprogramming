@@ -22,7 +22,8 @@ The following software is required:
 * STAR 2.4.1c (`STAR`)
 * SUPPA ... (`suppa.py`)
 * ...
-TODO: Check for completeness, add links and check version numbers
+TODO: Check for completeness, add links and check version numbers  
+
 > Wherever followed by parentheses, the indicated executable name, when called from a shell, has to 
 > link to the correct version of the specific software. You may need to modify your `$PATH` to 
 > ensure this.
