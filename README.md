@@ -1,39 +1,41 @@
 # RNA splicing in reprogramming
 
-Code for reproducing the data in [REF].
+Code for reproducing the data in TODO: REF.
 
 ## Reproducing the data
 
 ### Pre-requisites
-Add description (can partly take this from RNA-seq pipeline description)
+TODO: Add description (can partly take this from RNA-seq pipeline description)
 
-Add links and version numbers
+TODO: Add links and version numbers
 * Anduril
 * STAR
 * kallisto
 * SUPPA
 * ...
 
-Add words on cluster
+TODO: Add words on cluster
 
 ### Clone repository
 
 Clone the repository:
 ```sh
-git clone
+git clone TODO
 ```
 
 Set root directory:
 ```sh
-cd SplceFactorsReprogramming
+cd SpliceFactorsReprogramming
 root="$PWD"
 ```
 
 ### Description of files
 
+TODO
 
 ### Get public resources
 
+TODO
 
 ### Download RNA-Seq data
 
@@ -81,7 +83,7 @@ Aggregate data into feature (rows) x sample (columns) matrices:
 
 [Optional] Remove temporary and intermediate Anduril data files:
 ```sh
-"${root}/documentation/align_and_quantify/.sh"
+"${root}/documentation/align_and_quantify/08.remove_temporary_files.sh"
 ```
 
 
