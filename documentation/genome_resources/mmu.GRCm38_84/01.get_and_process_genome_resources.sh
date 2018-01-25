@@ -31,8 +31,8 @@ fileNamePrefix="mmu.GRCm38_84"
 # ----------------
 resDir="${root}/publicResources/genome_resources/${fileNamePrefix}"
 rawDir="${resDir}/raw"
-tmpDir="${root}/.tmp/publicResources/genome_resources/${fileNamePrefix}"
-logDir="${root}/logFiles/publicResources/genome_resources/${fileNamePrefix}"
+tmpDir="${root}/.tmp/genome_resources/${fileNamePrefix}"
+logDir="${root}/logFiles/genome_resources/${fileNamePrefix}"
 
 # URLs
 # ----

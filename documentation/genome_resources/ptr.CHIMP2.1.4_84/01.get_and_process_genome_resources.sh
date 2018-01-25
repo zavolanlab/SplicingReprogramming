@@ -25,14 +25,14 @@ root="$(dirname $(dirname $(dirname $(cd "$(dirname "$0" )" && pwd))))"
 # Prefix for filenames
 # --------------------
 # - Downloaded files go to 'rawDir' and keep their original filenames
-fileNamePrefix="hsa.GRCh38_84"
+fileNamePrefix="ptr.CHIMP2.1.4_84"
 
 # Other directories
 # -----------------
 resDir="${root}/publicResources/genome_resources/${fileNamePrefix}"
 rawDir="${resDir}/raw"
-tmpDir="${root}/.tmp/publicResources/genome_resources/${fileNamePrefix}"
-logDir="${root}/logFiles/publicResources/genome_resources/${fileNamePrefix}"
+tmpDir="${root}/.tmp/genome_resources/${fileNamePrefix}"
+logDir="${root}/logFiles/genome_resources/${fileNamePrefix}"
 
 # URLs
 # ----
@@ -40,9 +40,9 @@ logDir="${root}/logFiles/publicResources/genome_resources/${fileNamePrefix}"
 # files are concatenated after download
 # - It is assumed that the specified transcriptome files contain sequences for all transcripts in 
 # the (filtered) gene annotations
-genomeURLs=("ftp://ftp.ensembl.org/pub/release-84/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz")
-geneAnnoURLs=("ftp://ftp.ensembl.org/pub/release-84/gtf/homo_sapiens/Homo_sapiens.GRCh38.84.gtf.gz")
-transcriptomeURLs=("ftp://ftp.ensembl.org/pub/release-84/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz" "ftp://ftp.ensembl.org/pub/release-84/fasta/homo_sapiens/ncrna/Homo_sapiens.GRCh38.ncrna.fa.gz")
+genomeURLs=("ftp://ftp.ensembl.org/pub/release-84/fasta/pan_troglodytes/dna/Pan_troglodytes.CHIMP2.1.4.dna_sm.toplevel.fa.gz")
+geneAnnoURLs=("ftp://ftp.ensembl.org/pub/release-84/gtf/pan_troglodytes/Pan_troglodytes.CHIMP2.1.4.84.gtf.gz")
+transcriptomeURLs=("ftp://ftp.ensembl.org/pub/release-85/fasta/pan_troglodytes/cdna/Pan_troglodytes.CHIMP2.1.4.cdna.all.fa.gz" "ftp://ftp.ensembl.org/pub/release-85/fasta/pan_troglodytes/ncrna/Pan_troglodytes.CHIMP2.1.4.ncrna.fa.gz")
 
 # Filters
 # -------
@@ -53,12 +53,12 @@ transcriptomeURLs=("ftp://ftp.ensembl.org/pub/release-84/fasta/homo_sapiens/cdna
 # applying gene annotation filters
 # - Warnings are issued if sequences for annotated transcripts are absent in the transcriptome
 # Genome filters
-genomeFilterChromosomes="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT"
+genomeFilterChromosomes="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT"
 # Gene annotation / transcriptome filters
-geneAnnoFilterChromosomes="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y"
+geneAnnoFilterChromosomes="1 2A 2B 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y"
 geneAnnoFilterGeneBiotypes="antisense lincRNA processed_transcript protein_coding"
 geneAnnoFilterTranscriptBiotypes=""
-geneAnnoFilterTranscriptSupportLevels="1 2 3"
+geneAnnoFilterTranscriptSupportLevels=""
 
 
 ########################
@@ -251,7 +251,7 @@ zcat "$geneAnnoFilt" | awk '$3 == "transcript"' | awk -v OFS="\t" '{
 }' | sed -e 's/"//g' -e 's/;//g' | sort -u -k1,1 | gzip > "${trxTableFilt}"
 
 
-## COMPILE GENE SYMBOL LOOKUP TABLE
+### COMPILE GENE SYMBOL LOOKUP TABLE
 
 ## Compile table
 echo "Compiling gene ID > gene symbol lookup table..." >> "$logFile"
@@ -261,7 +261,7 @@ awk -F"\t" '{print $8"\t"$6}' <(zcat $trxTable) | sort -u | awk 'BEGIN{FS="\t"; 
 awk -F"\t" '{print $8"\t"$6}' <(zcat $trxTableFilt) | sort -u | awk 'BEGIN{FS="\t"; OFS="\t"} {a1[$1]=$1; if (a2[$1] == "") {a2[$1]=$2} else {a2[$1]=a2[$1]"|"$2}} END{for (id in a1) {print a2[id], id}}' | grep -v "|" | sort | gzip > "$idSymTableFilt"
 
 
-#############
+############
 ###  END  ###
 #############
 
