@@ -47,14 +47,18 @@ We have used the following configuration:
 * **HPC** - UGE 8.3.1p6 with libdrmaa.so.1.0
 * **Client** - Python 2.7.5 with drmaa 0.7.6
 
-Furthermore, the following environment variables have to be set/modified:
+Furthermore, your `$PYTHONPATH` has to be set/modified to include a custom Anduril resource:
 ```bash
-export DRMAA_LIBRARY_PATH="<PATH>"   # Set path according to your system
 export PYTHONPATH="${root}/frameworksAuxiliary/anduril/lib:$PYTHONPATH"
 ```
 > **NOTE:** Executing the `export` commands in the current shell instance will only affect the 
 > environment of that particular instance. To avoid having to execute these again in future 
 > instances, add the lines to your shell startup script (e.g. `.bashrc` for Bash).  
+
+Finally, you need to ensure that the following environment variables are (correctly) set on your 
+system:
+* `$ANDURIL_HOME`
+* `DRMAA_LIBRARY_PATH`
 
 > **NOTE:** The DRMAA library, as well as the corresponding Python module and environment variable 
 > `$DRMAA_LIBRARY_PATH` are not required if Anduril workflows are to be executed locally. However, 
@@ -63,28 +67,25 @@ export PYTHONPATH="${root}/frameworksAuxiliary/anduril/lib:$PYTHONPATH"
 > re-configured for local execution.
 
 ### Clone repository
-
-Clone the repository:
+Now it's time to clone this repository:
 ```sh
-git clone TODO
+git clone TODO: Add URL
 ```
 
-Set root directory:
+We can move into the new directory and set it as the root directory for the analysis:
 ```sh
 cd SpliceFactorsReprogramming
 root="$PWD"
 ```
 
 ### Description of files
+TODO: Complete
 
-TODO: Modify/add
-
-The directory will contain the barebones directory structure with the following top-level content:
+Freshly cloned, the directory should have the following (top-level) content:
 * `frameworksAuxiliary  `Contains the Anduril bundle including all required components
 * `scriptsSoftware      `Contains scripts required for the pipeline and preparation
 
 ### Get genome resources
-
 In this section, the following resources for human, mouse and chimpanzee are downloaded from 
 [Ensembl](http://www.ensembl.org/index.html) (release 84), filtered/processed and indexed:
 * genome
