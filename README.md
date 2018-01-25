@@ -4,8 +4,8 @@ Code for reproducing the data in (TODO: URL publication).
 ## Reproducing the data
 TODO: Add links and add/check version numbers
 
-> Bash is the recommended shell for the execution of all commands in this section. Commands may need 
-> to be modified if executed from another shell.
+> **Note:** Bash is the recommended shell for the execution of all commands in this section. 
+> Commands may need to be modified if executed from another shell.
 
 ### Pre-requisites
 This section lists the software requirements, as well as a description of the operating system and 
