@@ -107,17 +107,17 @@ data are computed and summarized:
 "${root}/documentation/align_and_quantify/05.summarize_data.sh"
 ```
 
-6. [Optional] Calculate md5 hash sums for persistent output files:
+6. **[Optional]** Calculate md5 hash sums for persistent output files:
 ```sh
 "${root}/documentation/align_and_quantify/06.calculate_hash_sums.sh"
 ```
 
-7. [Optional] Re-organize and archive Anduril log files:
+7. **[Optional]** Re-organize and archive Anduril log files:
 ```sh
 "${root}/documentation/align_and_quantify/07.archive_log_files.sh"
 ```
 
-8. [Optional] Remove temporary and intermediate Anduril data files:
+8. **[Optional]** Remove temporary and intermediate Anduril data files:
 ```sh
 "${root}/documentation/align_and_quantify/08.remove_temporary_files.sh"
 ```
