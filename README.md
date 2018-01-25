@@ -72,7 +72,7 @@ are downloaded from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra
 "${root}/documentation/sra_data/01.download_data.sh"
 ```
 
-### Quantification & alignments
+### Pre-processing
 
 In this section, the previously downloaded RNA-Seq libraries are uniformly processed. The following 
 data are computed and summarized:
