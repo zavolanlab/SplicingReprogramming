@@ -11,7 +11,6 @@ setup that was used to execute resource-intensive processes. All indicated versi
 used in this study. Others may work, but have not been tested.
 
 #### Required software
-TODO: Check for completeness, add links and check version numbers
 The following software is required. Wherever followed by parentheses, the indicated executable name, 
 when called from a shell, has to link to the correct version of the specific software (i.e. it has 
 to be available in your `$PATH` and to be returned by the `which` command when called with the 
@@ -26,13 +25,14 @@ respective executable as its argument).
 * STAR 2.4.1c (`STAR`)
 * SUPPA ... (`suppa.py`)
 * ...
+TODO: Check for completeness, add links and check version numbers
 
 #### Operating system
 All analyses were performed on systems running:
-TODO: Check for completeness, add links and check version numbers
 * CentOS 6.5 with
     * GNU bash 4.2.0(1)
     * GNU coreutils 8.9
+TODO: Check for completeness, add links and check version numbers
 
 #### Resource management
 This study features two resource-intensive processing workflows, each step of which is remotely 
