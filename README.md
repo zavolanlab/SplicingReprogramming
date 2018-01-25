@@ -36,7 +36,7 @@ TODO
 ### Get genome resources
 
 In this section, the following resources for human, mouse and chimpanzee are downloaded from 
-[Ensembl](http://www.ensembl.org/index.html)(release 84), filtered/processed and indexed:
+[Ensembl](http://www.ensembl.org/index.html) (release 84), filtered/processed and indexed:
 * genome
 * gene annotations
 * transcriptome
