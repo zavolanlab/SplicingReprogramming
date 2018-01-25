@@ -49,9 +49,7 @@ processed and indexed.
 ```
 
 2. Generate transcript quantification and read mapping indices and compile AS events:
-
 > This step uses Anduril/DRMAA-based execution on a HPC cluster!
-
 ```sh
 # Human
 "${root}/documentation/genome_resources/hsa.GRCh38_84/02.generate_indices_and_as_events.sh"
@@ -67,6 +65,7 @@ In this section, RNA-Seq libraries from several different studies (TODO: see Tab
 are downloaded from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra).
 
 1. Download data:
+> This step requires >500GB of storage space!
 ```sh
 "${root}/documentation/sra_data/01.download_data.sh"
 ```
@@ -90,9 +89,8 @@ data are computed and summarized:
 ```
 
 3. Build and execute Anduril commands:
-
 > This step uses Anduril/DRMAA-based execution on a HPC cluster!
-
+> This step requires several TB of storage space!
 ```sh
 "${root}/documentation/align_and_quantify/03.execute_workflows.sh"
 ```
