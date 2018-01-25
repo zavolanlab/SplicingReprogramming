@@ -46,7 +46,7 @@ Downloads, filters and further processes genomes, gene annotations and transcrip
 ```
 
 Generate transcript quantification and read mapping indices and compile AS events:
-<aside class="warning">This step uses Anduril/DRMAA-based execution on a HPC cluster!</aside>
+> This step uses Anduril/DRMAA-based execution on a HPC cluster!
 ```sh
 # Human
 "${root}/documentation/genome_resources/hsa.GRCh38_84/02.generate_indices_and_as_events.sh"
