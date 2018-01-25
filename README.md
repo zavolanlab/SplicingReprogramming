@@ -1,6 +1,6 @@
 # RNA splicing in reprogramming
 
-Code for reproducing the data in (TODO: ref to publication).
+Code for reproducing the data in (TODO: URL publication).
 
 ## Reproducing the data
 
@@ -134,7 +134,7 @@ data are computed and summarized:
 * Mihaela Zavolan
 
 All code not listed in the [Pre-requisites](#pre-requisites) section written by Alexander Kanitz. 
-See (TODO: Authors' contributions section in the publication) for further details.
+See *Authors' contributions* section in (TODO: URL publication) for further details.
 
 ## Acknowledgments
 
@@ -154,7 +154,7 @@ The authors would like to thank:
 * [sciCORE Center for Scientific Computing](https://scicore.unibas.ch/)
 * [The Cancer Genome Atlas](https://cancergenome.nih.gov/)
 
-See (TODO: Acknowledgements section in the publication) for further details.
+See *Acknowledgements* section in (TODO: URL publication) for further details.
 
 ## Funding
 * [ERC Starting Grant](https://erc.europa.eu/funding/starting-grants) to Mihaela Zavolan
@@ -162,7 +162,7 @@ See (TODO: Acknowledgements section in the publication) for further details.
   Fellowship](https://www.mrc.ac.uk/skills-careers/fellowships/non-clinical-fellowships/senior-non-clinical-fellowship-sncf/) 
   to Keisuke Kaji
 
-See (TODO: Funding section in the publication) for further details.
+See *Funding* section in (TODO: URL publication) for further details.
 
 ## License
 
