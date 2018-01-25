@@ -65,7 +65,7 @@ In this section, RNA-Seq libraries from several different studies (TODO: see Tab
 are downloaded from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra).
 
 1. Download data:  
-> This step requires >500GB of storage space!
+> This step requires >500GB of storage space!  
 ```sh
 "${root}/documentation/sra_data/01.download_data.sh"
 ```
@@ -89,8 +89,8 @@ data are computed and summarized:
 ```
 
 3. Build and execute Anduril commands:
-> This step uses Anduril/DRMAA-based execution on a HPC cluster!                                 
-> This step requires several TB of storage space!
+> This step uses Anduril/DRMAA-based execution on a HPC cluster!  This step requires several TB of 
+> storage space!
 ```sh
 "${root}/documentation/align_and_quantify/03.execute_workflows.sh"
 ```
