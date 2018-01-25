@@ -33,10 +33,13 @@ root="$PWD"
 
 TODO
 
-### Get public resources
+### Get genome resources
 
-In this section, genome resources for human, mouse and chimpanzee are downloaded, filtered, 
-processed and indexed.
+In this section, the following resources for human, mouse and chimpanzee are downloaded from 
+[Ensembl](http://www.ensembl.org/index.html)(release 84), filtered/processed and indexed:
+* genome
+* gene annotations
+* transcriptome
 
 1. Downloads, filters and further processes genomes, gene annotations and transcriptomes:
 ```sh
