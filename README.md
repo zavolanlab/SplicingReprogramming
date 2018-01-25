@@ -47,7 +47,7 @@ We have used the following configuration:
 * **HPC** - UGE 8.3.1p6 with libdrmaa.so.1.0
 * **Client** - Python 2.7.5 with drmaa 0.7.6
 
-Finally, you need to ensure that the following environment variables are (correctly) set on your 
+You will also need to ensure that the following environment variables are (correctly) set on your 
 system:
 * `$ANDURIL_HOME`
 * `$DRMAA_LIBRARY_PATH`
