@@ -22,8 +22,7 @@
 root="$(dirname $(dirname $(cd "$(dirname "$0" )" && pwd)))"
 
 # Set other parameters
-script_reshape="${root}/scriptsSoftware/reshape_three_columns_to_matrix.R"
-script_log="${root}/scriptsSoftware/log_transform_matrix.R"
+scriptDir="${root}/scriptsSoftware"
 outDir="${root}/analyzedData/summarized_data/thpa"
 outFile="${outDir}/rna_expression.tissues.tpa.gene_level.tsv"
 outFile_log="${outDir}/rna_expression.tissues.tpa.gene_level.log.tsv"
@@ -60,7 +59,7 @@ rm -f "$logFile"; touch "$logFile"
 ##############
 
 # Convert expression data table to matrix
-"$script_reshape" \
+"${scriptDir}/reshape_three_columns_to_matrix.R" \
     --input-file="$inFile" \
     --output-file="$outFile" \
     --vertical="$colVert" \
@@ -71,7 +70,7 @@ rm -f "$logFile"; touch "$logFile"
     &>> "$logFile"
 
 # Log-transform matrix
-"$script_log" \
+"${scriptDir}/log_transform_matrix.R" \
     --input-file="$outFile" \
     --output-file="$outFile_log" \
     --base="$base" \

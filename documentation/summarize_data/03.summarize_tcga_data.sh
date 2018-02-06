@@ -22,10 +22,10 @@
 root="$(dirname $(dirname $(cd "$(dirname "$0" )" && pwd)))"
 
 # Set other parameters
-script_merge="${root}/scriptsSoftware/merge_common_field_from_multiple_tables_by_id.R"
-script_fc="${root}/scriptsSoftware/fold_changes_from_tables.R"
+scriptDir="${root}/scriptsSoftware"
 inDir="${root}/rawData/tcga"
 outDir="${root}/analyzedData/summarized_data/tcga"
+outFileMerge="${outDir}/fold_changes.RSEM.tumors_over_normals.tsv"
 logDir="${root}/logFiles/summarize_data"
 globNorm="*.normals.*"
 globTum="*.tumors.*"
@@ -66,7 +66,7 @@ rm -f "$logFile"; touch "$logFile"
 
 # Merging expression in normal tissues
 echo "Merging normal expression..." >> "$logFile"
-"$script_merge" \
+"${scriptDir}/merge_common_field_from_multiple_tables_by_id.R" \
     --input-directory="$inDir" \
     --output-directory="$outDir" \
     --glob="$globNorm" \
@@ -81,7 +81,7 @@ echo "Merging normal expression..." >> "$logFile"
 
 # Mergin expression in tumor tissues
 echo "Merging tumor expression..." >> "$logFile"
-"$script_merge" \
+"${scriptDir}/merge_common_field_from_multiple_tables_by_id.R" \
     --input-directory="$inDir" \
     --output-directory="$outDir" \
     --glob="$globTum" \
@@ -95,13 +95,12 @@ echo "Merging tumor expression..." >> "$logFile"
     &>> "$logFile"
 
 # Merging both
-out_file="${outDir}/fold_changes.RSEM.tumors_over_normals.tsv"
 query="${outDir}/expression.RSEM.tumors.tsv"
 reference="${outDir}/expression.RSEM.normals.tsv"
-"$script_fc" \
+"${scriptDir}/fold_changes_from_tables.R" \
     --query="$query" \
     --reference="$reference" \
-    --output-file="$out_file" \
+    --output-file="$outFileMerge" \
     --in-log=$base_in \
     --out-log=$base_out \
     --transpose \
