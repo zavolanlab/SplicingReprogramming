@@ -1,5 +1,5 @@
 # RNA splicing in reprogramming
-Code for reproducing the data in (TODO: URL publication).
+Code for reproducing the data in [REF].
 
 ## Reproducing the data
 > **Note:** Bash is the recommended shell for the execution of all commands in this section. 
@@ -114,8 +114,8 @@ In this section, the following resources for human, mouse and chimpanzee are dow
 
 ### Get RNA-Seq data
 
-In this section, RNA-Seq libraries from several different studies (TODO: see Table 1 in publication) 
-are downloaded from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra).
+In this section, RNA-Seq libraries from several different studies [REF; Table 1] are downloaded from 
+the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra).
 
 > **Note:** This step requires >500GB of storage space!
 ```sh
@@ -182,7 +182,7 @@ data are computed and summarized:
 * Mihaela Zavolan
 
 All code not listed in the [Pre-requisites](#pre-requisites) section written by Alexander Kanitz.  
-See *Authors' contributions* section in (TODO: URL publication) for further details.
+See *Authors' contributions* section in [REF] for further details.
 
 ### Acknowledgments
 
@@ -207,7 +207,7 @@ The authors would like to thank:
 * [Swiss Institute of Bioinformatics](https://www.sib.swiss/)
 * [The Cancer Genome Atlas](https://cancergenome.nih.gov/)
 
-See *Acknowledgements* section in (TODO: URL publication) for further details.
+See *Acknowledgements* section in [REF] for further details.
 
 ### Funding
 * [ERC Starting Grant](https://erc.europa.eu/funding/starting-grants) to Mihaela Zavolan 

@@ -57,6 +57,8 @@ rm -f "$logFile"; touch "$logFile"
 ###  MAIN  ###
 ##############
 
+### READ & ALIGNMENT STATISTICS ###
+
 # Summarize poly(A) tail removal statistics
 in_dir="${dataDir}/processing/polyA_removal/stats"
 in_prefix=""
@@ -72,6 +74,9 @@ in_suffix=".alignments.stats"
 out_dir="${outDir}/alignments/stats"; mkdir -p "$out_dir"
 out_file="${out_dir}/alignments.stats"
 "${scriptDir}/align_and_quantify/parse_STAR_logs.py" "$in_dir" "$in_prefix" "$in_suffix" > "$out_file" 2>> "$logFile"
+
+
+### TRANSCRIPT & GENE EXPRESSION: TPM ###
 
 # Summarize abundances (TPM)
 in_dir="${dataDir}/abundances/tpm"
@@ -104,6 +109,9 @@ in_file="${outDir}/abundances/tpm/Pan_troglodytes.transcripts.tpm"
 out_file="${outDir}/abundances/tpm/Pan_troglodytes.genes.tpm"
 "${scriptDir}/generic/aggregate_data_matrix_by_grouping_table.R" --input-table "$in_file" --output-table "$out_file" --grouping-table "$ptr_trx" --group-id-column 6 --has-header-input-table --verbose &>> "$logFile"
 
+
+### TRANSCRIPT & GENE EXPRESSION: COUNTS ###
+
 # Summarize abundances (counts)
 in_dir="${dataDir}/abundances/counts"
 out_dir="${outDir}/abundances/counts"; mkdir -p "$out_dir"
@@ -127,13 +135,8 @@ in_file="${outDir}/abundances/counts/Pan_troglodytes.transcripts.counts"
 out_file="${outDir}/abundances/counts/Pan_troglodytes.genes.counts"
 "${scriptDir}/generic/aggregate_data_matrix_by_grouping_table.R" --input-table "$in_file" --output-table "$out_file" --grouping-table "$ptr_trx" --group-id-column 6 --has-header-input-table --verbose &>> "$logFile"
 
-# Summarize isoform usages
-in_dir="${dataDir}/alternative_splicing/isoforms/psi"
-out_dir="${outDir}/alternative_splicing/isoforms/psi"; mkdir -p "$out_dir"
-out_suffix=".transcripts.psi"
-glob="*.alternative_splicing.isoforms.psi"
-id_suffix=".alternative_splicing.isoforms.psi"
-"${scriptDir}/generic/merge_common_field_from_multiple_tables_by_id.R" --input-directory "$in_dir" --output-directory "$out_dir" --out-file-suffix "$out_suffix" --glob "$glob" --id-suffix "$id_suffix" --has-header --annotation-table "$sampleTable" --anno-id-columns "1,2" --category-columns "3" --anno-has-header --include-ungrouped --verbose &>> "$logFile"
+
+### ALTERNATIVE SPLICING EVENTS ###
 
 # Summarize alternative splicing events (A3)
 in_dir="${dataDir}/alternative_splicing/events/A3/psi"
