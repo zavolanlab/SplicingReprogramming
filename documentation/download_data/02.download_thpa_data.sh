@@ -3,7 +3,7 @@
 #########################################################
 ### Alexander Kanitz, Biozentrum, University of Basel ###
 ### alexander.kanitz@alumni.ethz.ch                   ###
-### 21-SEP-2016                                       ###
+### 20-JUN-2017                                       ###
 #########################################################
 
 
@@ -11,7 +11,7 @@
 ###  DESCRIPTION  ###
 #####################
 
-# Downloads raw data in SRA format.
+# Download gene-level RNA expression data from The Human Protein Atlas.
 
 
 ####################
@@ -19,13 +19,12 @@
 ####################
 
 # Set root directory
-root="$(dirname $(dirname $(cd "$(dirname "$0" )" && pwd)))"
+root="$(dirname $(dirname $(dirname $(cd "$(dirname "$0" )" && pwd))))"
 
 # Set other parameters
-scriptDir="${root}/scriptsSoftware/sra_data"
-sampleTable="${root}/internalResources/samples.tsv"
-outDir="${root}/rawData"
-logDir="${root}/logFiles/align_and_quantify"
+url="http://www.proteinatlas.org/download/rna_tissue.csv.zip"
+outDir="${root}/rawData/thpa"
+logDir="${root}/logFiles/download_data"
 
 
 ########################
@@ -51,16 +50,21 @@ rm -f "$logFile"; touch "$logFile"
 ###  MAIN  ###
 ##############
 
-# Download RNA-seq run data
-echo "Processing sample table '$sampleTable'..." >> "$logFile"
-"${scriptDir}/download_SRA_data_from_sample_table.sh" "$sampleTable" "$outDir" &>> "$logFile"
+# Download data
+outFileCSV="${outDir}/rna_expression.tissues.tpa.gene_level.csv.zip"
+echo "Downloading data to file '$outFileCSV'..." >> "$logFile"
+wget --output-document "$outFileCSV" "$url" 2> /dev/null >> "$logFile"
+
+# Convert to TSV
+outFileTSV="${outDir}/rna_expression.tissues.tpa.gene_level.tsv.gz"
+echo "Converting to TSV file '$outFileTSV'..." >> "$logFile"
+unzip -p "$outFileCSV" | sed -e 's/cervix, uterine/cervix uterine/' -e 's/"//g' -e 's/,/\t/g' | gzip > "$outFileTSV"
 
 
 #############
 ###  END  ###
 #############
 
-echo "Sample table: $sampleTable" >> "$logFile"
-echo "Data downloaded to: $outDir" >> "$logFile"
+echo "Expression data in: $outDir" >> "$logFile"
 echo "Done. No errors." >> "$logFile"
 >&2 echo "Done. No errors."

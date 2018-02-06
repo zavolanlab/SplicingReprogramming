@@ -112,14 +112,28 @@ In this section, the following resources for human, mouse and chimpanzee are dow
 "${root}/documentation/genome_resources/ptr.CHIMP2.1.4_84/02.generate_indices_and_as_events.sh"
 ```
 
-### Get RNA-Seq data
+### Download data
 
-In this section, RNA-Seq libraries from several different studies [REF; Table 1] are downloaded from 
-the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra).
+In this section, RNA-Seq libraries and expression data from human tissues and cancers are downloaded 
+from various public repositories.
 
+1. Download RNA-Seq data [REF; Table 1] from the [Sequence Read 
+   Archive](https://www.ncbi.nlm.nih.gov/sra):
 > **Note:** This step requires >500GB of storage space!
 ```sh
-"${root}/documentation/sra_data/01.download_data.sh"
+"${root}/documentation/download_data/01.download_sra_data.sh"
+```
+
+2. Download human tissue expression data from [The Human Protein 
+   Atlas](https://www.proteinatlas.org/):
+```sh
+"${root}/documentation/download_data/02.download_thpa_data.sh"
+```
+
+3. Download tumor and control tissue expression data from [The Cancer Genome 
+   Atlas](https://cancergenome.nih.gov/) via [FireBrowse](http://firebrowse.org/):
+```sh
+"${root}/documentation/download_data/03.download_tcga_data.sh"
 ```
 
 ### Pre-process RNA-Seq data
@@ -152,24 +166,50 @@ data are computed and summarized:
 "${root}/documentation/align_and_quantify/04.organize_output_files.sh"
 ```
 
-5. Aggregate data into feature (rows) x sample (columns) matrices:
+5. **[Optional]** Re-organize and archive Anduril log files:
 ```sh
-"${root}/documentation/align_and_quantify/05.summarize_data.sh"
+"${root}/documentation/align_and_quantify/05.archive_log_files.sh"
 ```
 
-6. **[Optional]** Calculate md5 hash sums for persistent output files:
+### Summarize RNA-Seq, THPA and TCGA data
+
+1. Aggregate data into various feature (rows) x sample (columns) matrices:
 ```sh
-"${root}/documentation/align_and_quantify/06.calculate_hash_sums.sh"
+"${root}/documentation/summarize_data/01.summarize_sra_data.sh"
 ```
 
-7. **[Optional]** Re-organize and archive Anduril log files:
+2. Aggregate data into feature (rows) x tissue (columns) log2 TPM matrix:
 ```sh
-"${root}/documentation/align_and_quantify/07.archive_log_files.sh"
+"${root}/documentation/summarize_data/02.summarize_thpa_data.sh"
 ```
 
-8. **[Optional]** Remove temporary and intermediate Anduril data files:
+3. Aggregate data into feature (rows) x cancer (columns) log2 fold change matrix:
 ```sh
-"${root}/documentation/align_and_quantify/08.remove_temporary_files.sh"
+"${root}/documentation/summarize_data/03.summarize_tcga_data.sh"
+```
+
+### Differential gene expression analyses
+
+TODO: Run analysis & summarize results
+
+### Differential splicing analyses
+
+TODO: Run analysis & summarize results
+
+### FIGURES....................
+
+### Clean up
+
+1. **[Optional]** Calculate md5 hash sums for all output files:
+TODO: Adapt script to calculate hash sums for *all* files
+```sh
+"${root}/documentation/align_and_quantify/01.calculate_hash_sums.sh"
+```
+
+2. **[Optional]** Remove temporary files:
+TODO: Adapt script to remove *all* temporary files
+```sh
+"${root}/documentation/align_and_quantify/02.remove_temporary_files.sh"
 ```
 
 ## Credit

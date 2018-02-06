@@ -19,7 +19,7 @@
 ####################
 
 # Set root directory
-root="$(dirname $(dirname $(dirname $(cd "$(dirname "$0" )" && pwd))))"
+root="$(dirname $(dirname $(cd "$(dirname "$0" )" && pwd)))"
 
 # Set other parameters
 prefix="http://firebrowse.org/api/v1/Analyses/mRNASeq/Quartiles"
@@ -27,10 +27,9 @@ form="tsv"
 prot="RSEM"
 tum="tumors"
 norm="normals"
-inFile="${root}/internalResources/sra_data/splice_factors_of_interest"
-outDir="${root}/publicResources/tcga/expression"
-tmpDir="${root}/.tmp/analyzedData/fold_changes/tcga"
-logDir="${root}/logFiles/analyzedData/fold_changes/tcga"
+inFile="${root}/internalResources/splice_factors_of_interest.tsv"
+outDir="${root}/rawData/tcga"
+logDir="${root}/logFiles/download_data"
 
 
 ########################
@@ -44,7 +43,6 @@ set -o pipefail
 
 # Create directories
 mkdir -p "$outDir"
-mkdir -p "$tmpDir"
 mkdir -p "$logDir"
 
 # Create log file
@@ -56,11 +54,6 @@ rm -f "$logFile"; touch "$logFile"
 ##############
 ###  MAIN  ###
 ##############
-
-# Get official human gene symbols for genes of interest
-gene_symbols="${tmpDir}/gene_symbols"
-cp "$inFile" "$gene_symbols"
-# TODO: do this properly after input file is produced by heatmap plotting script
 
 # Iterate over genes of interest
 while read line; do
@@ -81,14 +74,13 @@ while read line; do
     outfile_t="${outDir}/expression.${prot}.${gene_print}.${tum}.${form}"
     wget --output-document "$outfile_t" "${prefix}?format=${form}&gene=${gene_search}&protocol=${prot}&sample_type=${tum}" &>> "$logFile"
 
-done < "$gene_symbols"
+done < "$in_file"
 
 
 #############
 ###  END  ###
 #############
 
-echo "Wrote genes of interest to: $gene_symbols" >> "$logFile"
 echo "Expression data in: $outDir" >> "$logFile"
 echo "Done. No errors." >> "$logFile"
 >&2 echo "Done. No errors."

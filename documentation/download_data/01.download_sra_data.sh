@@ -2,8 +2,8 @@
 
 #########################################################
 ### Alexander Kanitz, Biozentrum, University of Basel ###
-### alexander.kanitz@unibas.ch                        ###
-### 24-OCT-2016                                       ###
+### alexander.kanitz@alumni.ethz.ch                   ###
+### 21-SEP-2016                                       ###
 #########################################################
 
 
@@ -11,7 +11,7 @@
 ###  DESCRIPTION  ###
 #####################
 
-# Generates evenly sized chunks of the sample table.
+# Downloads RNA-Seq data from SRA.
 
 
 ####################
@@ -24,11 +24,8 @@ root="$(dirname $(dirname $(cd "$(dirname "$0" )" && pwd)))"
 # Set other parameters
 scriptDir="${root}/scriptsSoftware"
 sampleTable="${root}/internalResources/samples.tsv"
-outDir="${root}/.tmp/anduril/align_and_quantify/sample_tables"
-logDir="${root}/logFiles/align_and_quantify"
-sampleTablePrefix="table."
-sampleTableSuffix=".tsv"
-sampleTableChunkSize="10"
+outDir="${root}/rawData/sra"
+logDir="${root}/logFiles/download_data"
 
 
 ########################
@@ -50,13 +47,16 @@ rm -f "$logFile"; touch "$logFile"
 >&2 echo "Log written to '$logFile'..."
 
 
-############
-### MAIN ###
-############
+##############
+###  MAIN  ###
+##############
 
-# Split sample table into chunks
+# Replace placeholder path in sample table
+sed -i "s~\[\[ROOT\]\]~$root~" "$sampleTable"
+
+# Download RNA-seq run data
 echo "Processing sample table '$sampleTable'..." >> "$logFile"
-"${scriptDir}/split_table.sh" "$sampleTable" "$outDir" "$sampleTablePrefix" "$sampleTableSuffix" "$sampleTableChunkSize" &>> "$logFile"
+"${scriptDir}/download_SRA_data_from_sample_table.sh" "$sampleTable" "$outDir" &>> "$logFile"
 
 
 #############
@@ -64,6 +64,6 @@ echo "Processing sample table '$sampleTable'..." >> "$logFile"
 #############
 
 echo "Sample table: $sampleTable" >> "$logFile"
-echo "Sample table chunks in: $outDir" >> "$logFile"
+echo "Data downloaded to: $outDir" >> "$logFile"
 echo "Done. No errors." >> "$logFile"
 >&2 echo "Done. No errors."
