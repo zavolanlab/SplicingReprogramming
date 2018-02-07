@@ -7,20 +7,22 @@ Code for reproducing the data in [REF].
 
 ### Pre-requisites
 This section lists the software requirements, as well as a description of the hardware/software 
-setup that was used to execute resource-intensive processes. All indicated versions refer to those 
-used in this study. Others may work, but have not been tested.
+setup that was used to execute resource-intensive processes.  
+
+> **Note:** All indicated versions refer to those used in this study. Others may work, but have not been tested.
 
 #### Required software
 The following software is required:
 * [Anduril](http://anduril.org/site/resources/anduril1/), 1.2.23 (`anduril`)
 * [cutadapt](https://cutadapt.readthedocs.io/en/stable/), 1.8.3 (`cutadapt`)
 * [Git](https://git-scm.com/), 1.8.5.6
+* [Java SE Runtime Environment](http://www.oracle.com/technetwork/java/javase/overview/index.html), 
 * [kallisto](https://pachterlab.github.io/kallisto/), 0.42.3 (`kallisto`)
 * [Ontologizer](http://ontologizer.de/), 2.1 Build: 20160628-1269 (see note)
 * [Python2](https://www.python.org/), 2.7.11 (`python`) with modules
     * drmaa
     * TODO
-* [Python3](https://www.python.org/), TODO with modules
+* [Python3](https://www.python.org/), 3.5.2 with modules
     * TODO
 * [Samtools](http://www.htslib.org/), 1.3.1 (`samtools`)
 * [SRA Toolkit](https://www.ncbi.nlm.nih.gov/sra/docs/toolkitsoft/), 2.8.0 (`fastq-dump`)
@@ -29,32 +31,29 @@ The following software is required:
   `significanceCalculator.py`; see note)
 * [R](https://www.r-project.org/), 3.2.2 (`R`, `Rscript`) with packages
     * TODO
-* [Java SE Runtime Environment](http://www.oracle.com/technetwork/java/javase/overview/index.html), 
   1.7.0_80-b15 (`java`)
 
 TODO: Check for completeness
 
-> **NOTE:** Wherever followed by parentheses, the indicated executable names, when called from a 
+> **Note:** Wherever followed by parentheses, the indicated executable names, when called from a 
 > shell, have to link to the correct version of the specific software. You may need to modify your 
 > `$PATH` to ensure this.  
 
-> **NOTE:** The file [`Ontologizer.jar`](http://ontologizer.de/cmdline/Ontologizer.jar) needs to be 
+> **Note:** The file [`Ontologizer.jar`](http://ontologizer.de/cmdline/Ontologizer.jar) needs to be 
 > downloaded and copied/moved to the following location (after cloning this repository and setting 
 > the `$root` variable): `${root}/scriptsSoftware/Ontologizer.jar`  
 
-> **NOTE:** A *shebang* interpreter directive has to be added to each of the individual SUPPA 
+> **Note:** A *shebang* interpreter directive has to be added to each of the individual SUPPA 
 > component scripts, consisting of an absolute path pointing to a Python interpreter (and **not** a 
 > call to `env`!). In the case of `eventGenerator.py` and `psiCalculator.py` this has to be a 
-> Python2 (tested with versions 2.7.6 and 2.7.11) and for `significanceCalculator.py` a Python3 
-> interpreter (tested with versions TODO).
+> Python2 (tested with version 2.7.11) and for `significanceCalculator.py` a Python3 interpreter 
+> (tested with version TODO).
 
 #### Operating system
 All analyses were performed on systems running:
-* CentOS 6.5 with
-    * GNU bash 4.2.0(1)
-    * GNU coreutils 8.9
-
-TODO: Check for completeness, add links and check version numbers
+* [CentOS Linux](https://www.centos.org/), 6.5 with
+    * [GNU Bash](https://www.gnu.org/software/bash/), 4.2.0(1)
+    * [GNU Coreutils](https://www.gnu.org/software/coreutils/coreutils.html), 8.9
 
 #### Resource management
 This study features two resource-intensive processing workflows, each step of which is remotely 
@@ -71,7 +70,7 @@ system:
 * `$ANDURIL_HOME`
 * `$DRMAA_LIBRARY_PATH`
 
-> **NOTE:** The DRMAA library, as well as the corresponding Python module and environment variable 
+> **Note:** The DRMAA library, as well as the corresponding Python module and environment variable 
 > `$DRMAA_LIBRARY_PATH` are not required if Anduril workflows are to be executed locally. However, 
 > note that execution of the index generation and mapping/quantification pipelines will require up 
 > to 40Gb of available RAM for human/mouse samples and that workflows need to be manually 
@@ -92,7 +91,7 @@ a custom Anduril resource:
 ```bash
 export PYTHONPATH="${root}/frameworksAuxiliary/anduril/lib:$PYTHONPATH"
 ```
-> **NOTE:** Executing the `export` commands in the current shell instance will only affect the 
+> **Note:** Executing the `export` commands in the current shell instance will only affect the 
 > environment of that particular instance. To avoid having to execute these again in future 
 > instances, add the lines to your shell startup script (e.g. `.bashrc` for Bash).
 
