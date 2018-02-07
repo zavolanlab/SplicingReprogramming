@@ -20,14 +20,20 @@ The following software is required:
 * samtools 1.3.1 (`samtools`)
 * SRA Toolkit 2.8.0 (`fastq-dump`)
 * STAR 2.4.1c (`STAR`)
-* SUPPA ... (`suppa.py`)
+* SUPPA ... (`eventGenerator.py`, `psiCalculator.py`, `significanceCalculator.py`; see note)
 * ...
 
 TODO: Check for completeness, add links and check version numbers  
 
-> Wherever followed by parentheses, the indicated executable name, when called from a shell, has to 
-> link to the correct version of the specific software. You may need to modify your `$PATH` to 
-> ensure this.
+> **NOTE:** Wherever followed by parentheses, the indicated executable names, when called from a 
+> shell, have to link to the correct version of the specific software. You may need to modify your 
+> `$PATH` to ensure this.  
+
+> **NOTE:** A *shebang* interpreter directive has to be added to each of the individual SUPPA 
+> component scripts, consisting of an *absolute* path pointing to a Python interpreter (and **not** 
+> a call to `env`!). In the case of `eventGenerator.py` and `psiCalculator.py` this has to be a 
+> Python2 (tested with versions 2.7.6 and 2.7.11) and for `significanceCalculator.py` a Python3 
+> interpreter (tested with versions TODO).
 
 #### Operating system
 All analyses were performed on systems running:
@@ -57,6 +63,8 @@ system:
 > note that execution of the index generation and mapping/quantification pipelines will require up 
 > to 40Gb of available RAM for human/mouse samples and that workflows need to be manually 
 > re-configured for local execution.
+
+Finally, S
 
 ### Clone repository
 Now it's time to clone this repository:
