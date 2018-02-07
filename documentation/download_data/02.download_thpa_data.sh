@@ -19,10 +19,10 @@
 ####################
 
 # Set root directory
-root="$(dirname $(dirname $(dirname $(cd "$(dirname "$0" )" && pwd))))"
+root="$(dirname $(dirname $(cd "$(dirname "$0" )" && pwd)))"
 
 # Set other parameters
-url="http://www.proteinatlas.org/download/rna_tissue.csv.zip"
+url="https://v16.proteinatlas.org/download/rna_tissue.csv.zip"
 outDir="${root}/rawData/thpa"
 logDir="${root}/logFiles/download_data"
 

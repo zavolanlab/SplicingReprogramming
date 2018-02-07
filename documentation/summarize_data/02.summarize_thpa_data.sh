@@ -23,7 +23,7 @@ root="$(dirname $(dirname $(cd "$(dirname "$0" )" && pwd)))"
 
 # Set other parameters
 scriptDir="${root}/scriptsSoftware"
-outDir="${root}/analyzedData/summarized_data/thpa"
+outDir="${root}/analyzedData/data_matrices/thpa"
 outFile="${outDir}/rna_expression.tissues.tpa.gene_level.tsv"
 outFile_log="${outDir}/rna_expression.tissues.tpa.gene_level.log.tsv"
 logDir="${root}/logFiles/summarize_data"

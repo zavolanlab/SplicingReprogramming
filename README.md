@@ -125,13 +125,14 @@ from various public repositories.
 ```
 
 2. Download human tissue expression data from [The Human Protein 
-   Atlas](https://www.proteinatlas.org/):
+   Atlas](https://www.proteinatlas.org/) (release 16):
 ```sh
 "${root}/documentation/download_data/02.download_thpa_data.sh"
 ```
 
 3. Download tumor and control tissue expression data from [The Cancer Genome 
-   Atlas](https://cancergenome.nih.gov/) via [FireBrowse](http://firebrowse.org/):
+   Atlas](https://cancergenome.nih.gov/) via [FireBrowse](http://firebrowse.org/) (originally 
+   downloaded November 30th, 2017):
 ```sh
 "${root}/documentation/download_data/03.download_tcga_data.sh"
 ```

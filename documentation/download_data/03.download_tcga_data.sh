@@ -74,7 +74,7 @@ while read line; do
     outfile_t="${outDir}/expression.${prot}.${gene_print}.${tum}.${form}"
     wget --output-document "$outfile_t" "${prefix}?format=${form}&gene=${gene_search}&protocol=${prot}&sample_type=${tum}" &>> "$logFile"
 
-done < "$in_file"
+done < "$inFile"
 
 
 #############

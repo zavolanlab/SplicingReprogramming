@@ -24,7 +24,7 @@ root="$(dirname $(dirname $(cd "$(dirname "$0" )" && pwd)))"
 # Set other parameters
 scriptDir="${root}/scriptsSoftware"
 inDir="${root}/rawData/tcga"
-outDir="${root}/analyzedData/summarized_data/tcga"
+outDir="${root}/analyzedData/data_matrices/tcga"
 outFileMerge="${outDir}/fold_changes.RSEM.tumors_over_normals.tsv"
 logDir="${root}/logFiles/summarize_data"
 globNorm="*.normals.*"
@@ -63,6 +63,9 @@ rm -f "$logFile"; touch "$logFile"
 ##############
 ###  MAIN  ###
 ##############
+
+# Delete empty files
+find "$inDir" -size 0 -delete
 
 # Merging expression in normal tissues
 echo "Merging normal expression..." >> "$logFile"

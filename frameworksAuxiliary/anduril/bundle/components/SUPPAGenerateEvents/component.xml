@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <component>
     <name>SUPPAGenerateEvents</name>
-    <version></version>
-    <doc>Generates all possible alternative splicing events from a GTF annotation file.</doc>
+    <version>2.1</version>
+    <doc>Generates all possible alternative splicing and isoform switch events from a GTF annotation file.</doc>
     <author email="gael.perez@upf.edu">Gael P Alamancos</author>
     <category>NGS analysis</category>
     <category>RNA-Seq analysis</category>
@@ -12,7 +12,7 @@
         <argument name="source" value="anduril_custom_functions.py" />
     </launcher>
     <requires URL="http://www.python.org/" name="Python" optional="false" type="manual">python</requires>
-    <requires URL="https://bitbucket.org/regulatorygenomicsupf/suppa" name="SUPPA" optional="false" type="manual">suppa.py</requires>
+    <requires URL="https://github.com/comprna/SUPPA" name="SUPPA" optional="false" type="manual">suppa.py</requires>
     <type-parameters>
         <type-parameter name="GTF" extends="TSV">
             <doc>GTF file.</doc>
@@ -32,7 +32,7 @@
         </output>
     </outputs>
     <parameters>
-        <parameter name="_executable" type="string" default="suppa.py generateEvents">
+        <parameter name="_executable" type="string" default="eventGenerator.py">
             <doc>Path to executable.</doc>
         </parameter>
         <parameter name="_execMode" type="string" default="remote">
@@ -49,6 +49,9 @@
         </parameter>
         <parameter name="event_type" type="string" default="SE">
             <doc>Type(s) of alternative splicing events to generate. Choice of (1) &quot;FL&quot; (alternative first and last exons), (2) &quot;MX&quot; (mutually exclusive exons), (3) &quot;RI&quot; (retained introns), (4) &quot;SE&quot; (skipping exons), and (5) &quot;SS&quot; (alternative 5&apos; and 3&apos; splice sites). Separate multiple types by by whitespace. One or two (&quot;FL&quot; and &quot;SS&quot;) output files will be generated per event type.</doc>
+        </parameter>
+        <parameter name="format" type="string" default="ioe">
+            <doc>Format of the event annotation file: ioe for local events, ioi for transcript events.</doc>
         </parameter>
         <parameter name="boundary" type="string" default="S">
             <doc>(S)trict or (V)ariable boundary type.</doc>

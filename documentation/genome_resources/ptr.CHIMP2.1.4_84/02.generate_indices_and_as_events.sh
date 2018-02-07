@@ -144,7 +144,7 @@ EOF
 
 # Execute Anduril workflow
 echo "Executing workflow..." >> "$logFile"
-time anduril "run" "$workflow" --bundle "$bundleDir" --execution-dir "$execDir" --log "$logDirAnduril" --threads 4 &> /dev/null
+time anduril "run" "$workflow" --bundle "$bundleDir" --execution-dir "$execDir" --log "$logDirAnduril" --threads 4 1> /dev/null 2>> "$logFile"
 
 
 ## COPY RESULTS ##
